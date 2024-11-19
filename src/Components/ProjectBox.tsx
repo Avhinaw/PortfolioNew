@@ -1,5 +1,3 @@
-import React from "react";
-
 const ProjectBox = ({title, desc, img, github, site}: { title: string; desc: string; img: string; github: string; site: string;}) => {
     return (
         <>
