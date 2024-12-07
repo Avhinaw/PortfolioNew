@@ -13,7 +13,7 @@ const Project = [
     },
     {
         title: 'Obys Agency Clone',
-        description: 'A Showase of Smooth Animation',
+        description: 'A Showase of Smooth',
         image: obysMock,
         github: 'path',
         site: 'https://obysclone.netlify.app/'

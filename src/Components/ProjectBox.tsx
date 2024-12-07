@@ -3,15 +3,15 @@ const ProjectBox = ({title, desc, img, github, site}: { title: string; desc: str
     return (
         <>
         <a href={site} target="_blank" rel="noopener noreferrer">
-            <div id="project-box" className="project-box h-[40vh] w-[50vw] lg:h-[66vh] lg:w-[25vw] relative">
+            <div id="project-box" className="project-box h-[36vh] w-[47vw] lg:h-[66vh] lg:w-[25vw] relative">
                 <img
                     src={img}
                     alt=""
-                    className="h-[40vh] lg:h-[66vh] w-[50vw] lg:w-[24vw] object-cover rounded-2xl filter brightness-[40%] transition duration-300 hover:brightness-[70%]"
+                    className="h-[36vh] lg:h-[66vh] w-[45vw] lg:w-[24vw] object-cover rounded-2xl filter brightness-[40%] transition duration-300 hover:brightness-[70%]"
                 />
                 <div className="absolute top-10 left-7">
-                    <h3 className="text-2xl font-bold">{title}</h3>
-                    <h4 className="text-lg tracking-tight mt-1">{desc}</h4>
+                    <h3 className="text-xl lg:text-2xl font-bold">{title}</h3>
+                    <h4 className="text-md lg:text-lg tracking-tight mt-1">{desc}</h4>
                     <a href={github} target="_blank" rel="noopener noreferrer">
                     <button
                         id="github-button"
