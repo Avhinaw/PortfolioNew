@@ -1,29 +1,34 @@
+import abhiWalMock from '../assets/abhiWalMock.png';
+import obysMock from '../assets/obysMock.png';
+import premierMock from '../assets/premierMock.png';
+import weatherMock from '../assets/weatherMock.png';
+
 const Project = [
     {
             title: 'AvhiSafe Web3 Wallet',
             description: 'A web3 wallet of Sol and Eth',
-            image: '/src/assets/abhiWalMock.png',
+            image: abhiWalMock,
             github: 'https://github.com/Avhinaw/AvhiSafe',
             site: 'https://avhisafe.netlify.app/',
     },
     {
         title: 'Obys Agency Clone',
         description: 'A Showase of Smooth Animation',
-        image: '/src/assets/obysMock.png',
+        image: obysMock,
         github: 'path',
         site: 'https://obysclone.netlify.app/'
     },
     {
         title: 'Premier',
         description: 'Photograpy Website',
-        image: '/src/assets/premierMock.png',
+        image: premierMock,
         github: 'path',
         site: 'https://mmodel.netlify.app/'
     },
     {
         title: 'Project 4',
         description: 'project 4 description',
-        image: '/src/assets/weatherMock.png',
+        image: weatherMock,
         github: 'path',
         site: 'https://avhisafe.netlify.app/'
     },
