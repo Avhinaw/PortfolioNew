@@ -61,7 +61,7 @@ const App = () => {
 
   return (
     <>
-      <div className="py-16 px-36 bg-[#04090b] h-[118vh] text-white">
+      <div className="py-16 px-12 lg:px-36 bg-[#04090b] h-[118vh] text-white">
         <Intro />
         {/* Showcase Section */}
         <div
