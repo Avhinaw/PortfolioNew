@@ -1,6 +1,8 @@
 import { FaLinkedin } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa6";
 import { SiMailtrap } from "react-icons/si";
+import { SiGoogledocs } from "react-icons/si";
+
 const Intro = () => {
     return(
     <>
@@ -28,11 +30,18 @@ const Intro = () => {
                     <FaGithub />
                 </a>
                 <a
-                    href="mailto:your-email@example.com"
+                    href="mailto:avhinaaw@gmail.com"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
                     <SiMailtrap />
+                </a>
+                <a
+                    href="https://drive.google.com/file/d/17wbzaU4lT9-cYbEbhZQ-Y-O0PeCmKshl/view?usp=sharing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <SiGoogledocs />
                 </a>
             </div>
         </div>
