@@ -7,7 +7,7 @@ const ProjectBox = ({title, desc, img, github, site}: { title: string; desc: str
                 <img
                     src={img}
                     alt=""
-                    className="h-[40vh] lg:h-[66vh] w-[48vw] lg:w-[24vw] object-cover rounded-2xl filter brightness-[40%] transition duration-300 hover:brightness-[70%]"
+                    className="h-[40vh] lg:h-[66vh] w-[50vw] lg:w-[24vw] object-cover rounded-2xl filter brightness-[40%] transition duration-300 hover:brightness-[70%]"
                 />
                 <div className="absolute top-10 left-7">
                     <h3 className="text-2xl font-bold">{title}</h3>
