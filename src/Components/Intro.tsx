@@ -37,7 +37,7 @@ const Intro = () => {
                     <SiMailtrap />
                 </a>
                 <a
-                    href="https://drive.google.com/file/d/17wbzaU4lT9-cYbEbhZQ-Y-O0PeCmKshl/view?usp=sharing"
+                    href="https://drive.google.com/file/d/1DyNcxOMfdFKhqimv8LUNJ1dvK2rw4VBE/view?usp=sharing"
                     target="_blank"
                     rel="noopener noreferrer"
                 >

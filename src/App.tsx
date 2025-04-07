@@ -69,7 +69,7 @@ const App = () => {
           className="flex overflow-x-scroll overscroll-x-auto w-full [scrollbar-width:none] no-scrollbar"
         >
           {Project.map((elem, idx) => (
-            <div className="flex justify-start gap-4 mx-auto">
+            <div key={idx} className="flex justify-start gap-4 mx-auto">
             <ProjectBox 
               key={idx}
               title={elem.title}

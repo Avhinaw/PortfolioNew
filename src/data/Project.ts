@@ -1,12 +1,13 @@
 import abhiWalMock from '../assets/abhiWalMock.png';
 import obysMock from '../assets/obysMock.png';
 import premierMock from '../assets/premierMock.png';
-import weatherMock from '../assets/weatherMock.png';
+import AiTourMockup from '../assets/AiTourMockup.png';
+import shadientMock from '../assets/shadientMockup.png';
 
 const Project = [
     {
             title: 'AvhiSafe Web3 Wallet',
-            description: 'A web3 wallet of Sol and Eth',
+            description: 'A Web3 Wallet of Sol and Eth',
             image: abhiWalMock,
             github: 'https://github.com/Avhinaw/AvhiSafe',
             site: 'https://avhisafe.netlify.app/',
@@ -19,6 +20,13 @@ const Project = [
         site: 'https://obysclone.netlify.app/'
     },
     {
+        title: 'AI Tour Planner',
+        description: 'Plan Hassel Free Trip',
+        image: AiTourMockup,
+        github: 'path',
+        site: 'https://ai-tour.netlify.app/'
+    },
+    {
         title: 'Premier',
         description: 'Photograpy Website',
         image: premierMock,
@@ -26,18 +34,11 @@ const Project = [
         site: 'https://mmodel.netlify.app/'
     },
     {
-        title: 'Project 4',
-        description: 'project 4 description',
-        image: weatherMock,
+        title: 'Shadient',
+        description: 'Animation Showcase',
+        image: shadientMock,
         github: 'path',
-        site: 'https://avhisafe.netlify.app/'
-    },
-    {
-        title: 'Project 5',
-        description: 'project 5 description',
-        image: 'path of the img',
-        github: 'path',
-        site: 'https://avhisafe.netlify.app/'
+        site: 'https://headassign.netlify.app/'
     }
 ];
 
