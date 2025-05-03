@@ -15,7 +15,7 @@ const ProjectBox = ({title, desc, img, github, site}: { title: string; desc: str
                     <a href={github} target="_blank" rel="noopener noreferrer">
                     <button
                         id="github-button"
-                        className="inline-block backdrop-blur-xl border border-white/15 rounded-full bg-neutral-500/50 px-3 py-1 my-2 font-medium hover:bg-neutral-500/70 transition"
+                        className="backdrop-blur-xl border border-white/15 rounded-full bg-neutral-500/50 px-3 py-1 my-2 font-medium hover:bg-neutral-500/70 transition"
                 >
                         Github
                     </button>

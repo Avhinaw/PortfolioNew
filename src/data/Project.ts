@@ -3,14 +3,15 @@ import obysMock from '../assets/obysMock.png';
 import premierMock from '../assets/premierMock.png';
 import AiTourMockup from '../assets/AiTourMockup.png';
 import shadientMock from '../assets/shadientMockup.png';
+import zentryMock from '../assets/ZentryMockup.png';
 
 const Project = [
     {
-            title: 'AvhiSafe Web3 Wallet',
-            description: 'A Web3 Wallet of Sol and Eth',
-            image: abhiWalMock,
-            github: 'https://github.com/Avhinaw/AvhiSafe',
-            site: 'https://avhisafe.netlify.app/',
+        title: 'AvhiSafe Web3 Wallet',
+        description: 'A Web3 Wallet of Sol and Eth',
+        image: abhiWalMock,
+        github: 'https://github.com/Avhinaw/AvhiSafe',
+        site: 'https://avhisafe.netlify.app/'
     },
     {
         title: 'Obys Agency Clone',
@@ -27,8 +28,15 @@ const Project = [
         site: 'https://ai-tour.netlify.app/'
     },
     {
+        title: 'Zentry WebApp',
+        description: 'A luxurious, focused modern responsive app',
+        image: zentryMock,
+        github: 'path',
+        site: 'https://zentry-awaard.netlify.app/'
+    },
+    {
         title: 'Premier',
-        description: 'Photograpy Website',
+        description: 'Mordern DesignedPhotograpy Website',
         image: premierMock,
         github: 'path',
         site: 'https://mmodel.netlify.app/'
