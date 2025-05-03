@@ -17,35 +17,35 @@ const Project = [
         title: 'Obys Agency Clone',
         description: 'A Showase of Smooth',
         image: obysMock,
-        github: 'path',
+        github: 'https://github.com/Avhinaw/Obys-Agency-clone',
         site: 'https://obysclone.netlify.app/'
     },
     {
         title: 'AI Tour Planner',
         description: 'Plan Hassel Free Trip',
         image: AiTourMockup,
-        github: 'path',
+        github: 'https://github.com/Avhinaw/ai-tour-planner',
         site: 'https://ai-tour.netlify.app/'
     },
     {
         title: 'Zentry WebApp',
         description: 'A luxurious, focused modern responsive app',
         image: zentryMock,
-        github: 'path',
+        github: 'https://github.com/Avhinaw/Zentry-Awaard-Web',
         site: 'https://zentry-awaard.netlify.app/'
     },
     {
         title: 'Premier',
         description: 'Mordern DesignedPhotograpy Website',
         image: premierMock,
-        github: 'path',
+        github: 'https://github.com/Avhinaw/Mordernism',
         site: 'https://mmodel.netlify.app/'
     },
     {
         title: 'Shadient',
         description: 'Animation Showcase',
         image: shadientMock,
-        github: 'path',
+        github: 'https://github.com/Avhinaw/HeadFieldAssign',
         site: 'https://headassign.netlify.app/'
     }
 ];
