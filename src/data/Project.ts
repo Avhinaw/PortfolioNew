@@ -4,6 +4,7 @@ import premierMock from '../assets/premierMock.png';
 import AiTourMockup from '../assets/AiTourMockup.png';
 import shadientMock from '../assets/shadientMockup.png';
 import zentryMock from '../assets/ZentryMockup.png';
+import helloAndroidMockup from '../assets/helloAndroidMockup.png';
 
 const Project = [
     {
@@ -26,6 +27,13 @@ const Project = [
         image: AiTourMockup,
         github: 'https://github.com/Avhinaw/ai-tour-planner',
         site: 'https://ai-tour.netlify.app/'
+    },
+    {
+        title: 'Hello Android',
+        description: 'You ask, We answer',
+        image: helloAndroidMockup,
+        github: 'https://github.com/Avhinaw/Hello_android',
+        site: 'https://helloandroid.netlify.app/'
     },
     {
         title: 'Zentry WebApp',
