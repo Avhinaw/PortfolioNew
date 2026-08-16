@@ -414,6 +414,156 @@ a {
   box-shadow: 0 28px 90px rgba(94, 54, 255, 0.55);
 }
 
+.music-toggle {
+  position: absolute;
+  z-index: 30;
+  top: 1rem;
+  right: 1rem;
+  display: inline-flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-contrast);
+  cursor: pointer;
+  background: var(--accent);
+  border: 0;
+  border-radius: 999px;
+  box-shadow: var(--card-shadow);
+  transition: transform 220ms ease, filter 220ms ease;
+}
+
+.music-toggle:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.music-toggle.is-playing {
+  animation: music-pulse 2.4s ease-in-out infinite;
+}
+
+.loading-screen {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: var(--ink);
+  background: var(--page-bg);
+  isolation: isolate;
+  animation: loading-screen-exit 560ms ease 900ms both;
+}
+
+.loading-screen::before,
+.loading-screen::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+}
+
+.loading-screen::before {
+  z-index: -2;
+  background: radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 34%), radial-gradient(circle at 50% 50%, transparent 0 22%, color-mix(in srgb, var(--accent) 12%, transparent) 22.2% 22.5%, transparent 22.8%);
+}
+
+.loading-screen::after {
+  z-index: -1;
+  background: linear-gradient(120deg, transparent 0 45%, color-mix(in srgb, var(--accent) 7%, transparent) 50%, transparent 55%);
+  transform: translateX(-100%);
+  animation: loading-sheen 1.6s ease-in-out infinite;
+}
+
+.loading-screen-orbit {
+  position: absolute;
+  width: min(66vw, 34rem);
+  aspect-ratio: 1;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: 50%;
+  box-shadow: 0 0 60px color-mix(in srgb, var(--accent) 12%, transparent), inset 0 0 50px color-mix(in srgb, var(--accent) 10%, transparent);
+  animation: loading-orbit 2.1s linear infinite;
+}
+
+.loading-screen-spider {
+  position: relative;
+  z-index: 2;
+  width: clamp(12rem, 34vw, 26rem);
+  max-width: 70vw;
+  filter: drop-shadow(0 28px 32px rgba(0, 0, 0, 0.48));
+  animation: loading-spider-arrive 1.1s cubic-bezier(0.2, 0.85, 0.25, 1.15) both;
+}
+
+.loading-screen-copy {
+  position: absolute;
+  bottom: 12%;
+  display: flex;
+  align-items: baseline;
+  gap: 0.2rem;
+  color: var(--muted-ink);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.loading-screen-dots {
+  display: inline-block;
+  width: 1.3rem;
+  overflow: hidden;
+  color: var(--accent);
+  animation: loading-dots 1.1s steps(4, end) infinite;
+}
+
+@keyframes loading-spider-arrive {
+  0% {
+    opacity: 0;
+    transform: translateY(3rem) scale(0.42) rotate(-8deg);
+  }
+  58% {
+    opacity: 1;
+    transform: translateY(-0.6rem) scale(1.04) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes loading-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loading-sheen {
+  0%, 24% {
+    transform: translateX(-100%);
+  }
+  68%, 100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes loading-screen-exit {
+  to {
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes loading-dots {
+  0% { width: 0.2rem; }
+  50% { width: 0.7rem; }
+  100% { width: 1.3rem; }
+}
+
+@keyframes music-pulse {
+  0%, 100% { box-shadow: var(--card-shadow); }
+  50% { box-shadow: 0 0 0 0.35rem color-mix(in srgb, var(--accent) 20%, transparent), var(--card-shadow); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .theme-style-trigger.is-animating .theme-style-avatar,
   .theme-style-trigger.is-animating .theme-style-spider-icon {

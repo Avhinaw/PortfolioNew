@@ -1,6 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { MdOutlineArrowBackIos, MdOutlineArrowForwardIos } from "react-icons/md";
+import {
+  MdMusicNote,
+  MdMusicOff,
+  MdOutlineArrowBackIos,
+  MdOutlineArrowForwardIos,
+} from "react-icons/md";
 import Intro from "./Components/Intro";
+import LoadingScreen from "./Components/LoadingScreen";
+import sampleMusic from "./assets/sample-portfolio-music.mp3";
 import {
   defaultThemeStyle,
   getRandomThemeStyle,
@@ -11,6 +18,12 @@ import Project from "./data/Project";
 
 const App = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const loadingStartedAtRef = useRef(performance.now());
+  const loadingTimeoutRef = useRef<number | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [themeStyle, setThemeStyle] = useState<ThemeStyleId>(() => {
     const savedStyle = window.localStorage.getItem("portfolio-theme-style") as ThemeStyleId | null;
     return savedStyle ?? defaultThemeStyle;
@@ -68,6 +81,19 @@ const App = () => {
   }, [themeStyle]);
 
   useEffect(() => {
+    const audio = audioRef.current;
+    const audioContext = audioContextRef.current;
+
+    return () => {
+      if (loadingTimeoutRef.current) {
+        window.clearTimeout(loadingTimeoutRef.current);
+      }
+      audio?.pause();
+      void audioContext?.close();
+    };
+  }, []);
+
+  useEffect(() => {
     return () => {
       if (themeAnimationTimeoutRef.current) {
         window.clearTimeout(themeAnimationTimeoutRef.current);
@@ -75,9 +101,70 @@ const App = () => {
     };
   }, []);
 
+  const playSpiderClickSound = async () => {
+    const AudioContextClass = window.AudioContext;
+    if (!AudioContextClass) return;
+
+    const audioContext = audioContextRef.current ?? new AudioContextClass();
+    audioContextRef.current = audioContext;
+    if (audioContext.state === "suspended") {
+      await audioContext.resume();
+    }
+
+    const now = audioContext.currentTime;
+    const master = audioContext.createGain();
+    master.gain.setValueAtTime(0.0001, now);
+    master.gain.exponentialRampToValueAtTime(0.16, now + 0.015);
+    master.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
+    master.connect(audioContext.destination);
+
+    const webSnap = audioContext.createOscillator();
+    webSnap.type = "triangle";
+    webSnap.frequency.setValueAtTime(860, now);
+    webSnap.frequency.exponentialRampToValueAtTime(230, now + 0.19);
+    webSnap.connect(master);
+    webSnap.start(now);
+    webSnap.stop(now + 0.2);
+
+    const webPulse = audioContext.createOscillator();
+    webPulse.type = "sine";
+    webPulse.frequency.setValueAtTime(170, now + 0.02);
+    webPulse.frequency.exponentialRampToValueAtTime(75, now + 0.3);
+    webPulse.connect(master);
+    webPulse.start(now + 0.02);
+    webPulse.stop(now + 0.32);
+  };
+
+  const toggleMusic = async () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isMusicPlaying) {
+      audio.pause();
+      setIsMusicPlaying(false);
+      return;
+    }
+
+    try {
+      await audio.play();
+      setIsMusicPlaying(true);
+    } catch {
+      setIsMusicPlaying(false);
+    }
+  };
+
+  const completeLoading = () => {
+    const elapsed = performance.now() - loadingStartedAtRef.current;
+    const remaining = Math.max(0, 1200 - elapsed);
+    loadingTimeoutRef.current = window.setTimeout(() => {
+      setIsLoading(false);
+    }, remaining);
+  };
+
   const randomizeThemeStyle = () => {
     if (isThemeAnimating) return;
 
+    void playSpiderClickSound();
     setIsThemeAnimating(true);
     setThemeStyle((currentStyle) => getRandomThemeStyle(currentStyle));
     themeAnimationTimeoutRef.current = window.setTimeout(() => {
@@ -90,6 +177,23 @@ const App = () => {
       data-style={themeStyle}
       className="portfolio-shell min-h-screen overflow-x-hidden px-4 py-16 sm:px-8 sm:py-20 lg:px-36 lg:py-16"
     >
+      <audio
+        ref={audioRef}
+        src={sampleMusic}
+        loop
+        preload="auto"
+        aria-hidden="true"
+      />
+      <button
+        type="button"
+        className={`music-toggle ${isMusicPlaying ? "is-playing" : ""}`}
+        onClick={() => void toggleMusic()}
+        aria-label={isMusicPlaying ? "Pause sample music" : "Play sample music"}
+        title={isMusicPlaying ? "Pause sample music" : "Play sample music"}
+      >
+        {isMusicPlaying ? <MdMusicNote aria-hidden="true" /> : <MdMusicOff aria-hidden="true" />}
+      </button>
+      {isLoading && <LoadingScreen onComplete={completeLoading} />}
       <Intro
         themeStyle={themeStyle}
         isThemeAnimating={isThemeAnimating}
