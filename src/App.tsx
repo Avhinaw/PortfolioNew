@@ -1,110 +1,102 @@
-import { useRef, useState, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { MdOutlineArrowBackIos, MdOutlineArrowForwardIos } from "react-icons/md";
 import Intro from "./Components/Intro";
 import ProjectBox from "./Components/ProjectBox";
-import { MdOutlineArrowBackIos } from "react-icons/md";
-import { MdOutlineArrowForwardIos } from "react-icons/md";
 import Project from "./data/Project";
 
 const App = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [disableLeft, setDisableLeft] = useState(true); // Track left button state
-  const [disableRight, setDisableRight] = useState(false); // Track right button state
+  const [disableLeft, setDisableLeft] = useState(true);
+  const [disableRight, setDisableRight] = useState(false);
 
-  // Calculate the exact width of one project, including margin
-  const getProjectWidth = () => {
+  const checkButtons = useCallback(() => {
     const container = scrollContainerRef.current;
-    if (container) {
-      const projectBox = container.querySelector<HTMLDivElement>(".project-box");
-      if (projectBox) {
-        const style = window.getComputedStyle(projectBox);
-        const marginRight = parseFloat(style.marginRight); // Get margin
-        return projectBox.offsetWidth + marginRight; // Total width of one box
-      }
-    }
-    return 0;
+    if (!container) return;
+
+    const maxScrollLeft = container.scrollWidth - container.clientWidth;
+    setDisableLeft(container.scrollLeft <= 1);
+    setDisableRight(container.scrollLeft >= maxScrollLeft - 1);
+  }, []);
+
+  const getProjectScrollAmount = () => {
+    const container = scrollContainerRef.current;
+    const projectBox = container?.querySelector<HTMLElement>(".project-box");
+    if (!container || !projectBox) return container?.clientWidth ?? 0;
+
+    const gap = Number.parseFloat(getComputedStyle(projectBox.parentElement as Element).gap) || 0;
+    return projectBox.getBoundingClientRect().width + gap;
   };
 
-  const checkButtons = () => {
+  const scrollProjects = (direction: "left" | "right") => {
     const container = scrollContainerRef.current;
-    if (container) {
-      setDisableLeft(container.scrollLeft === 0); // Disable left if at start
-      setDisableRight(
-        container.scrollLeft + container.clientWidth >= container.scrollWidth
-      ); // Disable right if at end
-    }
-  };
+    if (!container) return;
 
-  const scrollLeft = () => {
-    const container = scrollContainerRef.current;
-    if (container) {
-      const projectWidth = getProjectWidth(); // Get project width dynamically
-      container.scrollBy({ left: -projectWidth, behavior: "smooth" });
-    }
-  };
-
-  const scrollRight = () => {
-    const container = scrollContainerRef.current;
-    if (container) {
-      const projectWidth = getProjectWidth(); // Get project width dynamically
-      container.scrollBy({ left: projectWidth, behavior: "smooth" });
-    }
+    const amount = getProjectScrollAmount();
+    container.scrollBy({
+      left: direction === "right" ? amount : -amount,
+      behavior: "smooth",
+    });
   };
 
   useEffect(() => {
     const container = scrollContainerRef.current;
-    if (container) {
-      container.addEventListener("scroll", checkButtons); // Update button states on scroll
-      checkButtons(); // Initial check
-      return () => container.removeEventListener("scroll", checkButtons);
-    }
-  }, []);
+    if (!container) return;
+
+    checkButtons();
+    container.addEventListener("scroll", checkButtons, { passive: true });
+    window.addEventListener("resize", checkButtons);
+
+    return () => {
+      container.removeEventListener("scroll", checkButtons);
+      window.removeEventListener("resize", checkButtons);
+    };
+  }, [checkButtons]);
 
   return (
-    <>
-      <div className="py-28 lg:py-16 px-4 lg:px-36 bg-[#04090b] h-[118vh] text-white">
-        <Intro />
-        {/* Showcase Section */}
+    <main className="min-h-screen overflow-x-hidden bg-[#04090b] px-4 py-16 text-white sm:px-8 sm:py-20 lg:px-36 lg:py-16">
+      <Intro />
+
+      <section aria-label="Featured projects" className="mt-4">
         <div
           ref={scrollContainerRef}
-          className="flex overflow-x-scroll overscroll-x-auto w-full [scrollbar-width:none] no-scrollbar"
+          className="no-scrollbar flex w-full snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain scroll-smooth pb-2"
         >
-          {Project.map((elem, idx) => (
-            <div key={idx} className="flex justify-start gap-4 mx-auto">
-            <ProjectBox 
-              key={idx}
-              title={elem.title}
-            desc={elem.description}
-            img={elem.image}
-            github={elem.github}
-            site={elem.site}
-            />
-          </div>
-          ))
-          }
-        </div>
-        {/* Navigation Arrows */}
-        <div className="h-10 w-72 flex pt-12 gap-3 px-3">
-          <div
-            className={`${
-              disableLeft ? "opacity-50 cursor-not-allowed" : "hover:bg-[#151D20]"
-            } w-10 h-10 rounded-full flex items-center justify-center`}
-            onClick={disableLeft ? undefined : scrollLeft}
-          >
-            <MdOutlineArrowBackIos />
-          </div>
-          <div
-            className={`${
-              disableRight
-                ? "opacity-50 cursor-not-allowed"
-                : "hover:bg-[#151D20]"
-            } w-10 h-10 rounded-full flex items-center justify-center cursor-pointer`}
-            onClick={disableRight ? undefined : scrollRight}
-          >
-            <MdOutlineArrowForwardIos />
+          <div className="flex w-max gap-4 px-1">
+            {Project.map((project) => (
+              <ProjectBox
+                key={project.title}
+                title={project.title}
+                desc={project.description}
+                img={project.image}
+                github={project.github}
+                site={project.site}
+              />
+            ))}
           </div>
         </div>
-      </div>
-    </>
+
+        <div className="mt-6 flex gap-3 px-1" aria-label="Project carousel controls">
+          <button
+            type="button"
+            aria-label="Previous projects"
+            disabled={disableLeft}
+            onClick={() => scrollProjects("left")}
+            className="flex h-10 w-10 items-center justify-center rounded-full transition hover:bg-[#151D20] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            <MdOutlineArrowBackIos aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            aria-label="Next projects"
+            disabled={disableRight}
+            onClick={() => scrollProjects("right")}
+            className="flex h-10 w-10 items-center justify-center rounded-full transition hover:bg-[#151D20] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            <MdOutlineArrowForwardIos aria-hidden="true" />
+          </button>
+        </div>
+      </section>
+    </main>
   );
 };
 
