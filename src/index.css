@@ -1490,21 +1490,24 @@ html.has-web-cursor * {
 
 .cursor-fx-layer {
   position: fixed;
-  z-index: 90;
+  z-index: 9999;
   inset: 0;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 160ms ease;
+  opacity: 1;
 }
 
 .cursor-fx-layer.is-visible {
   opacity: 1;
 }
 
+.cursor-fx-layer.is-hidden {
+  opacity: 0;
+}
+
 .cursor-fx-pointer {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: -100px;
+  left: -100px;
   width: 1.9rem;
   height: 1.9rem;
   pointer-events: none;
@@ -1553,7 +1556,7 @@ html.has-web-cursor * {
 
 .cursor-web-shot {
   position: fixed;
-  z-index: 89;
+  z-index: 9998;
   top: var(--web-y);
   left: var(--web-x);
   width: 5.4rem;

@@ -193,12 +193,13 @@ const App = () => {
   const closeFeature = () => setActiveFeature(null);
 
   return (
-    <main
+    <>
+      <CursorFX />
+      <main
       data-style={themeStyle}
       data-feature-mode={isFocusMode ? "focus" : activeFeature === "spotlight" ? "spotlight" : undefined}
       className="portfolio-shell min-h-screen overflow-x-hidden px-4 py-16 sm:px-8 sm:py-20 lg:px-36 lg:py-16"
     >
-      <CursorFX />
       <audio
         ref={audioRef}
         src={sampleMusic}
@@ -279,7 +280,8 @@ const App = () => {
         onToggleFocusMode={() => setIsFocusMode((current) => !current)}
         isFocusMode={isFocusMode}
       />
-    </main>
+      </main>
+    </>
   );
 };
 
