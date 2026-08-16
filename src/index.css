@@ -50,7 +50,7 @@ a {
   --accent: #8cf3c6;
   --accent-contrast: #06120e;
   --card-bg: rgba(255, 255, 255, 0.09);
-  --card-border: rgba(255, 255, 255, 0.18);
+  --card-border: transparent;
   --card-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
   --card-radius: 1rem;
   --image-filter: brightness(40%);
@@ -97,7 +97,7 @@ a {
 .portfolio-shell > div:first-child > div:nth-child(1) > div {
   color: var(--ink) !important;
   background: var(--card-bg) !important;
-  border: 1px solid var(--card-border);
+  border: 0;
 }
 
 .portfolio-shell > div:first-child > div:nth-child(1) > div > div {
@@ -107,7 +107,7 @@ a {
 .theme-style-trigger {
   color: var(--accent-contrast);
   background: var(--accent);
-  border: 1px solid var(--card-border);
+  border: 0;
   box-shadow: var(--card-shadow);
 }
 
@@ -118,7 +118,7 @@ a {
 
 .portfolio-shell .project-box {
   overflow: hidden;
-  border: 1px solid var(--card-border);
+  border: 0;
   border-radius: var(--card-radius);
   background: var(--card-bg);
   box-shadow: var(--card-shadow);
@@ -145,14 +145,14 @@ a {
 .portfolio-shell .project-box > a:last-child {
   color: var(--accent-contrast) !important;
   background: var(--accent) !important;
-  border-color: var(--card-border) !important;
+  border: 0 !important;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
 }
 
 .portfolio-shell [aria-label='Project carousel controls'] button {
   color: var(--ink);
   background: var(--card-bg);
-  border: 1px solid var(--card-border);
+  border: 0;
 }
 
 /* 1. Glassmorphism */
@@ -163,7 +163,7 @@ a {
   --accent: #8cf3c6;
   --accent-contrast: #06120e;
   --card-bg: rgba(255, 255, 255, 0.1);
-  --card-border: rgba(255, 255, 255, 0.22);
+  --card-border: transparent;
   --card-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
   --card-radius: 1.25rem;
   --image-filter: brightness(42%) saturate(0.9);
@@ -207,14 +207,14 @@ a {
 
 /* 3. Neobrutalism */
 .portfolio-shell[data-style='neobrutalism'] {
-  --page-bg: #f6efdc;
-  --ink: #111111;
-  --muted-ink: #242424;
-  --accent: #ff6b5c;
-  --accent-contrast: #111111;
-  --card-bg: #ffd84d;
-  --card-border: #111111;
-  --card-shadow: 8px 8px 0 #111111;
+  --page-bg: #0b1017;
+  --ink: #f4f7fb;
+  --muted-ink: #b3bfce;
+  --accent: #ff8a65;
+  --accent-contrast: #10151d;
+  --card-bg: #17212d;
+  --card-border: transparent;
+  --card-shadow: 8px 8px 0 #05080c;
   --card-radius: 0.25rem;
   --image-filter: brightness(66%) saturate(1.2) contrast(1.1);
   --display-font: 'Space Grotesk', sans-serif;
@@ -224,7 +224,7 @@ a {
 .portfolio-shell[data-style='neobrutalism'] > div:first-child > div:nth-child(1) > div,
 .portfolio-shell[data-style='neobrutalism'] .theme-style-trigger,
 .portfolio-shell[data-style='neobrutalism'] [aria-label='Project carousel controls'] button {
-  border: 3px solid #111111;
+  border: 0;
   box-shadow: var(--card-shadow);
 }
 
@@ -236,61 +236,68 @@ a {
 
 /* 4. Bento Grid */
 .portfolio-shell[data-style='bento'] {
-  --page-bg: #eee9e0;
-  --ink: #1d2430;
-  --muted-ink: #596271;
-  --accent: #ff775f;
-  --accent-contrast: #ffffff;
-  --card-bg: #ffffff;
-  --card-border: rgba(29, 36, 48, 0.08);
-  --card-shadow: 0 16px 35px rgba(50, 54, 62, 0.12);
+  --page-bg: #090f18;
+  --ink: #f4f7fb;
+  --muted-ink: #9eacbd;
+  --accent: #b8ff6a;
+  --accent-contrast: #0b1308;
+  --card-bg: #111b29;
+  --card-border: transparent;
+  --card-shadow: 0 22px 45px rgba(0, 0, 0, 0.28);
   --card-radius: 1.6rem;
-  --image-filter: brightness(58%) saturate(0.95);
+  --image-filter: brightness(48%) saturate(1.1);
   --display-font: 'Space Grotesk', sans-serif;
 }
 
 .portfolio-shell[data-style='bento']::before {
   opacity: 1;
-  background: linear-gradient(135deg, rgba(255, 119, 95, 0.1), transparent 42%), radial-gradient(circle at 80% 10%, rgba(94, 167, 255, 0.13), transparent 25%);
+  background: linear-gradient(135deg, rgba(184, 255, 106, 0.08), transparent 38%), radial-gradient(circle at 80% 10%, rgba(85, 145, 255, 0.16), transparent 25%);
 }
 
 .portfolio-shell[data-style='bento'] .project-box {
   box-shadow: var(--card-shadow);
+  width: clamp(240px, 24vw, 360px) !important;
 }
 
 .portfolio-shell[data-style='bento'] .project-box:nth-child(2n) {
-  --card-bg: #d7e8ff;
+  --card-bg: #16263a;
+  transform: translateY(18px);
 }
 
 .portfolio-shell[data-style='bento'] .project-box:nth-child(3n) {
-  --card-bg: #dff5d2;
+  --card-bg: #142a26;
+  width: clamp(260px, 27vw, 400px) !important;
+}
+
+.portfolio-shell[data-style='bento'] .project-box:nth-child(4n) {
+  --card-bg: #251d35;
 }
 
 /* 5. Minimalism & Swiss Style */
 .portfolio-shell[data-style='swiss'] {
-  --page-bg: #f5f5f2;
-  --ink: #101010;
-  --muted-ink: #444444;
-  --accent: #e43d30;
+  --page-bg: #0b0e12;
+  --ink: #f1f4f7;
+  --muted-ink: #a5afb9;
+  --accent: #ff5b52;
   --accent-contrast: #ffffff;
-  --card-bg: #ffffff;
-  --card-border: #101010;
+  --card-bg: #12171d;
+  --card-border: transparent;
   --card-shadow: none;
   --card-radius: 0;
-  --image-filter: grayscale(1) contrast(1.08) brightness(72%);
+  --image-filter: grayscale(1) contrast(1.08) brightness(58%);
   --display-font: 'Space Grotesk', sans-serif;
 }
 
 .portfolio-shell[data-style='swiss']::before {
   opacity: 1;
-  background: linear-gradient(90deg, transparent 0 14%, rgba(228, 61, 48, 0.06) 14% 14.3%, transparent 14.3% 100%);
+  background: linear-gradient(90deg, transparent 0 14%, rgba(255, 91, 82, 0.08) 14% 14.3%, transparent 14.3% 100%);
 }
 
 .portfolio-shell[data-style='swiss'] .project-box,
 .portfolio-shell[data-style='swiss'] > div:first-child > div:nth-child(1) > div,
 .portfolio-shell[data-style='swiss'] .theme-style-trigger,
 .portfolio-shell[data-style='swiss'] [aria-label='Project carousel controls'] button {
-  border-width: 1px;
+  border: 0;
 }
 
 .portfolio-shell[data-style='swiss'] .project-box:hover {
