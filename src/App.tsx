@@ -4,6 +4,9 @@ import {
   MdMusicOff,
   MdChecklist,
   MdSportsEsports,
+  MdRadar,
+  MdContactMail,
+  MdAccessTime,
   MdOutlineArrowBackIos,
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
@@ -13,6 +16,7 @@ import FeatureSuggestionStrip from "./Components/FeatureSuggestionStrip";
 import FeatureActionModal from "./Components/FeatureActionModal";
 import TodoModal from "./Components/TodoModal";
 import GameModal from "./Components/GameModal";
+import MiniAppModal, { type MiniAppId } from "./Components/MiniAppModal";
 import sampleMusic from "./assets/sample-portfolio-music.mp3";
 import {
   defaultThemeStyle,
@@ -35,6 +39,7 @@ const App = () => {
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [isTodoOpen, setIsTodoOpen] = useState(false);
   const [isGameOpen, setIsGameOpen] = useState(false);
+  const [activeMiniApp, setActiveMiniApp] = useState<MiniAppId | null>(null);
   const [activeFeature, setActiveFeature] = useState<FeatureSuggestionId | null>(null);
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [activeSkillId, setActiveSkillId] = useState(skillMapNodes[0].id);
@@ -231,6 +236,33 @@ const App = () => {
       />
       <button
         type="button"
+        className="clock-toggle"
+        onClick={() => setActiveMiniApp("clock")}
+        aria-label="Open local time"
+        title="Open local time"
+      >
+        <MdAccessTime aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        className="contact-toggle"
+        onClick={() => setActiveMiniApp("contact")}
+        aria-label="Open direct contact"
+        title="Open direct contact"
+      >
+        <MdContactMail aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        className="signal-toggle"
+        onClick={() => setActiveMiniApp("signal")}
+        aria-label="Open skill signal board"
+        title="Open skill signal board"
+      >
+        <MdRadar aria-hidden="true" />
+      </button>
+      <button
+        type="button"
         className="game-toggle"
         onClick={() => setIsGameOpen(true)}
         aria-label="Open Spidey Swing game"
@@ -312,6 +344,7 @@ const App = () => {
 
       <TodoModal isOpen={isTodoOpen} onClose={() => setIsTodoOpen(false)} />
       <GameModal isOpen={isGameOpen} onClose={() => setIsGameOpen(false)} />
+      <MiniAppModal app={activeMiniApp} onClose={() => setActiveMiniApp(null)} />
       <FeatureActionModal
         action={activeFeature}
         onClose={closeFeature}
