@@ -8,6 +8,7 @@ import {
 import Intro from "./Components/Intro";
 import LoadingScreen from "./Components/LoadingScreen";
 import CursorFX from "./Components/CursorFX";
+import StyleGallery from "./Components/StyleGallery";
 import sampleMusic from "./assets/sample-portfolio-music.mp3";
 import {
   defaultThemeStyle,
@@ -162,15 +163,19 @@ const App = () => {
     }, remaining);
   };
 
-  const randomizeThemeStyle = () => {
-    if (isThemeAnimating) return;
+  const selectThemeStyle = (nextStyle: ThemeStyleId) => {
+    if (isThemeAnimating || nextStyle === themeStyle) return;
 
     void playSpiderClickSound();
     setIsThemeAnimating(true);
-    setThemeStyle((currentStyle) => getRandomThemeStyle(currentStyle));
+    setThemeStyle(nextStyle);
     themeAnimationTimeoutRef.current = window.setTimeout(() => {
       setIsThemeAnimating(false);
     }, 900);
+  };
+
+  const randomizeThemeStyle = () => {
+    selectThemeStyle(getRandomThemeStyle(themeStyle));
   };
 
   return (
@@ -200,6 +205,11 @@ const App = () => {
         themeStyle={themeStyle}
         isThemeAnimating={isThemeAnimating}
         onThemeStyleChange={randomizeThemeStyle}
+      />
+      <StyleGallery
+        activeStyle={themeStyle}
+        isAnimating={isThemeAnimating}
+        onSelectStyle={selectThemeStyle}
       />
 
       <section aria-label="Featured projects" className="mt-4">
