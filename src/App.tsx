@@ -1,11 +1,20 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MdOutlineArrowBackIos, MdOutlineArrowForwardIos } from "react-icons/md";
 import Intro from "./Components/Intro";
+import {
+  defaultThemeStyle,
+  getRandomThemeStyle,
+  type ThemeStyleId,
+} from "./data/ThemeStyle";
 import ProjectBox from "./Components/ProjectBox";
 import Project from "./data/Project";
 
 const App = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [themeStyle, setThemeStyle] = useState<ThemeStyleId>(() => {
+    const savedStyle = window.localStorage.getItem("portfolio-theme-style") as ThemeStyleId | null;
+    return savedStyle ?? defaultThemeStyle;
+  });
   const [disableLeft, setDisableLeft] = useState(true);
   const [disableRight, setDisableRight] = useState(false);
 
@@ -52,9 +61,23 @@ const App = () => {
     };
   }, [checkButtons]);
 
+  useEffect(() => {
+    window.localStorage.setItem("portfolio-theme-style", themeStyle);
+  }, [themeStyle]);
+
+  const randomizeThemeStyle = () => {
+    setThemeStyle((currentStyle) => getRandomThemeStyle(currentStyle));
+  };
+
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#04090b] px-4 py-16 text-white sm:px-8 sm:py-20 lg:px-36 lg:py-16">
-      <Intro />
+    <main
+      data-style={themeStyle}
+      className="portfolio-shell min-h-screen overflow-x-hidden px-4 py-16 sm:px-8 sm:py-20 lg:px-36 lg:py-16"
+    >
+      <Intro
+        themeStyle={themeStyle}
+        onThemeStyleChange={randomizeThemeStyle}
+      />
 
       <section aria-label="Featured projects" className="mt-4">
         <div

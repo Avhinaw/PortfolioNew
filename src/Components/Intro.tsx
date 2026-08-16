@@ -2,8 +2,18 @@ import { FaLinkedin } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa6";
 import { SiMailtrap } from "react-icons/si";
 import { SiGoogledocs } from "react-icons/si";
+import { MdAutoAwesome } from "react-icons/md";
+import {
+  getThemeStyleLabel,
+  type ThemeStyleId,
+} from "../data/ThemeStyle";
 
-const Intro = () => {
+type IntroProps = {
+  themeStyle: ThemeStyleId;
+  onThemeStyleChange: () => void;
+};
+
+const Intro = ({ themeStyle, onThemeStyleChange }: IntroProps) => {
     return(
     <>
         <div className="my-2">
@@ -44,6 +54,16 @@ const Intro = () => {
                     <SiGoogledocs />
                 </a>
             </div>
+            <button
+                type="button"
+                onClick={onThemeStyleChange}
+                className="theme-style-trigger mt-2 inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
+                aria-label={`Current style: ${getThemeStyleLabel(themeStyle)}. Click to randomly switch visual style.`}
+                title={`Style: ${getThemeStyleLabel(themeStyle)} — click to shuffle`}
+            >
+                <MdAutoAwesome aria-hidden="true" />
+                <span>{getThemeStyleLabel(themeStyle)}</span>
+            </button>
         </div>
     </>
     )
