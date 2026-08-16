@@ -9,7 +9,6 @@ import {
 import Intro from "./Components/Intro";
 import LoadingScreen from "./Components/LoadingScreen";
 import CursorFX from "./Components/CursorFX";
-import StyleGallery from "./Components/StyleGallery";
 import FeatureSuggestionStrip from "./Components/FeatureSuggestionStrip";
 import FeatureActionModal from "./Components/FeatureActionModal";
 import TodoModal from "./Components/TodoModal";
@@ -231,12 +230,6 @@ const App = () => {
         isThemeAnimating={isThemeAnimating}
         onThemeStyleChange={randomizeThemeStyle}
       />
-      <StyleGallery
-        activeStyle={themeStyle}
-        isAnimating={isThemeAnimating}
-        onSelectStyle={selectThemeStyle}
-      />
-
       <section aria-label="Featured projects" className="mt-4">
         <div
           ref={scrollContainerRef}
