@@ -20,6 +20,8 @@ import {
 import type { FeatureSuggestionId } from "./data/FeatureSuggestion";
 import ProjectBox from "./Components/ProjectBox";
 import Project from "./data/Project";
+import SpideyTracker from "./Components/SpideyTracker";
+import { skillMapNodes } from "./data/SkillMap";
 
 const App = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -32,6 +34,16 @@ const App = () => {
   const [isTodoOpen, setIsTodoOpen] = useState(false);
   const [activeFeature, setActiveFeature] = useState<FeatureSuggestionId | null>(null);
   const [isFocusMode, setIsFocusMode] = useState(false);
+  const [activeSkillId, setActiveSkillId] = useState(skillMapNodes[0].id);
+  const [trackedSkillIds, setTrackedSkillIds] = useState<string[]>(() => {
+    try {
+      const saved = window.localStorage.getItem("spidey-tracked-skills");
+      const parsed = saved ? (JSON.parse(saved) as string[]) : [];
+      return parsed.length ? parsed.filter((id) => skillMapNodes.some((node) => node.id === id)) : [skillMapNodes[0].id];
+    } catch {
+      return [skillMapNodes[0].id];
+    }
+  });
   const [themeStyle, setThemeStyle] = useState<ThemeStyleId>(() => {
     const savedStyle = window.localStorage.getItem("portfolio-theme-style") as ThemeStyleId | null;
     return savedStyle ?? defaultThemeStyle;
@@ -87,6 +99,10 @@ const App = () => {
   useEffect(() => {
     window.localStorage.setItem("portfolio-theme-style", themeStyle);
   }, [themeStyle]);
+
+  useEffect(() => {
+    window.localStorage.setItem("spidey-tracked-skills", JSON.stringify(trackedSkillIds));
+  }, [trackedSkillIds]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -191,6 +207,11 @@ const App = () => {
 
   const closeFeature = () => setActiveFeature(null);
 
+  const selectSkill = (skillId: string) => {
+    setActiveSkillId(skillId);
+    setTrackedSkillIds((current) => current.includes(skillId) ? current : [...current, skillId]);
+  };
+
   return (
     <>
       <main
@@ -270,6 +291,12 @@ const App = () => {
         </div>
         <FeatureSuggestionStrip onSelect={handleFeatureSelect} />
       </section>
+
+      <SpideyTracker
+        activeSkillId={activeSkillId}
+        trackedSkillIds={trackedSkillIds}
+        onSelectSkill={selectSkill}
+      />
 
       <TodoModal isOpen={isTodoOpen} onClose={() => setIsTodoOpen(false)} />
       <FeatureActionModal
