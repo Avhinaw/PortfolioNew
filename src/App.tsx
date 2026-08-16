@@ -7,6 +7,7 @@ import {
   MdRadar,
   MdContactMail,
   MdAccessTime,
+  MdAutoAwesome,
   MdOutlineArrowBackIos,
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
@@ -17,6 +18,7 @@ import FeatureActionModal from "./Components/FeatureActionModal";
 import TodoModal from "./Components/TodoModal";
 import GameModal from "./Components/GameModal";
 import MiniAppModal, { type MiniAppId } from "./Components/MiniAppModal";
+import AiAssistantModal from "./Components/AiAssistantModal";
 import sampleMusic from "./assets/sample-portfolio-music.mp3";
 import {
   defaultThemeStyle,
@@ -40,6 +42,7 @@ const App = () => {
   const [isTodoOpen, setIsTodoOpen] = useState(false);
   const [isGameOpen, setIsGameOpen] = useState(false);
   const [activeMiniApp, setActiveMiniApp] = useState<MiniAppId | null>(null);
+  const [isAiOpen, setIsAiOpen] = useState(false);
   const [activeFeature, setActiveFeature] = useState<FeatureSuggestionId | null>(null);
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [activeSkillId, setActiveSkillId] = useState(skillMapNodes[0].id);
@@ -236,6 +239,15 @@ const App = () => {
       />
       <button
         type="button"
+        className="ai-toggle"
+        onClick={() => setIsAiOpen(true)}
+        aria-label="Open HireBot AI assistant"
+        title="Open HireBot AI assistant"
+      >
+        <MdAutoAwesome aria-hidden="true" />
+      </button>
+      <button
+        type="button"
         className="clock-toggle"
         onClick={() => setActiveMiniApp("clock")}
         aria-label="Open local time"
@@ -345,6 +357,7 @@ const App = () => {
       <TodoModal isOpen={isTodoOpen} onClose={() => setIsTodoOpen(false)} />
       <GameModal isOpen={isGameOpen} onClose={() => setIsGameOpen(false)} />
       <MiniAppModal app={activeMiniApp} onClose={() => setActiveMiniApp(null)} />
+      <AiAssistantModal isOpen={isAiOpen} onClose={() => setIsAiOpen(false)} />
       <FeatureActionModal
         action={activeFeature}
         onClose={closeFeature}
