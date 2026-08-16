@@ -91,7 +91,7 @@ a {
 }
 
 .portfolio-shell > div:first-child {
-  position: relative;
+  position: static;
 }
 
 .portfolio-shell > div:first-child > div:nth-child(1) > div {
@@ -105,10 +105,25 @@ a {
 }
 
 .theme-style-trigger {
+  position: absolute;
+  z-index: 20;
+  top: 1rem;
+  left: 1rem;
   color: var(--accent-contrast);
   background: var(--accent);
   border: 0;
   box-shadow: var(--card-shadow);
+}
+
+.theme-style-icon {
+  cursor: pointer;
+}
+
+@media (min-width: 640px) {
+  .theme-style-trigger {
+    top: 1.25rem;
+    left: 1.25rem;
+  }
 }
 
 .theme-style-trigger:hover {

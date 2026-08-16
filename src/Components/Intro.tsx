@@ -57,12 +57,11 @@ const Intro = ({ themeStyle, onThemeStyleChange }: IntroProps) => {
             <button
                 type="button"
                 onClick={onThemeStyleChange}
-                className="theme-style-trigger mt-2 inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
+                className="theme-style-trigger theme-style-icon inline-flex h-11 w-11 items-center justify-center rounded-full transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
                 aria-label={`Current style: ${getThemeStyleLabel(themeStyle)}. Click to randomly switch visual style.`}
                 title={`Style: ${getThemeStyleLabel(themeStyle)} — click to shuffle`}
             >
-                <MdAutoAwesome aria-hidden="true" />
-                <span>{getThemeStyleLabel(themeStyle)}</span>
+                <MdAutoAwesome aria-hidden="true" className="text-xl" />
             </button>
         </div>
     </>
