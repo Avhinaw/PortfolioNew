@@ -8,7 +8,6 @@ import {
 } from "react-icons/md";
 import Intro from "./Components/Intro";
 import LoadingScreen from "./Components/LoadingScreen";
-import CursorFX from "./Components/CursorFX";
 import FeatureSuggestionStrip from "./Components/FeatureSuggestionStrip";
 import FeatureActionModal from "./Components/FeatureActionModal";
 import TodoModal from "./Components/TodoModal";
@@ -194,7 +193,6 @@ const App = () => {
 
   return (
     <>
-      <CursorFX />
       <main
       data-style={themeStyle}
       data-feature-mode={isFocusMode ? "focus" : activeFeature === "spotlight" ? "spotlight" : undefined}
