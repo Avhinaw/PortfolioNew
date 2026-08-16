@@ -11,8 +11,11 @@ const CursorFX = () => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (!finePointer.matches || reducedMotion.matches) return;
 
+    document.documentElement.classList.add("has-web-cursor");
+
     let frame = 0;
     let scrollTimeout = 0;
+    let clickTimeout = 0;
 
     const moveCursor = (event: PointerEvent) => {
       cancelAnimationFrame(frame);
@@ -38,14 +41,14 @@ const CursorFX = () => {
       web.className = "cursor-web-shot";
       web.style.setProperty("--web-x", `${event.clientX}px`);
       web.style.setProperty("--web-y", `${event.clientY}px`);
-      web.style.setProperty("--web-angle", `${Math.round(Math.random() * 30 - 15)}deg`);
-      document.body.appendChild(web);
       web.addEventListener("animationend", () => web.remove(), { once: true });
+      document.body.appendChild(web);
     };
 
     const pressCursor = () => {
+      window.clearTimeout(clickTimeout);
       layer.classList.add("is-clicking");
-      window.setTimeout(() => layer.classList.remove("is-clicking"), 260);
+      clickTimeout = window.setTimeout(() => layer.classList.remove("is-clicking"), 320);
     };
 
     const reactToScroll = () => {
@@ -64,6 +67,8 @@ const CursorFX = () => {
     return () => {
       cancelAnimationFrame(frame);
       window.clearTimeout(scrollTimeout);
+      window.clearTimeout(clickTimeout);
+      document.documentElement.classList.remove("has-web-cursor");
       document.removeEventListener("pointermove", moveCursor);
       document.removeEventListener("pointerover", updateHoverState);
       document.removeEventListener("pointerout", hideCursor);
@@ -76,9 +81,10 @@ const CursorFX = () => {
 
   return (
     <div ref={layerRef} className="cursor-fx-layer" aria-hidden="true">
-      <span className="cursor-fx-web" />
-      <span className="cursor-fx-ring" />
-      <span className="cursor-fx-core" />
+      <span className="cursor-fx-pointer">
+        <span className="cursor-fx-crosshair" />
+        <span className="cursor-fx-dot" />
+      </span>
     </div>
   );
 };
