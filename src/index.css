@@ -564,6 +564,144 @@ a {
   50% { box-shadow: 0 0 0 0.35rem color-mix(in srgb, var(--accent) 20%, transparent), var(--card-shadow); }
 }
 
+.cursor-fx-layer {
+  position: fixed;
+  z-index: 90;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.cursor-fx-layer.is-visible {
+  opacity: 1;
+}
+
+.cursor-fx-core,
+.cursor-fx-ring,
+.cursor-fx-web {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  transform: translate3d(var(--cursor-x, -100px), var(--cursor-y, -100px), 0) translate(-50%, -50%);
+}
+
+.cursor-fx-core {
+  width: 0.45rem;
+  height: 0.45rem;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 70%, transparent);
+  transition: width 180ms ease, height 180ms ease, background 180ms ease;
+}
+
+.cursor-fx-ring {
+  width: 1.7rem;
+  height: 1.7rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 72%, transparent);
+  border-radius: 50%;
+  transition: width 220ms cubic-bezier(0.22, 1, 0.36, 1), height 220ms cubic-bezier(0.22, 1, 0.36, 1), border-color 180ms ease, transform 220ms ease;
+}
+
+.cursor-fx-web {
+  width: 2.7rem;
+  height: 2.7rem;
+  opacity: 0.5;
+  background: radial-gradient(circle, transparent 0 28%, color-mix(in srgb, var(--accent) 54%, transparent) 29% 30%, transparent 31% 46%, color-mix(in srgb, var(--accent) 38%, transparent) 47% 48%, transparent 49%), linear-gradient(45deg, transparent 49%, color-mix(in srgb, var(--accent) 35%, transparent) 50% 51%, transparent 52%), linear-gradient(-45deg, transparent 49%, color-mix(in srgb, var(--accent) 35%, transparent) 50% 51%, transparent 52%);
+  border-radius: 50%;
+  transform: translate3d(var(--cursor-x, -100px), var(--cursor-y, -100px), 0) translate(-50%, -50%) scale(0.78);
+  transition: opacity 200ms ease, transform 260ms ease;
+}
+
+.cursor-fx-layer.is-hovering .cursor-fx-ring {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-color: var(--accent);
+}
+
+.cursor-fx-layer.is-hovering .cursor-fx-core {
+  width: 0.65rem;
+  height: 0.65rem;
+}
+
+.cursor-fx-layer.is-clicking .cursor-fx-ring {
+  width: 3.7rem;
+  height: 3.7rem;
+  border-color: var(--accent);
+  animation: cursor-web-burst 260ms ease-out both;
+}
+
+.cursor-fx-layer.is-scrolling .cursor-fx-web {
+  opacity: 0.9;
+  transform: translate3d(var(--cursor-x, -100px), var(--cursor-y, -100px), 0) translate(-50%, -50%) scale(1.05) rotate(18deg);
+}
+
+.cursor-web-shot {
+  position: fixed;
+  z-index: 89;
+  top: var(--web-y);
+  left: var(--web-x);
+  width: 0.25rem;
+  height: clamp(3rem, 7vw, 7rem);
+  pointer-events: none;
+  background: linear-gradient(to bottom, var(--accent), color-mix(in srgb, var(--accent) 12%, transparent));
+  border-radius: 999px;
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--accent) 68%, transparent));
+  transform: translate(-50%, -4%) rotate(var(--web-angle));
+  transform-origin: top center;
+  animation: cursor-web-shoot 620ms cubic-bezier(0.2, 0.8, 0.25, 1) both;
+}
+
+.cursor-web-shot::before,
+.cursor-web-shot::after {
+  position: absolute;
+  top: 20%;
+  width: 0.2rem;
+  height: 70%;
+  content: "";
+  background: inherit;
+  border-radius: inherit;
+}
+
+.cursor-web-shot::before {
+  left: -0.5rem;
+  transform: rotate(-22deg);
+}
+
+.cursor-web-shot::after {
+  right: -0.5rem;
+  transform: rotate(22deg);
+}
+
+@keyframes cursor-web-shoot {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -4%) rotate(var(--web-angle)) scaleY(0.1);
+  }
+  22% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -4%) rotate(var(--web-angle)) scaleY(1);
+  }
+}
+
+@keyframes cursor-web-burst {
+  0% { transform: translate3d(var(--cursor-x, -100px), var(--cursor-y, -100px), 0) translate(-50%, -50%) scale(0.72); }
+  100% { transform: translate3d(var(--cursor-x, -100px), var(--cursor-y, -100px), 0) translate(-50%, -50%) scale(1); }
+}
+
+@media (pointer: coarse) {
+  .cursor-fx-layer,
+  .cursor-web-shot {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .theme-style-trigger.is-animating .theme-style-avatar,
   .theme-style-trigger.is-animating .theme-style-spider-icon {
