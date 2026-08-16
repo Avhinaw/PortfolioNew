@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   MdMusicNote,
   MdMusicOff,
+  MdChecklist,
   MdOutlineArrowBackIos,
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
@@ -9,12 +10,16 @@ import Intro from "./Components/Intro";
 import LoadingScreen from "./Components/LoadingScreen";
 import CursorFX from "./Components/CursorFX";
 import StyleGallery from "./Components/StyleGallery";
+import FeatureSuggestionStrip from "./Components/FeatureSuggestionStrip";
+import FeatureActionModal from "./Components/FeatureActionModal";
+import TodoModal from "./Components/TodoModal";
 import sampleMusic from "./assets/sample-portfolio-music.mp3";
 import {
   defaultThemeStyle,
   getRandomThemeStyle,
   type ThemeStyleId,
 } from "./data/ThemeStyle";
+import type { FeatureSuggestionId } from "./data/FeatureSuggestion";
 import ProjectBox from "./Components/ProjectBox";
 import Project from "./data/Project";
 
@@ -26,6 +31,9 @@ const App = () => {
   const loadingTimeoutRef = useRef<number | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [isTodoOpen, setIsTodoOpen] = useState(false);
+  const [activeFeature, setActiveFeature] = useState<FeatureSuggestionId | null>(null);
+  const [isFocusMode, setIsFocusMode] = useState(false);
   const [themeStyle, setThemeStyle] = useState<ThemeStyleId>(() => {
     const savedStyle = window.localStorage.getItem("portfolio-theme-style") as ThemeStyleId | null;
     return savedStyle ?? defaultThemeStyle;
@@ -178,9 +186,17 @@ const App = () => {
     selectThemeStyle(getRandomThemeStyle(themeStyle));
   };
 
+  const handleFeatureSelect = (feature: FeatureSuggestionId) => {
+    setActiveFeature(feature);
+    if (feature === "focus") setIsFocusMode((current) => !current);
+  };
+
+  const closeFeature = () => setActiveFeature(null);
+
   return (
     <main
       data-style={themeStyle}
+      data-feature-mode={isFocusMode ? "focus" : activeFeature === "spotlight" ? "spotlight" : undefined}
       className="portfolio-shell min-h-screen overflow-x-hidden px-4 py-16 sm:px-8 sm:py-20 lg:px-36 lg:py-16"
     >
       <CursorFX />
@@ -191,6 +207,15 @@ const App = () => {
         preload="auto"
         aria-hidden="true"
       />
+      <button
+        type="button"
+        className="todo-toggle"
+        onClick={() => setIsTodoOpen(true)}
+        aria-label="Open todo list"
+        title="Open todo list"
+      >
+        <MdChecklist aria-hidden="true" />
+      </button>
       <button
         type="button"
         className={`music-toggle ${isMusicPlaying ? "is-playing" : ""}`}
@@ -251,7 +276,16 @@ const App = () => {
             <MdOutlineArrowForwardIos aria-hidden="true" />
           </button>
         </div>
+        <FeatureSuggestionStrip onSelect={handleFeatureSelect} />
       </section>
+
+      <TodoModal isOpen={isTodoOpen} onClose={() => setIsTodoOpen(false)} />
+      <FeatureActionModal
+        action={activeFeature}
+        onClose={closeFeature}
+        onToggleFocusMode={() => setIsFocusMode((current) => !current)}
+        isFocusMode={isFocusMode}
+      />
     </main>
   );
 };
