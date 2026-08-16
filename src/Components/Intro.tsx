@@ -2,7 +2,8 @@ import { FaLinkedin } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa6";
 import { SiMailtrap } from "react-icons/si";
 import { SiGoogledocs } from "react-icons/si";
-import { MdAutoAwesome } from "react-icons/md";
+import { FaSpider } from "react-icons/fa6";
+import spiderHeroPop from "../assets/spider-hero-pop.png";
 import {
   getThemeStyleLabel,
   type ThemeStyleId,
@@ -10,10 +11,15 @@ import {
 
 type IntroProps = {
   themeStyle: ThemeStyleId;
+  isThemeAnimating: boolean;
   onThemeStyleChange: () => void;
 };
 
-const Intro = ({ themeStyle, onThemeStyleChange }: IntroProps) => {
+const Intro = ({
+  themeStyle,
+  isThemeAnimating,
+  onThemeStyleChange,
+}: IntroProps) => {
     return(
     <>
         <div className="my-2">
@@ -57,11 +63,17 @@ const Intro = ({ themeStyle, onThemeStyleChange }: IntroProps) => {
             <button
                 type="button"
                 onClick={onThemeStyleChange}
-                className="theme-style-trigger theme-style-icon inline-flex h-11 w-11 items-center justify-center rounded-full transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
-                aria-label={`Current style: ${getThemeStyleLabel(themeStyle)}. Click to randomly switch visual style.`}
-                title={`Style: ${getThemeStyleLabel(themeStyle)} — click to shuffle`}
+                className={`theme-style-trigger theme-style-icon inline-flex h-11 w-11 items-center justify-center rounded-full transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current ${isThemeAnimating ? "is-animating" : ""}`}
+                aria-label={`Current style: ${getThemeStyleLabel(themeStyle)}. Click to switch visual style.`}
+                title={`Style: ${getThemeStyleLabel(themeStyle)} — click to switch`}
             >
-                <MdAutoAwesome aria-hidden="true" className="text-xl" />
+                <FaSpider aria-hidden="true" className="theme-style-spider-icon text-xl" />
+                <img
+                    src={spiderHeroPop}
+                    alt=""
+                    aria-hidden="true"
+                    className="theme-style-avatar"
+                />
             </button>
         </div>
     </>

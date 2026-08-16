@@ -15,6 +15,8 @@ const App = () => {
     const savedStyle = window.localStorage.getItem("portfolio-theme-style") as ThemeStyleId | null;
     return savedStyle ?? defaultThemeStyle;
   });
+  const [isThemeAnimating, setIsThemeAnimating] = useState(false);
+  const themeAnimationTimeoutRef = useRef<number | undefined>(undefined);
   const [disableLeft, setDisableLeft] = useState(true);
   const [disableRight, setDisableRight] = useState(false);
 
@@ -65,8 +67,22 @@ const App = () => {
     window.localStorage.setItem("portfolio-theme-style", themeStyle);
   }, [themeStyle]);
 
+  useEffect(() => {
+    return () => {
+      if (themeAnimationTimeoutRef.current) {
+        window.clearTimeout(themeAnimationTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const randomizeThemeStyle = () => {
+    if (isThemeAnimating) return;
+
+    setIsThemeAnimating(true);
     setThemeStyle((currentStyle) => getRandomThemeStyle(currentStyle));
+    themeAnimationTimeoutRef.current = window.setTimeout(() => {
+      setIsThemeAnimating(false);
+    }, 900);
   };
 
   return (
@@ -76,6 +92,7 @@ const App = () => {
     >
       <Intro
         themeStyle={themeStyle}
+        isThemeAnimating={isThemeAnimating}
         onThemeStyleChange={randomizeThemeStyle}
       />
 
