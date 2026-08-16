@@ -1505,11 +1505,12 @@ html.has-web-cursor * {
   position: absolute;
   top: 0;
   left: 0;
-  width: 2.1rem;
-  height: 2.1rem;
+  width: 1.9rem;
+  height: 1.9rem;
   pointer-events: none;
-  transform: translate3d(var(--cursor-x, -100px), var(--cursor-y, -100px), 0) translate(-50%, -50%);
-  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translate(-50%, -50%);
+  transition: none;
+  will-change: left, top;
 }
 
 .cursor-fx-crosshair {
