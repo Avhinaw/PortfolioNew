@@ -739,6 +739,9 @@ a {
   }
 }
 
+.clock-toggle,
+.contact-toggle,
+.signal-toggle,
 .game-toggle,
 .todo-toggle,
 .music-toggle {
@@ -759,6 +762,18 @@ a {
   transition: transform 220ms ease, filter 220ms ease;
 }
 
+.clock-toggle {
+  right: 18.5rem;
+}
+
+.contact-toggle {
+  right: 15rem;
+}
+
+.signal-toggle {
+  right: 11.5rem;
+}
+
 .game-toggle {
   right: 8rem;
 }
@@ -767,6 +782,9 @@ a {
   right: 4.5rem;
 }
 
+.clock-toggle:hover,
+.contact-toggle:hover,
+.signal-toggle:hover,
 .game-toggle:hover,
 .todo-toggle:hover,
 .music-toggle:hover {
@@ -846,6 +864,9 @@ a {
 }
 
 .feature-suggestion-chip:focus-visible,
+.clock-toggle:focus-visible,
+.contact-toggle:focus-visible,
+.signal-toggle:focus-visible,
 .game-toggle:focus-visible,
 .todo-toggle:focus-visible,
 .music-toggle:focus-visible {
@@ -2353,5 +2374,306 @@ body.game-modal-open {
 @media (prefers-reduced-motion: reduce) {
   .game-web-beacon {
     animation: none;
+  }
+}
+
+/* Utility mini-apps */
+.mini-app-modal-backdrop {
+  position: fixed;
+  z-index: 145;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(2, 5, 8, 0.76);
+  backdrop-filter: blur(14px);
+  animation: modal-in 180ms ease both;
+}
+
+.mini-app-modal {
+  width: min(100%, 34rem);
+  max-height: min(86vh, 40rem);
+  overflow: auto;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--card-bg) 95%, var(--page-bg));
+  border-radius: max(1rem, var(--card-radius));
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.5), 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.mini-app-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.25rem 0;
+}
+
+.mini-app-heading p {
+  margin: 0 0 0.2rem;
+  color: var(--accent);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.61rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.mini-app-heading h2 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--display-font);
+  font-size: clamp(1.45rem, 4vw, 2rem);
+}
+
+.mini-app-heading span {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--muted-ink);
+  font-size: 0.75rem;
+}
+
+.mini-app-heading button {
+  display: grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--ink);
+  cursor: pointer;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 0;
+  border-radius: 50%;
+}
+
+.mini-app-heading button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.mini-app-content {
+  padding: 1.25rem;
+}
+
+.mini-signal-app {
+  display: grid;
+  gap: 1rem;
+}
+
+.mini-signal-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 9%, var(--page-bg));
+  border-radius: 0.7rem;
+}
+
+.mini-signal-summary > svg {
+  width: 1.7rem;
+  height: 1.7rem;
+  flex: 0 0 auto;
+}
+
+.mini-signal-summary div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.mini-signal-summary strong {
+  color: var(--ink);
+  font-size: 0.85rem;
+}
+
+.mini-signal-summary span {
+  color: var(--muted-ink);
+  font-size: 0.7rem;
+}
+
+.mini-signal-list {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.mini-signal-list > div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.35rem 0.8rem;
+  align-items: center;
+}
+
+.mini-signal-list > div > span {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  color: var(--ink);
+  font-size: 0.78rem;
+}
+
+.mini-signal-list small {
+  color: var(--muted-ink);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+}
+
+.mini-signal-list strong {
+  color: var(--accent);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+}
+
+.mini-signal-list i {
+  grid-column: 1 / -1;
+  height: 0.35rem;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--accent) 12%, var(--page-bg));
+  border-radius: 999px;
+}
+
+.mini-signal-list i b {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: inherit;
+}
+
+.mini-contact-app {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.mini-contact-avatar {
+  display: grid;
+  width: 3.5rem;
+  height: 3.5rem;
+  place-items: center;
+  color: var(--accent-contrast);
+  font-family: var(--display-font);
+  font-size: 1.1rem;
+  background: var(--accent);
+  border-radius: 1rem;
+  box-shadow: var(--card-shadow);
+}
+
+.mini-contact-app > div:nth-child(2) {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.mini-contact-app strong {
+  color: var(--ink);
+  font-family: var(--display-font);
+  font-size: 1rem;
+}
+
+.mini-contact-app p {
+  margin: 0;
+  color: var(--muted-ink);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.mini-app-primary-link,
+.mini-app-secondary-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.7rem 0.8rem;
+  font-size: 0.72rem;
+  border-radius: 999px;
+}
+
+.mini-app-primary-link {
+  grid-column: 1 / -1;
+  color: var(--accent-contrast) !important;
+  background: var(--accent);
+}
+
+.mini-app-secondary-link {
+  grid-column: 1 / -1;
+  color: var(--ink) !important;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.mini-clock-app {
+  display: grid;
+  justify-items: center;
+  gap: 0.45rem;
+  padding: 1.25rem 0 0.7rem;
+  text-align: center;
+}
+
+.mini-clock-app > svg {
+  width: 2.4rem;
+  height: 2.4rem;
+  color: var(--accent);
+  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--accent) 55%, transparent));
+}
+
+.mini-clock-app strong {
+  color: var(--ink);
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(2rem, 8vw, 3.6rem);
+  letter-spacing: -0.08em;
+}
+
+.mini-clock-app span {
+  color: var(--muted-ink);
+  font-size: 0.8rem;
+}
+
+.mini-clock-app small {
+  margin-top: 0.5rem;
+  color: var(--accent);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  text-transform: uppercase;
+}
+
+body.mini-app-modal-open {
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .clock-toggle {
+    right: 15rem;
+  }
+
+  .contact-toggle {
+    right: 12.2rem;
+  }
+
+  .signal-toggle {
+    right: 9.4rem;
+  }
+
+  .game-toggle {
+    right: 6.6rem;
+  }
+
+  .todo-toggle {
+    right: 3.8rem;
+  }
+
+  .clock-toggle,
+  .contact-toggle,
+  .signal-toggle,
+  .game-toggle,
+  .todo-toggle,
+  .music-toggle {
+    width: 2.35rem;
+    height: 2.35rem;
+  }
+
+  .mini-app-modal-backdrop {
+    padding: 0.65rem;
+  }
+
+  .mini-app-heading,
+  .mini-app-content {
+    padding-right: 0.9rem;
+    padding-left: 0.9rem;
   }
 }
