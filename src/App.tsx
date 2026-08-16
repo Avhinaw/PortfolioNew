@@ -205,7 +205,7 @@ const App = () => {
       <section aria-label="Featured projects" className="mt-4">
         <div
           ref={scrollContainerRef}
-          className="no-scrollbar flex w-full snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain scroll-smooth pb-2"
+          className="no-scrollbar flex w-full snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth pb-2"
         >
           <div className="flex w-max gap-4 px-1">
             {Project.map((project) => (
