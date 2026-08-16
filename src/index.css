@@ -1485,7 +1485,7 @@ body.todo-modal-open {
 
 html.has-web-cursor,
 html.has-web-cursor * {
-  cursor: none !important;
+  cursor: auto !important;
 }
 
 .cursor-fx-layer {
