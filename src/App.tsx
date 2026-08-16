@@ -3,6 +3,7 @@ import {
   MdMusicNote,
   MdMusicOff,
   MdChecklist,
+  MdSportsEsports,
   MdOutlineArrowBackIos,
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
@@ -11,6 +12,7 @@ import LoadingScreen from "./Components/LoadingScreen";
 import FeatureSuggestionStrip from "./Components/FeatureSuggestionStrip";
 import FeatureActionModal from "./Components/FeatureActionModal";
 import TodoModal from "./Components/TodoModal";
+import GameModal from "./Components/GameModal";
 import sampleMusic from "./assets/sample-portfolio-music.mp3";
 import {
   defaultThemeStyle,
@@ -32,6 +34,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [isTodoOpen, setIsTodoOpen] = useState(false);
+  const [isGameOpen, setIsGameOpen] = useState(false);
   const [activeFeature, setActiveFeature] = useState<FeatureSuggestionId | null>(null);
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [activeSkillId, setActiveSkillId] = useState(skillMapNodes[0].id);
@@ -228,6 +231,15 @@ const App = () => {
       />
       <button
         type="button"
+        className="game-toggle"
+        onClick={() => setIsGameOpen(true)}
+        aria-label="Open Spidey Swing game"
+        title="Open Spidey Swing game"
+      >
+        <MdSportsEsports aria-hidden="true" />
+      </button>
+      <button
+        type="button"
         className="todo-toggle"
         onClick={() => setIsTodoOpen(true)}
         aria-label="Open todo list"
@@ -299,6 +311,7 @@ const App = () => {
       />
 
       <TodoModal isOpen={isTodoOpen} onClose={() => setIsTodoOpen(false)} />
+      <GameModal isOpen={isGameOpen} onClose={() => setIsGameOpen(false)} />
       <FeatureActionModal
         action={activeFeature}
         onClose={closeFeature}
