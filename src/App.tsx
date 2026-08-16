@@ -7,6 +7,7 @@ import {
 } from "react-icons/md";
 import Intro from "./Components/Intro";
 import LoadingScreen from "./Components/LoadingScreen";
+import CursorFX from "./Components/CursorFX";
 import sampleMusic from "./assets/sample-portfolio-music.mp3";
 import {
   defaultThemeStyle,
@@ -177,6 +178,7 @@ const App = () => {
       data-style={themeStyle}
       className="portfolio-shell min-h-screen overflow-x-hidden px-4 py-16 sm:px-8 sm:py-20 lg:px-36 lg:py-16"
     >
+      <CursorFX />
       <audio
         ref={audioRef}
         src={sampleMusic}
