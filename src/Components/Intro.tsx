@@ -7,12 +7,12 @@ const Intro = () => {
     return(
     <>
         <div className="my-2">
-            <h1 className="text-3xl">Hi 👋🏻</h1>
+            <h1 className="text-3xl">Hi</h1>
             <h1 className="text-3xl">I'm Abhinav, a Coder that Design</h1>
             <div className="mt-4 flex items-center gap-2 font-medium px-3 py-2 rounded-lg tracking-tight bg-white/5 w-fit">
                 <div className="bg-[#16a34a] w-4 h-4 rounded-full"></div>
                 <h3 className="text-white text-neutral-200 ">Frontend Dev at 
-                <span className="font-bold"> Fix Web</span></h3>
+                <span className="font-bold"> Resolute Solutions</span></h3>
             </div>
             <div className="flex gap-3 py-3 text-xl">
             <a
