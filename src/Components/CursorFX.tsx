@@ -23,6 +23,7 @@ const CursorFX = () => {
       frame = requestAnimationFrame(() => {
         pointer.style.left = `${event.clientX}px`;
         pointer.style.top = `${event.clientY}px`;
+        layer.classList.remove("is-hidden");
         layer.classList.add("is-visible");
       });
     };
@@ -33,7 +34,7 @@ const CursorFX = () => {
     };
 
     const hideCursor = (event: PointerEvent) => {
-      if (!event.relatedTarget) layer.classList.remove("is-visible");
+      if (!event.relatedTarget) layer.classList.add("is-hidden");
     };
 
     const pressCursor = () => {
@@ -43,6 +44,8 @@ const CursorFX = () => {
     };
 
     const shootWeb = (event: MouseEvent) => {
+      if (event.clientX <= 0 && event.clientY <= 0) return;
+
       const web = document.createElement("span");
       web.className = "cursor-web-shot";
       web.style.left = `${event.clientX}px`;
