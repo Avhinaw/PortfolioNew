@@ -739,6 +739,7 @@ a {
   }
 }
 
+.ai-toggle,
 .clock-toggle,
 .contact-toggle,
 .signal-toggle,
@@ -762,6 +763,10 @@ a {
   transition: transform 220ms ease, filter 220ms ease;
 }
 
+.ai-toggle {
+  right: 22rem;
+}
+
 .clock-toggle {
   right: 18.5rem;
 }
@@ -782,6 +787,7 @@ a {
   right: 4.5rem;
 }
 
+.ai-toggle:hover,
 .clock-toggle:hover,
 .contact-toggle:hover,
 .signal-toggle:hover,
@@ -864,6 +870,7 @@ a {
 }
 
 .feature-suggestion-chip:focus-visible,
+.ai-toggle:focus-visible,
 .clock-toggle:focus-visible,
 .contact-toggle:focus-visible,
 .signal-toggle:focus-visible,
@@ -2673,6 +2680,285 @@ body.mini-app-modal-open {
 
   .mini-app-heading,
   .mini-app-content {
+    padding-right: 0.9rem;
+    padding-left: 0.9rem;
+  }
+}
+
+/* HireBot AI assistant */
+.ai-modal-backdrop {
+  position: fixed;
+  z-index: 150;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(2, 5, 8, 0.78);
+  backdrop-filter: blur(14px);
+  animation: modal-in 180ms ease both;
+}
+
+.ai-modal {
+  display: flex;
+  width: min(100%, 38rem);
+  max-height: min(88vh, 46rem);
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--card-bg) 96%, var(--page-bg));
+  border-radius: max(1rem, var(--card-radius));
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.55), 0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.ai-modal-heading {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 1.15rem 1.25rem 0.7rem;
+}
+
+.ai-avatar {
+  display: grid;
+  width: 2.7rem;
+  height: 2.7rem;
+  place-items: center;
+  color: var(--accent-contrast);
+  background: var(--accent);
+  border-radius: 0.8rem;
+  box-shadow: var(--card-shadow);
+}
+
+.ai-avatar svg {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.ai-modal-heading p {
+  margin: 0 0 0.15rem;
+  color: var(--accent);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ai-modal-heading h2 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--display-font);
+  font-size: clamp(1.45rem, 4vw, 2rem);
+}
+
+.ai-modal-heading span {
+  display: block;
+  margin-top: 0.18rem;
+  color: var(--muted-ink);
+  font-size: 0.7rem;
+}
+
+.ai-modal-heading > button {
+  display: grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  place-items: center;
+  color: var(--ink);
+  cursor: pointer;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 0;
+  border-radius: 50%;
+}
+
+.ai-modal-heading > button:focus-visible,
+.ai-mode-row button:focus-visible,
+.ai-quick-prompts button:focus-visible,
+.ai-form button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.ai-mode-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  padding: 0 1.25rem 0.8rem;
+  color: var(--accent);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+}
+
+.ai-mode-row button {
+  padding: 0.38rem 0.55rem;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.58rem;
+  cursor: pointer;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border: 0;
+  border-radius: 999px;
+}
+
+.ai-chat {
+  display: grid;
+  gap: 0.7rem;
+  min-height: 11rem;
+  max-height: 42vh;
+  padding: 0.9rem 1.25rem;
+  overflow-y: auto;
+  background: color-mix(in srgb, var(--page-bg) 54%, transparent);
+}
+
+.ai-message {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.55rem;
+  max-width: 90%;
+  align-items: start;
+}
+
+.ai-message.user {
+  justify-self: end;
+  grid-template-columns: 1fr auto;
+  text-align: right;
+}
+
+.ai-message.user span {
+  order: 2;
+}
+
+.ai-message span {
+  padding-top: 0.25rem;
+  color: var(--accent);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+}
+
+.ai-message p {
+  margin: 0;
+  padding: 0.65rem 0.75rem;
+  color: var(--ink);
+  font-size: 0.78rem;
+  line-height: 1.52;
+  background: color-mix(in srgb, var(--accent) 9%, var(--card-bg));
+  border-radius: 0.75rem 0.75rem 0.75rem 0.2rem;
+}
+
+.ai-message.user p {
+  color: var(--accent-contrast);
+  background: var(--accent);
+  border-radius: 0.75rem 0.75rem 0.2rem 0.75rem;
+}
+
+.ai-quick-prompts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.75rem 1.25rem 0;
+}
+
+.ai-quick-prompts button {
+  padding: 0.42rem 0.58rem;
+  color: var(--muted-ink);
+  font-size: 0.62rem;
+  cursor: pointer;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border: 0;
+  border-radius: 999px;
+}
+
+.ai-quick-prompts button:hover {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+.ai-form {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem 1.15rem;
+}
+
+.ai-form input {
+  min-width: 0;
+  flex: 1;
+  padding: 0.72rem 0.8rem;
+  color: var(--ink);
+  background: var(--page-bg);
+  border: 0;
+  border-radius: 0.6rem;
+  outline: 0;
+}
+
+.ai-form input:focus {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+.ai-form button {
+  display: grid;
+  width: 2.7rem;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--accent-contrast);
+  cursor: pointer;
+  background: var(--accent);
+  border: 0;
+  border-radius: 0.6rem;
+}
+
+body.ai-modal-open {
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .ai-toggle {
+    right: 15.5rem;
+  }
+
+  .clock-toggle {
+    right: 13rem;
+  }
+
+  .contact-toggle {
+    right: 10.5rem;
+  }
+
+  .signal-toggle {
+    right: 8rem;
+  }
+
+  .game-toggle {
+    right: 5.5rem;
+  }
+
+  .todo-toggle {
+    right: 3rem;
+  }
+
+  .music-toggle {
+    right: 0.5rem;
+  }
+
+  .ai-toggle,
+  .clock-toggle,
+  .contact-toggle,
+  .signal-toggle,
+  .game-toggle,
+  .todo-toggle,
+  .music-toggle {
+    width: 2.35rem;
+    height: 2.35rem;
+  }
+
+  .ai-modal-backdrop {
+    padding: 0.6rem;
+  }
+
+  .ai-modal-heading,
+  .ai-mode-row,
+  .ai-chat,
+  .ai-quick-prompts,
+  .ai-form {
     padding-right: 0.9rem;
     padding-left: 0.9rem;
   }
