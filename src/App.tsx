@@ -13,7 +13,6 @@ import {
 } from "react-icons/md";
 import Intro from "./Components/Intro";
 import LoadingScreen from "./Components/LoadingScreen";
-import FeatureSuggestionStrip from "./Components/FeatureSuggestionStrip";
 import FeatureActionModal from "./Components/FeatureActionModal";
 import TodoModal from "./Components/TodoModal";
 import GameModal from "./Components/GameModal";
@@ -345,7 +344,6 @@ const App = () => {
             <MdOutlineArrowForwardIos aria-hidden="true" />
           </button>
         </div>
-        <FeatureSuggestionStrip onSelect={handleFeatureSelect} />
       </section>
 
       <SpideyTracker
