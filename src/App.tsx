@@ -210,11 +210,6 @@ const App = () => {
     selectThemeStyle(getRandomThemeStyle(themeStyle));
   };
 
-  const handleFeatureSelect = (feature: FeatureSuggestionId) => {
-    setActiveFeature(feature);
-    if (feature === "focus") setIsFocusMode((current) => !current);
-  };
-
   const closeFeature = () => setActiveFeature(null);
 
   const selectSkill = (skillId: string) => {
