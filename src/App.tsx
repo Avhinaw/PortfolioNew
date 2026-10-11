@@ -32,6 +32,7 @@ import ProjectBox from "./Components/ProjectBox";
 import Project from "./data/Project";
 import SpideyTracker from "./Components/SpideyTracker";
 import { skillMapNodes } from "./data/SkillMap";
+import VideoCallWidget from "./Components/VideoCallWidget";
 
 const App = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -303,6 +304,7 @@ const App = () => {
         isThemeAnimating={isThemeAnimating}
         onThemeStyleChange={randomizeThemeStyle}
       />
+      <VideoCallWidget />
       <section aria-label="Featured projects" className="mt-4">
         <div
           ref={scrollContainerRef}
