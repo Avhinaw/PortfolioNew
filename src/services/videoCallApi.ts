@@ -139,3 +139,26 @@ export const endHostMeeting = (roomId: string, token: string) =>
 
 export const getHostIceServers = (token: string) =>
   hostRequest<{ iceServers: IceServer[] }>("/host/ice-servers", token);
+
+export interface HostAvailability {
+  available: boolean;
+  busy: boolean;
+}
+
+export const getHostMeeting = (roomId: string, token: string) =>
+  hostRequest<HostMeeting>(`/host/meetings/${roomId}`, token);
+
+export const rejectPendingHostMeetings = (token: string) =>
+  hostRequest<{ rejected: number }>("/host/meetings/bulk/reject-pending", token, { method: "POST" });
+
+export const getHostAvailability = (token: string) =>
+  hostRequest<HostAvailability>("/host/availability", token);
+
+export const updateHostAvailability = (token: string, available: boolean) =>
+  hostRequest<HostAvailability>("/host/availability", token, {
+    method: "PUT",
+    body: JSON.stringify({ available }),
+  });
+
+export const testHostTelegram = (token: string) =>
+  hostRequest<unknown>("/host/telegram/test", token, { method: "POST" });
