@@ -3110,3 +3110,202 @@ body.ai-modal-open {
     animation: none;
   }
 }
+
+/* Radial mini-app wheel */
+.app-wheel-toggle {
+  position: absolute;
+  z-index: 220;
+  top: 1rem;
+  left: 50%;
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  color: var(--accent-contrast);
+  cursor: pointer;
+  background: var(--accent);
+  border: 3px solid color-mix(in srgb, var(--accent) 55%, white);
+  border-radius: 50%;
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 13%, transparent), var(--card-shadow);
+  transform: translateX(-50%);
+  transition: transform 220ms ease, filter 220ms ease, box-shadow 220ms ease;
+}
+.app-wheel-toggle:hover,
+.app-wheel-toggle:focus-visible,
+.app-wheel-toggle.is-open {
+  filter: brightness(1.1);
+  box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 18%, transparent), 0 0 28px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.app-wheel-toggle:hover {
+  transform: translateX(-50%) scale(1.06);
+}
+.app-wheel-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.app-wheel-backdrop {
+  position: fixed;
+  z-index: 210;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  padding-top: 4.8rem;
+  background: radial-gradient(circle at 50% 10%, color-mix(in srgb, var(--accent) 8%, transparent), rgba(2, 5, 8, 0.68) 26%, rgba(2, 5, 8, 0.82));
+  backdrop-filter: blur(8px);
+  animation: app-wheel-backdrop-in 180ms ease both;
+}
+.app-wheel {
+  position: relative;
+  width: 23rem;
+  height: 23rem;
+  flex: 0 0 auto;
+  animation: app-wheel-in 320ms cubic-bezier(0.2, 0.9, 0.25, 1.15) both;
+}
+.app-wheel-ring,
+.app-wheel-ring::before,
+.app-wheel-ring::after {
+  position: absolute;
+  inset: 2.2rem;
+  content: '';
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
+  border-radius: 50%;
+  box-shadow: 0 0 35px color-mix(in srgb, var(--accent) 15%, transparent), inset 0 0 35px color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.app-wheel-ring::before {
+  inset: 1.3rem;
+  border-style: dashed;
+  opacity: 0.55;
+  animation: wheel-ring-spin 24s linear infinite;
+}
+.app-wheel-ring::after {
+  inset: 3.2rem;
+  border-color: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+.app-wheel-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 6.3rem;
+  height: 6.3rem;
+  place-content: center;
+  color: var(--accent);
+  text-align: center;
+  background: color-mix(in srgb, var(--page-bg) 88%, var(--accent));
+  border: 1px solid color-mix(in srgb, var(--accent) 58%, transparent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0.7rem color-mix(in srgb, var(--accent) 8%, transparent), 0 0 32px color-mix(in srgb, var(--accent) 30%, transparent);
+  transform: translate(-50%, -50%);
+}
+.app-wheel-center span,
+.app-wheel-center strong {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+}
+.app-wheel-center strong {
+  margin-top: 0.18rem;
+  color: var(--ink);
+  font-family: var(--display-font);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+}
+.app-wheel-option {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 4.5rem;
+  justify-items: center;
+  gap: 0.35rem;
+  padding: 0;
+  color: var(--ink);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  opacity: 0;
+  transform: translate(-50%, -50%) translate(var(--wheel-x), var(--wheel-y)) scale(0.45);
+  animation: app-wheel-option-in 360ms cubic-bezier(0.2, 0.9, 0.25, 1.2) forwards;
+}
+.app-wheel-option:nth-of-type(3) { animation-delay: 35ms; }
+.app-wheel-option:nth-of-type(4) { animation-delay: 70ms; }
+.app-wheel-option:nth-of-type(5) { animation-delay: 105ms; }
+.app-wheel-option:nth-of-type(6) { animation-delay: 140ms; }
+.app-wheel-option:nth-of-type(7) { animation-delay: 175ms; }
+.app-wheel-option:nth-of-type(8) { animation-delay: 210ms; }
+.app-wheel-option:nth-of-type(9) { animation-delay: 245ms; }
+.app-wheel-option-icon {
+  display: grid;
+  width: 3.2rem;
+  height: 3.2rem;
+  place-items: center;
+  color: var(--accent-contrast);
+  font-size: 1.35rem;
+  background: var(--accent);
+  border: 2px solid color-mix(in srgb, var(--accent) 58%, white);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0.35rem color-mix(in srgb, var(--accent) 10%, transparent), 0 8px 24px rgba(0, 0, 0, 0.36);
+  transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease;
+}
+.app-wheel-option small {
+  max-width: 7rem;
+  padding: 0.25rem 0.45rem;
+  color: var(--ink);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  background: color-mix(in srgb, var(--page-bg) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  border-radius: 999px;
+}
+.app-wheel-option:hover .app-wheel-option-icon,
+.app-wheel-option:focus-visible .app-wheel-option-icon {
+  filter: brightness(1.13);
+  box-shadow: 0 0 0 0.5rem color-mix(in srgb, var(--accent) 16%, transparent), 0 0 28px color-mix(in srgb, var(--accent) 48%, transparent);
+  transform: scale(1.12);
+}
+.app-wheel-option:focus-visible {
+  outline: 0;
+}
+@keyframes app-wheel-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes app-wheel-in {
+  from { transform: scale(0.72) rotate(-12deg); opacity: 0; }
+  to { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+@keyframes app-wheel-option-in {
+  to { opacity: 1; transform: translate(-50%, -50%) translate(var(--wheel-x), var(--wheel-y)) scale(1); }
+}
+@keyframes wheel-ring-spin {
+  to { transform: rotate(360deg); }
+}
+@media (max-width: 640px) {
+  .app-wheel-toggle {
+    top: 0.7rem;
+  }
+  .app-wheel-backdrop {
+    padding-top: 4.3rem;
+  }
+  .app-wheel {
+    width: 20rem;
+    height: 20rem;
+  }
+  .app-wheel-option {
+    transform: translate(-50%, -50%) translate(calc(var(--wheel-x) * 0.82), calc(var(--wheel-y) * 0.82)) scale(0.45);
+  }
+  @keyframes app-wheel-option-in {
+    to { opacity: 1; transform: translate(-50%, -50%) translate(calc(var(--wheel-x) * 0.82), calc(var(--wheel-y) * 0.82)) scale(1); }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-wheel,
+  .app-wheel-option,
+  .app-wheel-ring::before {
+    animation: none;
+    opacity: 1;
+  }
+}
