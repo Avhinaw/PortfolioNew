@@ -384,8 +384,8 @@ a {
   transform: none;
 }
 
-/* 6. Digital Liquid / Liquid Glass */
-.portfolio-shell[data-style='liquid'] {
+/* 6. Liquidism */
+.portfolio-shell[data-style='liquidism'] {
   --page-bg: #05051a;
   --ink: #f5f3ff;
   --muted-ink: #beb8db;
@@ -399,18 +399,18 @@ a {
   --display-font: 'Space Grotesk', sans-serif;
 }
 
-.portfolio-shell[data-style='liquid']::before {
+.portfolio-shell[data-style='liquidism']::before {
   opacity: 1;
   background: radial-gradient(circle at 12% 15%, rgba(255, 84, 193, 0.3), transparent 28%), radial-gradient(circle at 84% 10%, rgba(76, 120, 255, 0.32), transparent 30%), radial-gradient(circle at 55% 90%, rgba(57, 247, 216, 0.13), transparent 30%);
   filter: blur(12px);
 }
 
-.portfolio-shell[data-style='liquid'] .project-box,
-.portfolio-shell[data-style='liquid'] > div:first-child > div:nth-child(1) > div {
+.portfolio-shell[data-style='liquidism'] .project-box,
+.portfolio-shell[data-style='liquidism'] > div:first-child > div:nth-child(1) > div {
   backdrop-filter: blur(24px) saturate(1.3);
 }
 
-.portfolio-shell[data-style='liquid'] .project-box:hover {
+.portfolio-shell[data-style='liquidism'] .project-box:hover {
   box-shadow: 0 28px 90px rgba(94, 54, 255, 0.55);
 }
 
@@ -438,7 +438,64 @@ a {
   box-shadow: var(--card-shadow);
 }
 
-/* 8. Terminal Noir */
+/* 8. G.One Protocol */
+.portfolio-shell[data-style='gone'] {
+  --page-bg: #030711;
+  --ink: #eafcff;
+  --muted-ink: #8ba8bb;
+  --accent: #00e5ff;
+  --accent-contrast: #001016;
+  --card-bg: rgba(5, 20, 34, 0.78);
+  --card-border: rgba(0, 229, 255, 0.42);
+  --card-shadow: 0 18px 55px rgba(0, 229, 255, 0.16), 0 0 0 1px rgba(255, 49, 90, 0.2);
+  --card-radius: 0.35rem;
+  --image-filter: brightness(38%) saturate(1.35) contrast(1.12) hue-rotate(150deg);
+  --display-font: 'Space Grotesk', sans-serif;
+}
+.portfolio-shell[data-style='gone']::before {
+  opacity: 1;
+  background: radial-gradient(circle at 78% 8%, rgba(0, 229, 255, 0.22), transparent 25%), radial-gradient(circle at 12% 50%, rgba(255, 49, 90, 0.12), transparent 28%), repeating-linear-gradient(0deg, transparent 0 3.2rem, rgba(0, 229, 255, 0.045) 3.25rem 3.3rem);
+}
+.portfolio-shell[data-style='gone']::after {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  content: '';
+  opacity: 0.32;
+  background: linear-gradient(90deg, transparent 49.8%, rgba(0, 229, 255, 0.22) 50%, transparent 50.2%);
+  background-size: 7rem 100%;
+  mix-blend-mode: screen;
+}
+.portfolio-shell[data-style='gone'] h1::before {
+  content: 'G.ONE // ';
+  color: #ff315a;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.42em;
+  letter-spacing: 0.14em;
+  vertical-align: middle;
+}
+.portfolio-shell[data-style='gone'] h1,
+.portfolio-shell[data-style='gone'] h2,
+.portfolio-shell[data-style='gone'] h3 {
+  text-shadow: 0 0 18px rgba(0, 229, 255, 0.26);
+}
+.portfolio-shell[data-style='gone'] .project-box,
+.portfolio-shell[data-style='gone'] .style-gallery,
+.portfolio-shell[data-style='gone'] > div:first-child > div:nth-child(1) > div {
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+.portfolio-shell[data-style='gone'] .project-box:hover {
+  box-shadow: 0 22px 70px rgba(0, 229, 255, 0.24), 0 0 0 1px rgba(255, 49, 90, 0.44);
+}
+.portfolio-shell[data-style='gone'] .theme-style-trigger {
+  color: #031019;
+  background: linear-gradient(135deg, #00e5ff, #ff315a);
+  box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.15), 0 0 26px rgba(255, 49, 90, 0.3);
+}
+
+/* 9. Terminal Noir */
 .portfolio-shell[data-style='terminal'] {
   --page-bg: #050806;
   --ink: #c9ffd2;
