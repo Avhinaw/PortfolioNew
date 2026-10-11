@@ -59,8 +59,9 @@ const App = () => {
     }
   });
   const [themeStyle, setThemeStyle] = useState<ThemeStyleId>(() => {
-    const savedStyle = window.localStorage.getItem("portfolio-theme-style") as ThemeStyleId | null;
-    return savedStyle ?? defaultThemeStyle;
+    const savedStyle = window.localStorage.getItem("portfolio-theme-style");
+    if (savedStyle === "liquid") return "liquidism";
+    return (savedStyle as ThemeStyleId | null) ?? defaultThemeStyle;
   });
   const [isThemeAnimating, setIsThemeAnimating] = useState(false);
   const themeAnimationTimeoutRef = useRef<number | undefined>(undefined);
