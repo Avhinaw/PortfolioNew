@@ -8,6 +8,9 @@ import {
   MdContactMail,
   MdAccessTime,
   MdAutoAwesome,
+  MdApps,
+  MdPalette,
+  MdClose,
   MdOutlineArrowBackIos,
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
@@ -42,6 +45,7 @@ const App = () => {
   const [isGameOpen, setIsGameOpen] = useState(false);
   const [activeMiniApp, setActiveMiniApp] = useState<MiniAppId | null>(null);
   const [isAiOpen, setIsAiOpen] = useState(false);
+  const [isAppWheelOpen, setIsAppWheelOpen] = useState(false);
   const [activeFeature, setActiveFeature] = useState<FeatureSuggestionId | null>(null);
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [activeSkillId, setActiveSkillId] = useState(skillMapNodes[0].id);
@@ -135,6 +139,15 @@ const App = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isAppWheelOpen) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsAppWheelOpen(false);
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isAppWheelOpen]);
+
   const playSpiderClickSound = async () => {
     const AudioContextClass = window.AudioContext;
     if (!AudioContextClass) return;
@@ -217,6 +230,17 @@ const App = () => {
     setTrackedSkillIds((current) => current.includes(skillId) ? current : [...current, skillId]);
   };
 
+  const wheelOptions = [
+    { id: "hirebot", label: "HireBot", icon: <MdAutoAwesome aria-hidden="true" />, action: () => setIsAiOpen(true), x: 0, y: -138 },
+    { id: "clock", label: "Local Time", icon: <MdAccessTime aria-hidden="true" />, action: () => setActiveMiniApp("clock"), x: 98, y: -98 },
+    { id: "contact", label: "Contact", icon: <MdContactMail aria-hidden="true" />, action: () => setActiveMiniApp("contact"), x: 138, y: 8 },
+    { id: "signal", label: "Skills", icon: <MdRadar aria-hidden="true" />, action: () => setActiveMiniApp("signal"), x: 98, y: 105 },
+    { id: "game", label: "Spidey Swing", icon: <MdSportsEsports aria-hidden="true" />, action: () => setIsGameOpen(true), x: 0, y: 140 },
+    { id: "todo", label: "Todo", icon: <MdChecklist aria-hidden="true" />, action: () => setIsTodoOpen(true), x: -98, y: 105 },
+    { id: "music", label: isMusicPlaying ? "Pause Music" : "Play Music", icon: isMusicPlaying ? <MdMusicNote aria-hidden="true" /> : <MdMusicOff aria-hidden="true" />, action: () => { void toggleMusic(); }, x: -138, y: 8 },
+    { id: "style", label: "Change Style", icon: <MdPalette aria-hidden="true" />, action: randomizeThemeStyle, x: -98, y: -98 },
+  ];
+
   return (
     <>
       <main
@@ -231,6 +255,47 @@ const App = () => {
         preload="auto"
         aria-hidden="true"
       />
+      <button
+        type="button"
+        className={`app-wheel-toggle ${isAppWheelOpen ? "is-open" : ""}`}
+        onClick={() => setIsAppWheelOpen((open) => !open)}
+        aria-expanded={isAppWheelOpen}
+        aria-label={isAppWheelOpen ? "Close mini-app wheel" : "Open mini-app wheel"}
+        title="Open mini-app wheel"
+      >
+        {isAppWheelOpen ? <MdClose aria-hidden="true" /> : <MdApps aria-hidden="true" />}
+      </button>
+      {isAppWheelOpen && (
+        <div
+          className="app-wheel-backdrop"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setIsAppWheelOpen(false);
+          }}
+        >
+          <div className="app-wheel" role="menu" aria-label="Portfolio mini-app wheel">
+            <div className="app-wheel-ring" aria-hidden="true" />
+            <div className="app-wheel-center" aria-hidden="true"><span>MINI</span><strong>APPS</strong></div>
+            {wheelOptions.map((option) => (
+              <button
+                key={option.id}
+                type="button"
+                className="app-wheel-option"
+                style={{ "--wheel-x": `${option.x}px`, "--wheel-y": `${option.y}px` } as React.CSSProperties}
+                onClick={() => {
+                  option.action();
+                  setIsAppWheelOpen(false);
+                }}
+                role="menuitem"
+                aria-label={option.label}
+              >
+                <span className="app-wheel-option-icon">{option.icon}</span>
+                <small>{option.label}</small>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       <button
         type="button"
         className="ai-toggle"
