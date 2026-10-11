@@ -31,3 +31,4 @@ The FE uses native `RTCPeerConnection` and `getUserMedia`; Socket.IO is used onl
 - Sign in with the backend host email and password. The access token is kept in `sessionStorage` only.
 - Review pending visitor requests, accept or reject them, and join accepted rooms with camera and microphone controls.
 - The host page uses the backend host endpoints under `/api/host/*` and Socket.IO host authentication. No admin credentials are stored in the frontend source.
+- The host dashboard also integrates `GET/PUT /api/host/availability`, `POST /api/host/meetings/bulk/reject-pending`, `GET /api/host/meetings/:roomId`, `GET /api/host/ice-servers`, and `POST /api/host/telegram/test`. Availability is reflected in the request queue: accepting a request is disabled while the host is unavailable.
