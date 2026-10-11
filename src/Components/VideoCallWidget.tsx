@@ -46,6 +46,7 @@ function statusLabel(status: MeetingStatus): string {
 
 const VideoCallWidget = () => {
   const [state, setState] = useState<WidgetState>("closed");
+  const [isOpen, setIsOpen] = useState(false);
   const [availability, setAvailability] = useState<Availability | null>(null);
   const [availabilityLoading, setAvailabilityLoading] = useState(false);
   const [visitorName, setVisitorName] = useState("");
@@ -164,9 +165,19 @@ const VideoCallWidget = () => {
   }, []);
 
   useEffect(() => {
-    if (state === "closed") return;
+    if (!isOpen) return;
     void refreshAvailability();
-  }, [refreshAvailability, state]);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isOpen, refreshAvailability]);
 
   useEffect(() => {
     if (state !== "waiting" || !roomId) return;
@@ -225,7 +236,20 @@ const VideoCallWidget = () => {
   const unavailable = availability?.available === false || availability?.busy === true;
 
   return (
-    <section className="video-call-widget" aria-labelledby="video-call-heading">
+    <>
+      <button
+        type="button"
+        className="video-call-launcher"
+        onClick={() => setIsOpen(true)}
+        aria-haspopup="dialog"
+        aria-expanded={isOpen}
+      >
+        <span className="video-call-launcher__pulse" aria-hidden="true" />
+        <span><strong>Let’s talk</strong><small>Video call</small></span>
+      </button>
+      {isOpen && <div className="video-call-modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setIsOpen(false); }}>
+      <section className="video-call-widget" role="dialog" aria-modal="true" aria-labelledby="video-call-heading">
+        <button type="button" className="video-call-modal-close" onClick={() => setIsOpen(false)} aria-label="Close video call dialog">×</button>
       <div className="video-call-widget__eyebrow">Open to a quick conversation</div>
       <div className="video-call-widget__header"><div><h2 id="video-call-heading">Let’s talk face to face.</h2><p>Request a private video call with Abhinav—no account needed.</p></div><span className={`availability-dot ${availability?.available && !availability.busy ? "is-live" : ""}`} aria-label={unavailable ? "Currently unavailable" : "Availability unknown"} /></div>
       {state === "closed" && <div className="video-call-widget__closed"><p className="availability-copy">{availabilityLoading ? "Checking availability…" : unavailable ? availability?.busy ? "Abhinav is currently on another call." : "Abhinav is unavailable right now." : availability ? "Abhinav is available for a call." : "Check availability before requesting."}</p><button type="button" className="video-call-button" onClick={() => { setState("form"); setError(null); }} disabled={unavailable || availabilityLoading}>{unavailable ? "Unavailable right now" : "Request a video call"}</button></div>}
@@ -235,7 +259,9 @@ const VideoCallWidget = () => {
       {state === "finished" && <div className="video-call-status"><span className="status-kicker">Call room closed</span><h3>{endReason === "rejected" ? "Abhinav couldn’t take the call." : endReason === "expired" || endReason === "timeout" ? "The waiting window has ended." : "Thanks for stopping by."}</h3><p>{endReason === "ended" ? "The video call has ended." : "You can return to the portfolio or request another call later."}</p><button type="button" className="video-call-button" onClick={reset}>Return to portfolio</button></div>}
       {error && (state === "form" || state === "closed") && <p className="video-call-error" role="alert">{error}</p>}
       {meeting && state === "finished" && <span className="sr-only">Meeting status: {meeting.status}</span>}
-    </section>
+      </section>
+      </div>}
+    </>
   );
 };
 
