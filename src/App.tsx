@@ -8,7 +8,6 @@ import {
   MdContactMail,
   MdAccessTime,
   MdAutoAwesome,
-  MdApps,
   MdPalette,
   MdClose,
   MdOutlineArrowBackIos,
@@ -22,6 +21,7 @@ import GameModal from "./Components/GameModal";
 import MiniAppModal, { type MiniAppId } from "./Components/MiniAppModal";
 import AiAssistantModal from "./Components/AiAssistantModal";
 import sampleMusic from "./assets/sample-portfolio-music.mp3";
+import spiderAvatar from "./assets/spider-hero-pop.png";
 import {
   defaultThemeStyle,
   getRandomThemeStyle,
@@ -263,7 +263,7 @@ const App = () => {
         aria-label={isAppWheelOpen ? "Close mini-app wheel" : "Open mini-app wheel"}
         title="Open mini-app wheel"
       >
-        {isAppWheelOpen ? <MdClose aria-hidden="true" /> : <MdApps aria-hidden="true" />}
+        {isAppWheelOpen ? <MdClose aria-hidden="true" /> : <img src={spiderAvatar} alt="" aria-hidden="true" />}
       </button>
       {isAppWheelOpen && (
         <div
@@ -296,69 +296,6 @@ const App = () => {
           </div>
         </div>
       )}
-      <button
-        type="button"
-        className="ai-toggle"
-        onClick={() => setIsAiOpen(true)}
-        aria-label="Open HireBot AI assistant"
-        title="Open HireBot AI assistant"
-      >
-        <MdAutoAwesome aria-hidden="true" />
-      </button>
-      <button
-        type="button"
-        className="clock-toggle"
-        onClick={() => setActiveMiniApp("clock")}
-        aria-label="Open local time"
-        title="Open local time"
-      >
-        <MdAccessTime aria-hidden="true" />
-      </button>
-      <button
-        type="button"
-        className="contact-toggle"
-        onClick={() => setActiveMiniApp("contact")}
-        aria-label="Open direct contact"
-        title="Open direct contact"
-      >
-        <MdContactMail aria-hidden="true" />
-      </button>
-      <button
-        type="button"
-        className="signal-toggle"
-        onClick={() => setActiveMiniApp("signal")}
-        aria-label="Open skill signal board"
-        title="Open skill signal board"
-      >
-        <MdRadar aria-hidden="true" />
-      </button>
-      <button
-        type="button"
-        className="game-toggle"
-        onClick={() => setIsGameOpen(true)}
-        aria-label="Open Spidey Swing game"
-        title="Open Spidey Swing game"
-      >
-        <MdSportsEsports aria-hidden="true" />
-      </button>
-      <button
-        type="button"
-        className="todo-toggle"
-        onClick={() => setIsTodoOpen(true)}
-        aria-label="Open todo list"
-        title="Open todo list"
-      >
-        <MdChecklist aria-hidden="true" />
-      </button>
-      <button
-        type="button"
-        className={`music-toggle ${isMusicPlaying ? "is-playing" : ""}`}
-        onClick={() => void toggleMusic()}
-        aria-label={isMusicPlaying ? "Pause sample music" : "Play sample music"}
-        title={isMusicPlaying ? "Pause sample music" : "Play sample music"}
-      >
-        {isMusicPlaying ? <MdMusicNote aria-hidden="true" /> : <MdMusicOff aria-hidden="true" />}
-      </button>
       {isLoading && <LoadingScreen onComplete={completeLoading} />}
       <Intro
         themeStyle={themeStyle}
