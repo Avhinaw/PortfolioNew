@@ -94,3 +94,48 @@ export const getIceServers = (roomId: string, visitorToken: string) =>
   request<{ iceServers: IceServer[] }>(`/meetings/${roomId}/ice-servers`, {
     headers: { "X-Visitor-Token": visitorToken },
   });
+
+export interface HostMeeting {
+  roomId: string;
+  visitorName: string;
+  visitorMessage: string | null;
+  status: MeetingStatus;
+  createdAt: string;
+  updatedAt: string;
+  expiresAt: string;
+  acceptedAt: string | null;
+  startedAt: string | null;
+  endedAt: string | null;
+  endedBy: "host" | "visitor" | "system" | null;
+  visitorOnline: boolean;
+}
+
+export interface HostLoginResponse {
+  accessToken: string;
+  tokenType: string;
+  expiresAt: string;
+}
+
+const hostRequest = <T>(path: string, token: string, init: RequestInit = {}) =>
+  request<T>(path, { ...init, headers: { Authorization: `Bearer ${token}`, ...(init.headers || {}) } });
+
+export const hostLogin = (email: string, password: string) =>
+  request<HostLoginResponse>("/host/auth/login", { method: "POST", body: JSON.stringify({ email, password }) });
+
+export const hostLogout = (token: string) =>
+  hostRequest<unknown>("/host/auth/logout", token, { method: "POST" });
+
+export const listHostMeetings = (token: string, status?: MeetingStatus) =>
+  hostRequest<{ meetings: HostMeeting[] }>(`/host/meetings?limit=50${status ? `&status=${status}` : ""}`, token);
+
+export const acceptHostMeeting = (roomId: string, token: string) =>
+  hostRequest<HostMeeting>(`/host/meetings/${roomId}/accept`, token, { method: "POST" });
+
+export const rejectHostMeeting = (roomId: string, token: string) =>
+  hostRequest<HostMeeting>(`/host/meetings/${roomId}/reject`, token, { method: "POST" });
+
+export const endHostMeeting = (roomId: string, token: string) =>
+  hostRequest<HostMeeting>(`/host/meetings/${roomId}/end`, token, { method: "POST" });
+
+export const getHostIceServers = (token: string) =>
+  hostRequest<{ iceServers: IceServer[] }>("/host/ice-servers", token);
