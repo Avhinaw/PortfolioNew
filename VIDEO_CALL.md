@@ -1,0 +1,26 @@
+# Visitor video calls
+
+## Environment
+
+Create a `.env.local` file in the FE project (do not commit secrets):
+
+```env
+VITE_API_URL=https://your-backend.onrender.com/api
+VITE_SOCKET_URL=https://your-backend.onrender.com
+```
+
+The REST client expects the backend's `{ ok: true, data }` response envelope. The visitor token is kept only in `sessionStorage` and is sent through `X-Visitor-Token` for cancellation and ICE-server requests.
+
+## Visitor flow
+
+- Availability is checked with `GET /api/availability`.
+- Requests are sent to `POST /api/meetings`.
+- The visitor polls `GET /api/meetings/:roomId/status` every four seconds until acceptance or a terminal state.
+- The waiting UI tells the visitor to wait up to seven minutes for Abhinav and then offers a leave action.
+- Cancellation uses `POST /api/meetings/:roomId/cancel` and is only treated as successful after the backend response.
+
+## Signaling contract verified from the backend
+
+Visitor Socket.IO authentication uses `{ role: "visitor", roomId, visitorToken }`. The visitor joins with `meeting:join`, reports media readiness with `call:ready`, receives the host offer through `call:offer`, sends `call:answer`, exchanges `call:ice-candidate`, reports connection state with `call:connected`, and ends through the visitor-authorized `call:end` event. The host is the offerer.
+
+The FE uses native `RTCPeerConnection` and `getUserMedia`; Socket.IO is used only for signaling. Real calling still requires a deployed backend whose CORS allowlist includes the portfolio origin and whose ICE configuration is reachable.
