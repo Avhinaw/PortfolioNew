@@ -1,13 +1,18 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+﻿import { useCallback, useEffect, useRef, useState } from "react";
 import { io, type Socket } from "socket.io-client";
 import {
   acceptHostMeeting,
   endHostMeeting,
+  getHostAvailability,
   getHostIceServers,
+  getHostMeeting,
   hostLogin,
   hostLogout,
   listHostMeetings,
+  rejectPendingHostMeetings,
   rejectHostMeeting,
+  testHostTelegram,
+  updateHostAvailability,
   type HostMeeting,
   type IceServer,
   VideoCallApiError,
@@ -40,6 +45,9 @@ const AdminMeetPage = () => {
   const [loading, setLoading] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
   const [pageError, setPageError] = useState<string | null>(null);
+  const [hostAvailable, setHostAvailable] = useState(true);
+  const [availabilityBusy, setAvailabilityBusy] = useState(false);
+  const [telegramMessage, setTelegramMessage] = useState<string | null>(null);
   const [connectionState, setConnectionState] = useState("No active call");
   const [micEnabled, setMicEnabled] = useState(true);
   const [cameraEnabled, setCameraEnabled] = useState(true);
@@ -78,6 +86,7 @@ const AdminMeetPage = () => {
   useEffect(() => {
     if (!token) return;
     void loadMeetings();
+    void getHostAvailability(token).then((result) => setHostAvailable(result.available)).catch((error) => setPageError(getError(error)));
     const timer = window.setInterval(() => void loadMeetings(), 4000);
     return () => window.clearInterval(timer);
   }, [loadMeetings, token]);
@@ -125,7 +134,7 @@ const AdminMeetPage = () => {
       const socket = io(socketUrl || undefined, { auth: { role: "host", token } });
       socketRef.current = socket;
       socket.on("connect", () => {
-        setConnectionState("Waiting for visitor…");
+        setConnectionState("Waiting for visitorâ€¦");
         socket.emit("host:join-room", { roomId: meeting.roomId });
         socket.emit("call:ready", { roomId: meeting.roomId });
       });
@@ -133,7 +142,7 @@ const AdminMeetPage = () => {
         const offer = await peer.createOffer();
         await peer.setLocalDescription(offer);
         socket.emit("call:offer", { roomId: meeting.roomId, sdp: { type: offer.type, sdp: offer.sdp } });
-        setConnectionState("Calling visitor…");
+        setConnectionState("Calling visitorâ€¦");
       });
       socket.on("call:answer", async (payload: { sdp: SignalDescription }) => {
         await peer.setRemoteDescription(payload.sdp);
@@ -163,6 +172,32 @@ const AdminMeetPage = () => {
     try { await rejectHostMeeting(meeting.roomId, token); await loadMeetings(); } catch (error) { setPageError(getError(error)); }
   };
 
+  const toggleAvailability = async () => {
+    if (!token) return;
+    setAvailabilityBusy(true); setPageError(null);
+    try {
+      const result = await updateHostAvailability(token, !hostAvailable);
+      setHostAvailable(result.available);
+    } catch (error) { setPageError(getError(error)); } finally { setAvailabilityBusy(false); }
+  };
+
+  const rejectAllPending = async () => {
+    if (!token || !meetings.some((meeting) => meeting.status === "pending")) return;
+    setLoading(true); setPageError(null);
+    try { await rejectPendingHostMeetings(token); await loadMeetings(); } catch (error) { setPageError(getError(error)); } finally { setLoading(false); }
+  };
+
+  const testTelegram = async () => {
+    if (!token) return;
+    setTelegramMessage(null); setPageError(null);
+    try { await testHostTelegram(token); setTelegramMessage("Telegram test notification delivered."); } catch (error) { setPageError(getError(error)); }
+  };
+
+  const openMeetingDetails = async (meeting: HostMeeting) => {
+    if (!token) return;
+    try { setActiveMeeting(await getHostMeeting(meeting.roomId, token)); } catch (error) { setPageError(getError(error)); }
+  };
+
   const endCall = async () => {
     if (!token || !activeMeeting) return;
     socketRef.current?.emit("call:end", { roomId: activeMeeting.roomId });
@@ -177,9 +212,29 @@ const AdminMeetPage = () => {
     if (kind === "audio") setMicEnabled(track.enabled); else setCameraEnabled(track.enabled);
   };
 
-  if (!token) return <main className="admin-meet-shell"><section className="admin-meet-card admin-meet-login"><span className="admin-meet-kicker">Private host access</span><h1>Admin meet</h1><p>Sign in to review visitor requests and join a call.</p><form onSubmit={login}><label htmlFor="admin-email">Email</label><input id="admin-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="username" required /><label htmlFor="admin-password">Password</label><input id="admin-password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required />{loginError && <p className="admin-meet-error" role="alert">{loginError}</p>}<button className="admin-meet-primary" type="submit" disabled={loading}>{loading ? "Signing in…" : "Sign in"}</button></form><a href="/">Return to portfolio</a></section></main>;
+  if (!token) return <main className="admin-meet-shell"><section className="admin-meet-card admin-meet-login"><span className="admin-meet-kicker">Private host access</span><h1>Admin meet</h1><p>Sign in to review visitor requests and join a call.</p><form onSubmit={login}><label htmlFor="admin-email">Email</label><input id="admin-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="username" required /><label htmlFor="admin-password">Password</label><input id="admin-password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required />{loginError && <p className="admin-meet-error" role="alert">{loginError}</p>}<button className="admin-meet-primary" type="submit" disabled={loading}>{loading ? "Signing inâ€¦" : "Sign in"}</button></form><a href="/">Return to portfolio</a></section></main>;
 
-  return <main className="admin-meet-shell"><header className="admin-meet-header"><div><span className="admin-meet-kicker">Private host access</span><h1>Admin meet</h1><p>Accept a visitor request, then join the room.</p></div><button className="admin-meet-quiet" type="button" onClick={() => void logout()}>Sign out</button></header>{pageError && <p className="admin-meet-error admin-meet-banner" role="alert">{pageError}</p>}<div className="admin-meet-grid"><section className="admin-meet-card"><div className="admin-meet-section-heading"><h2>Incoming requests</h2><button type="button" className="admin-meet-refresh" onClick={() => void loadMeetings()}>Refresh</button></div>{meetings.length === 0 ? <p className="admin-meet-muted">No active visitor requests.</p> : <div className="admin-meet-list">{meetings.map((meeting) => <article className="admin-meet-request" key={meeting.roomId}><div><strong>{meeting.visitorName}</strong><span>{formatTime(meeting.createdAt)} · {meeting.status}</span>{meeting.visitorMessage && <p>{meeting.visitorMessage}</p>}</div><div className="admin-meet-actions">{meeting.status === "pending" && <><button type="button" className="admin-meet-primary" onClick={() => void accept(meeting)} disabled={loading}>Accept & join</button><button type="button" className="admin-meet-quiet" onClick={() => void reject(meeting)}>Reject</button></>}{meeting.status === "accepted" && <button type="button" className="admin-meet-primary" onClick={() => void startCall(meeting)} disabled={loading}>Join call</button>}</div></article>)}</div>}</section>{activeMeeting && <section className="admin-meet-card admin-meet-room"><div className="admin-meet-section-heading"><div><span className="admin-meet-kicker">Live room</span><h2>{activeMeeting.visitorName}</h2></div><span className="admin-meet-status">{connectionState}</span></div><div className="admin-meet-videos"><video ref={remoteVideoRef} autoPlay playsInline className="admin-meet-video" /><video ref={localVideoRef} autoPlay muted playsInline className="admin-meet-video admin-meet-video-local" /></div><div className="admin-meet-controls"><button type="button" onClick={() => toggleTrack("audio")}>{micEnabled ? "Mute mic" : "Unmute mic"}</button><button type="button" onClick={() => toggleTrack("video")}>{cameraEnabled ? "Turn camera off" : "Turn camera on"}</button><button type="button" className="admin-meet-end" onClick={() => void endCall()}>End call</button></div></section>}</div></main>;
+  return (
+    <main className="admin-meet-shell">
+      <header className="admin-meet-header">
+        <div><span className="admin-meet-kicker">Private host access</span><h1>Admin meet</h1><p>Accept a visitor request, then join the room.</p></div>
+        <div className="admin-meet-header-actions">
+          <button className={`admin-meet-availability ${hostAvailable ? "is-available" : ""}`} type="button" onClick={() => void toggleAvailability()} disabled={availabilityBusy}><span className="admin-meet-availability-dot" />{availabilityBusy ? "Updating…" : hostAvailable ? "Available" : "Unavailable"}</button>
+          <button className="admin-meet-quiet" type="button" onClick={() => void testTelegram()}>Test Telegram</button>
+          <button className="admin-meet-quiet" type="button" onClick={() => void logout()}>Sign out</button>
+        </div>
+      </header>
+      {pageError && <p className="admin-meet-error admin-meet-banner" role="alert">{pageError}</p>}
+      {telegramMessage && <p className="admin-meet-success admin-meet-banner" role="status">{telegramMessage}</p>}
+      <div className="admin-meet-grid">
+        <section className="admin-meet-card">
+          <div className="admin-meet-section-heading"><h2>Incoming requests</h2><div className="admin-meet-section-actions"><button type="button" className="admin-meet-refresh" onClick={() => void loadMeetings()}>Refresh</button><button type="button" className="admin-meet-refresh admin-meet-danger-quiet" onClick={() => void rejectAllPending()} disabled={loading || !meetings.some((meeting) => meeting.status === "pending")}>Reject pending</button></div></div>
+          {meetings.length === 0 ? <p className="admin-meet-muted">No active visitor requests.</p> : <div className="admin-meet-list">{meetings.map((meeting) => <article className="admin-meet-request" key={meeting.roomId}><div><strong>{meeting.visitorName}</strong><span>{formatTime(meeting.createdAt)} · {meeting.status}</span>{meeting.visitorMessage && <p>{meeting.visitorMessage}</p>}</div><div className="admin-meet-actions">{meeting.status === "pending" && <><button type="button" className="admin-meet-primary" onClick={() => void accept(meeting)} disabled={loading || !hostAvailable}>Accept & join</button><button type="button" className="admin-meet-quiet" onClick={() => void reject(meeting)}>Reject</button></>}{meeting.status === "accepted" && <><button type="button" className="admin-meet-primary" onClick={() => void startCall(meeting)} disabled={loading}>Join call</button><button type="button" className="admin-meet-quiet" onClick={() => void openMeetingDetails(meeting)}>Details</button></>}</div></article>)}</div>}
+        </section>
+        {activeMeeting && <section className="admin-meet-card admin-meet-room"><div className="admin-meet-section-heading"><div><span className="admin-meet-kicker">Live room</span><h2>{activeMeeting.visitorName}</h2></div><span className="admin-meet-status">{connectionState}</span></div><div className="admin-meet-videos"><video ref={remoteVideoRef} autoPlay playsInline className="admin-meet-video" /><video ref={localVideoRef} autoPlay muted playsInline className="admin-meet-video admin-meet-video-local" /></div><div className="admin-meet-controls"><button type="button" onClick={() => toggleTrack("audio")}>{micEnabled ? "Mute mic" : "Unmute mic"}</button><button type="button" onClick={() => toggleTrack("video")}>{cameraEnabled ? "Turn camera off" : "Turn camera on"}</button><button type="button" className="admin-meet-end" onClick={() => void endCall()}>End call</button></div></section>}
+      </div>
+    </main>
+  );
 };
 
 export default AdminMeetPage;
