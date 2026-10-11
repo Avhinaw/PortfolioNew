@@ -24,3 +24,10 @@ The REST client expects the backend's `{ ok: true, data }` response envelope. Th
 Visitor Socket.IO authentication uses `{ role: "visitor", roomId, visitorToken }`. The visitor joins with `meeting:join`, reports media readiness with `call:ready`, receives the host offer through `call:offer`, sends `call:answer`, exchanges `call:ice-candidate`, reports connection state with `call:connected`, and ends through the visitor-authorized `call:end` event. The host is the offerer.
 
 The FE uses native `RTCPeerConnection` and `getUserMedia`; Socket.IO is used only for signaling. Real calling still requires a deployed backend whose CORS allowlist includes the portfolio origin and whose ICE configuration is reachable.
+
+## Admin host route
+
+- Open `/admin-meet` to reach the private host page.
+- Sign in with the backend host email and password. The access token is kept in `sessionStorage` only.
+- Review pending visitor requests, accept or reject them, and join accepted rooms with camera and microphone controls.
+- The host page uses the backend host endpoints under `/api/host/*` and Socket.IO host authentication. No admin credentials are stored in the frontend source.
