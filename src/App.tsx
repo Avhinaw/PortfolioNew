@@ -33,8 +33,9 @@ import Project from "./data/Project";
 import SpideyTracker from "./Components/SpideyTracker";
 import { skillMapNodes } from "./data/SkillMap";
 import VideoCallWidget from "./Components/VideoCallWidget";
+import AdminMeetPage from "./Components/AdminMeetPage";
 
-const App = () => {
+const PortfolioApp = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -366,5 +367,7 @@ const App = () => {
     </>
   );
 };
+
+const App = () => window.location.pathname === "/admin-meet" ? <AdminMeetPage /> : <PortfolioApp />;
 
 export default App;
