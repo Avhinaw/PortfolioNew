@@ -414,6 +414,64 @@ a {
   box-shadow: 0 28px 90px rgba(94, 54, 255, 0.55);
 }
 
+/* 6b. Apple Glass / Liquid Glass */
+.portfolio-shell[data-style='appleglass'] {
+  --page-bg: #dfe8f1;
+  --ink: #152331;
+  --muted-ink: #536778;
+  --accent: #ffffff;
+  --accent-contrast: #162331;
+  --card-bg: rgba(255, 255, 255, 0.38);
+  --card-border: rgba(255, 255, 255, 0.72);
+  --card-shadow: 0 24px 70px rgba(54, 84, 111, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  --card-radius: 1.8rem;
+  --image-filter: brightness(72%) saturate(0.8) contrast(0.92);
+  --display-font: 'Inter', sans-serif;
+}
+
+.portfolio-shell[data-style='appleglass']::before {
+  opacity: 1;
+  background: radial-gradient(circle at 8% 8%, rgba(255, 255, 255, 0.86), transparent 28%), radial-gradient(circle at 92% 12%, rgba(166, 210, 255, 0.72), transparent 30%), radial-gradient(circle at 48% 88%, rgba(205, 184, 255, 0.6), transparent 32%), linear-gradient(135deg, #eaf3fa, #cdd8e8 48%, #e3dff5);
+  filter: blur(18px);
+}
+
+.portfolio-shell[data-style='appleglass']::after {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  content: '';
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.3), transparent 38%, rgba(255, 255, 255, 0.18));
+}
+
+.portfolio-shell[data-style='appleglass'] .project-box,
+.portfolio-shell[data-style='appleglass'] > div:first-child > div:nth-child(1) > div,
+.portfolio-shell[data-style='appleglass'] .style-gallery,
+.portfolio-shell[data-style='appleglass'] .theme-style-trigger {
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(28px) saturate(1.35);
+  -webkit-backdrop-filter: blur(28px) saturate(1.35);
+}
+
+.portfolio-shell[data-style='appleglass'] .project-box:hover {
+  box-shadow: 0 30px 80px rgba(69, 99, 129, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transform: translateY(-5px);
+}
+
+.portfolio-shell[data-style='appleglass'] .theme-style-trigger {
+  color: #26384a;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(188, 216, 241, 0.62));
+  box-shadow: 0 14px 32px rgba(68, 93, 119, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+.portfolio-shell[data-style='appleglass'] .app-wheel-toggle,
+.portfolio-shell[data-style='appleglass'] .music-side-toggle {
+  color: #26384a;
+  background: rgba(255, 255, 255, 0.62);
+  border-color: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 12px 28px rgba(68, 93, 119, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
 /* 7. Cyberpunk Web */
 .portfolio-shell[data-style='cyberpunk'] {
   --page-bg: #07020f;
@@ -3317,6 +3375,41 @@ body.ai-modal-open {
   font-size: 1rem;
   letter-spacing: 0.08em;
 }
+
+.music-side-toggle {
+  position: fixed;
+  z-index: 220;
+  top: 1rem;
+  right: 1rem;
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  color: var(--accent-contrast);
+  cursor: pointer;
+  background: var(--accent);
+  border: 3px solid color-mix(in srgb, var(--accent) 55%, white);
+  border-radius: 50%;
+  box-shadow: var(--card-shadow);
+  transition: transform 220ms ease, filter 220ms ease, box-shadow 220ms ease;
+}
+
+.music-side-toggle:hover,
+.music-side-toggle:focus-visible {
+  filter: brightness(1.08);
+  box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 18%, transparent), 0 0 28px color-mix(in srgb, var(--accent) 45%, transparent);
+  transform: translateY(-1px) scale(1.05);
+}
+
+.music-side-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.music-side-toggle.is-playing {
+  animation: music-pulse 2.4s ease-in-out infinite;
+}
+
 .app-wheel-option {
   position: absolute;
   top: 50%;
