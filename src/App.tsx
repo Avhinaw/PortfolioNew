@@ -34,6 +34,9 @@ import SpideyTracker from "./Components/SpideyTracker";
 import { skillMapNodes } from "./data/SkillMap";
 import VideoCallWidget from "./Components/VideoCallWidget";
 import AdminMeetPage from "./Components/AdminMeetPage";
+import { getAvailability } from "./services/videoCallApi";
+
+const availabilityToastKey = "portfolio-availability-toast-shown";
 
 const PortfolioApp = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -41,7 +44,9 @@ const PortfolioApp = () => {
   const audioContextRef = useRef<AudioContext | null>(null);
   const loadingStartedAtRef = useRef(performance.now());
   const loadingTimeoutRef = useRef<number | undefined>(undefined);
+  const availabilityToastTimeoutRef = useRef<number | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
+  const [availabilityToast, setAvailabilityToast] = useState<string | null>(null);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [isTodoOpen, setIsTodoOpen] = useState(false);
   const [isGameOpen, setIsGameOpen] = useState(false);
@@ -129,8 +134,40 @@ const PortfolioApp = () => {
       if (loadingTimeoutRef.current) {
         window.clearTimeout(loadingTimeoutRef.current);
       }
+      if (availabilityToastTimeoutRef.current) {
+        window.clearTimeout(availabilityToastTimeoutRef.current);
+      }
       audio?.pause();
       void audioContext?.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const showToast = window.sessionStorage.getItem(availabilityToastKey) !== "1";
+
+    void getAvailability()
+      .then(({ available, busy }) => {
+        if (cancelled || !showToast) return;
+        window.sessionStorage.setItem(availabilityToastKey, "1");
+        setAvailabilityToast(
+          available
+            ? busy
+              ? "Abhinav is currently on another call."
+              : "Abhinav is available for a quick conversation."
+            : "Abhinav is currently unavailable.",
+        );
+        availabilityToastTimeoutRef.current = window.setTimeout(() => setAvailabilityToast(null), 5200);
+      })
+      .catch(() => {
+        if (cancelled || !showToast) return;
+        window.sessionStorage.setItem(availabilityToastKey, "1");
+        setAvailabilityToast("We’re checking Abhinav’s availability right now.");
+        availabilityToastTimeoutRef.current = window.setTimeout(() => setAvailabilityToast(null), 5200);
+      });
+
+    return () => {
+      cancelled = true;
     };
   }, []);
 
@@ -300,6 +337,12 @@ const PortfolioApp = () => {
         </div>
       )}
       {isLoading && <LoadingScreen onComplete={completeLoading} />}
+      {availabilityToast && (
+        <div className="availability-toast" role="status" aria-live="polite">
+          <span className="availability-toast-dot" aria-hidden="true" />
+          <span>{availabilityToast}</span>
+        </div>
+      )}
       <Intro
         themeStyle={themeStyle}
         isThemeAnimating={isThemeAnimating}
