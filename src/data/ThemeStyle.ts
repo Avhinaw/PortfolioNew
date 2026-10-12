@@ -5,6 +5,7 @@ export const themeStyles = [
   { id: "bento", label: "Bento Grid", description: "Modular dark tiles", swatch: "linear-gradient(135deg, #b8ff6a, #251d35)" },
   { id: "swiss", label: "Swiss Minimal", description: "Quiet editorial structure", swatch: "linear-gradient(135deg, #ff5b52, #12171d)" },
   { id: "liquidism", label: "Liquidism", description: "Neon fluid atmosphere", swatch: "linear-gradient(135deg, #70f7df, #6c51ff)" },
+  { id: "appleglass", label: "Apple Glass", description: "Soft translucent liquid glass", swatch: "linear-gradient(135deg, #f5fbff, #8bb7d9 48%, #c4a7ff)" },
   { id: "cyberpunk", label: "Cyberpunk Web", description: "Neon arcade circuitry", swatch: "linear-gradient(135deg, #ff2bd6, #00e5ff)" },
   { id: "gone", label: "G.One Protocol", description: "Sentient neon defense grid", swatch: "linear-gradient(135deg, #00e5ff, #ff315a)" },
   { id: "terminal", label: "Terminal Noir", description: "Hacker console focus", swatch: "linear-gradient(135deg, #b8ff6a, #07110b)" },
