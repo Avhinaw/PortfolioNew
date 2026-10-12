@@ -159,9 +159,26 @@ const AdminMeetPage = () => {
       socketRef.current = socket;
       socket.on("connect", () => {
         setConnectionState("Waiting for visitor…");
-        socket.emit("host:register");
-        socket.emit("host:join-room", { roomId: meeting.roomId });
-        socket.emit("call:ready", { roomId: meeting.roomId });
+        socket.emit("host:register", (registerResponse: { ok?: boolean; error?: { message?: string } }) => {
+          if (registerResponse?.ok === false) {
+            setPageError(registerResponse.error?.message || "The host could not register for signaling.");
+            setConnectionState("Host registration failed");
+            return;
+          }
+          socket.emit("host:join-room", { roomId: meeting.roomId }, (joinResponse: { ok?: boolean; error?: { message?: string } }) => {
+            if (joinResponse?.ok === false) {
+              setPageError(joinResponse.error?.message || "The host could not join the call room.");
+              setConnectionState("Room join failed");
+              return;
+            }
+            socket.emit("call:ready", { roomId: meeting.roomId }, (readyResponse: { ok?: boolean; error?: { message?: string } }) => {
+              if (readyResponse?.ok === false) {
+                setPageError(readyResponse.error?.message || "The host could not announce call readiness.");
+                setConnectionState("Call setup failed");
+              }
+            });
+          });
+        });
       });
       socket.on("call:begin", async () => {
         const offer = await peer.createOffer();
