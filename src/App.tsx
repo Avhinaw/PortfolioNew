@@ -8,7 +8,6 @@ import {
   MdContactMail,
   MdAccessTime,
   MdAutoAwesome,
-  MdPalette,
   MdClose,
   MdOutlineArrowBackIos,
   MdOutlineArrowForwardIos,
@@ -277,8 +276,6 @@ const PortfolioApp = () => {
     { id: "signal", label: "Skills", icon: <MdRadar aria-hidden="true" />, action: () => setActiveMiniApp("signal"), x: 98, y: 105 },
     { id: "game", label: "Spidey Swing", icon: <MdSportsEsports aria-hidden="true" />, action: () => setIsGameOpen(true), x: 0, y: 140 },
     { id: "todo", label: "Todo", icon: <MdChecklist aria-hidden="true" />, action: () => setIsTodoOpen(true), x: -98, y: 105 },
-    { id: "music", label: isMusicPlaying ? "Pause Music" : "Play Music", icon: isMusicPlaying ? <MdMusicNote aria-hidden="true" /> : <MdMusicOff aria-hidden="true" />, action: () => { void toggleMusic(); }, x: -138, y: 8 },
-    { id: "style", label: "Change Style", icon: <MdPalette aria-hidden="true" />, action: randomizeThemeStyle, x: -98, y: -98 },
   ];
 
   return (
@@ -295,6 +292,15 @@ const PortfolioApp = () => {
         preload="auto"
         aria-hidden="true"
       />
+      <button
+        type="button"
+        className={`music-side-toggle ${isMusicPlaying ? "is-playing" : ""}`}
+        onClick={() => { void toggleMusic(); }}
+        aria-label={isMusicPlaying ? "Pause background music" : "Play background music"}
+        title={isMusicPlaying ? "Pause music" : "Play music"}
+      >
+        {isMusicPlaying ? <MdMusicOff aria-hidden="true" /> : <MdMusicNote aria-hidden="true" />}
+      </button>
       <button
         type="button"
         className={`app-wheel-toggle ${isAppWheelOpen ? "is-open" : ""}`}
@@ -315,7 +321,7 @@ const PortfolioApp = () => {
         >
           <div className="app-wheel" role="menu" aria-label="Portfolio mini-app wheel">
             <div className="app-wheel-ring" aria-hidden="true" />
-            <div className="app-wheel-center" aria-hidden="true"><span>MINI</span><strong>APPS</strong></div>
+            <div className="app-wheel-center" aria-hidden="true"><strong>APPS</strong></div>
             {wheelOptions.map((option) => (
               <button
                 key={option.id}
