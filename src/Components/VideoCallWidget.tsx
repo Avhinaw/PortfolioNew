@@ -160,8 +160,19 @@ const VideoCallWidget = () => {
       socketRef.current = socket;
       socket.on("connect", () => {
         setConnectionState("Waiting for Abhinav to join…");
-        socket.emit("meeting:join", { roomId: targetRoom });
-        socket.emit("call:ready", { roomId: targetRoom });
+        socket.emit("meeting:join", { roomId: targetRoom }, (response: { ok?: boolean; error?: { message?: string } }) => {
+          if (response?.ok === false) {
+            setError(response.error?.message || "The visitor could not join the call room.");
+            setConnectionState("Room join failed");
+            return;
+          }
+          socket.emit("call:ready", { roomId: targetRoom }, (readyResponse: { ok?: boolean; error?: { message?: string } }) => {
+            if (readyResponse?.ok === false) {
+              setError(readyResponse.error?.message || "The visitor could not announce call readiness.");
+              setConnectionState("Call setup failed");
+            }
+          });
+        });
       });
       socket.on("meeting:status", (payload: StatusPayload) => {
         setStatus(payload.status);
