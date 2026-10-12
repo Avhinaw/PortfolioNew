@@ -1466,6 +1466,56 @@ body.todo-modal-open {
   animation: loading-screen-exit 560ms ease 900ms both;
 }
 
+.availability-toast {
+  position: fixed;
+  z-index: 110;
+  top: 1rem;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: min(calc(100% - 2rem), 28rem);
+  padding: 0.8rem 1rem;
+  color: #f5fffb;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  background: rgba(8, 25, 24, 0.94);
+  border: 1px solid rgba(140, 243, 198, 0.35);
+  border-radius: 999px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.3), 0 0 24px rgba(140, 243, 198, 0.12);
+  backdrop-filter: blur(16px);
+  transform: translateX(-50%);
+  animation: availability-toast-in 240ms ease both;
+  pointer-events: none;
+}
+
+.availability-toast-dot {
+  width: 0.58rem;
+  height: 0.58rem;
+  flex: 0 0 auto;
+  background: #8cf3c6;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0.25rem rgba(140, 243, 198, 0.12), 0 0 14px rgba(140, 243, 198, 0.8);
+}
+
+@keyframes availability-toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (max-width: 520px) {
+  .availability-toast {
+    top: 0.7rem;
+    font-size: 0.74rem;
+  }
+}
+
 .loading-screen::before,
 .loading-screen::after {
   position: absolute;
