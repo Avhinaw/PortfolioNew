@@ -5,7 +5,9 @@ import {
   createMeeting,
   getAvailability,
   getIceServers,
+  getIceServersWithFallback,
   getMeetingStatus,
+  getSocketUrl,
   type Availability,
   type MeetingStatus,
   type PublicMeetingStatus,
@@ -23,7 +25,7 @@ const WAITING_LIMIT_MS = 7 * 60 * 1000;
 const POLL_INTERVAL_MS = 4000;
 const tokenKey = "portfolio-video-call-token";
 const roomKey = "portfolio-video-call-room";
-const socketUrl = (import.meta.env.VITE_SOCKET_URL as string | undefined)?.replace(/\/$/, "");
+const socketUrl = getSocketUrl();
 
 function formatCountdown(ms: number): string {
   const seconds = Math.max(0, Math.ceil(ms / 1000));
@@ -137,7 +139,7 @@ const VideoCallWidget = () => {
       if (generation !== callGenerationRef.current) { media.getTracks().forEach((track) => track.stop()); return; }
       streamRef.current = media;
       if (localVideoRef.current) localVideoRef.current.srcObject = media;
-      const peer = new RTCPeerConnection({ iceServers: ice.iceServers });
+      const peer = new RTCPeerConnection({ iceServers: getIceServersWithFallback(ice.iceServers) });
       peerRef.current = peer;
       media.getTracks().forEach((track) => peer.addTrack(track, media));
       peer.ontrack = (event) => {
