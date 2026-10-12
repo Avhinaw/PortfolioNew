@@ -5,10 +5,12 @@ import {
   endHostMeeting,
   getHostAvailability,
   getHostIceServers,
+  getIceServersWithFallback,
   getHostMeeting,
   hostLogin,
   hostLogout,
   listHostMeetings,
+  getSocketUrl,
   rejectPendingHostMeetings,
   rejectHostMeeting,
   testHostTelegram,
@@ -22,7 +24,7 @@ import "./AdminMeetPage.css";
 type SignalDescription = { type: "offer" | "answer"; sdp: string };
 type MeetingWithError = HostMeeting & { actionError?: string };
 const tokenKey = "portfolio-host-access-token";
-const socketUrl = (import.meta.env.VITE_SOCKET_URL as string | undefined)?.replace(/\/$/, "");
+const socketUrl = getSocketUrl();
 
 function getError(error: unknown): string {
   if (error instanceof VideoCallApiError) {
@@ -146,7 +148,7 @@ const AdminMeetPage = () => {
       const attachLocal = () => { if (localVideoRef.current) { localVideoRef.current.srcObject = media; void localVideoRef.current.play().catch(() => setPageError("Click the local video area to start preview playback.")); } };
       attachLocal();
       window.requestAnimationFrame(attachLocal);
-      const peer = new RTCPeerConnection({ iceServers: ice.iceServers as IceServer[] });
+      const peer = new RTCPeerConnection({ iceServers: getIceServersWithFallback(ice.iceServers as IceServer[]) });
       peerRef.current = peer;
       media.getTracks().forEach((track) => peer.addTrack(track, media));
       peer.ontrack = (event) => {
