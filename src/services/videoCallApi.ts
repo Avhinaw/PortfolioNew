@@ -36,6 +36,11 @@ export interface IceServer {
   credential?: string;
 }
 
+export const FALLBACK_ICE_SERVERS: IceServer[] = [
+  { urls: "stun:stun.l.google.com:19302" },
+  { urls: "stun:stun.cloudflare.com:3478" },
+];
+
 export interface ApiErrorShape {
   code?: string;
   message?: string;
@@ -55,6 +60,18 @@ export class VideoCallApiError extends Error {
 }
 
 const apiUrl = (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, "") || "/api";
+
+export function getSocketUrl(): string | undefined {
+  const explicit = (import.meta.env.VITE_SOCKET_URL as string | undefined)?.trim().replace(/\/$/, "");
+  if (explicit) return explicit;
+  const configuredApi = (import.meta.env.VITE_API_URL as string | undefined)?.trim().replace(/\/$/, "");
+  if (!configuredApi) return undefined;
+  return configuredApi.replace(/\/api$/, "");
+}
+
+export function getIceServersWithFallback(iceServers: IceServer[]): IceServer[] {
+  return [...FALLBACK_ICE_SERVERS, ...iceServers];
+}
 
 async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   let response: Response;
