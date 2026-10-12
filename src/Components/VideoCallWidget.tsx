@@ -70,8 +70,14 @@ const VideoCallWidget = () => {
   const pendingCandidatesRef = useRef<RTCIceCandidateInit[]>([]);
   const roomRef = useRef<string | null>(null);
   const tokenRef = useRef<string | null>(null);
+  const startedRoomRef = useRef<string | null>(null);
+  const callGenerationRef = useRef(0);
+  const connectedReportedRef = useRef(false);
+  const remoteStreamRef = useRef<MediaStream | null>(null);
 
   const cleanupCall = useCallback(() => {
+    callGenerationRef.current += 1;
+    connectedReportedRef.current = false;
     peerRef.current?.close();
     peerRef.current = null;
     socketRef.current?.disconnect();
@@ -81,6 +87,8 @@ const VideoCallWidget = () => {
     if (localVideoRef.current) localVideoRef.current.srcObject = null;
     if (remoteVideoRef.current) remoteVideoRef.current.srcObject = null;
     pendingCandidatesRef.current = [];
+    remoteStreamRef.current = null;
+    startedRoomRef.current = null;
   }, []);
 
   const finish = useCallback((reason: CallEndReason) => {
@@ -101,34 +109,52 @@ const VideoCallWidget = () => {
     const peer = peerRef.current;
     const room = roomRef.current;
     if (!peer || !room) return;
-    await peer.setRemoteDescription(description);
-    for (const candidate of pendingCandidatesRef.current.splice(0)) await peer.addIceCandidate(candidate);
-    if (description.type === "offer") {
-      const answer = await peer.createAnswer();
-      await peer.setLocalDescription(answer);
-      send("call:answer", { roomId: room, sdp: { type: answer.type, sdp: answer.sdp } });
+    try {
+      await peer.setRemoteDescription(description);
+      for (const candidate of pendingCandidatesRef.current.splice(0)) await peer.addIceCandidate(candidate);
+      if (description.type === "offer") {
+        const answer = await peer.createAnswer();
+        await peer.setLocalDescription(answer);
+        send("call:answer", { roomId: room, sdp: { type: answer.type, sdp: answer.sdp } });
+      }
+    } catch (cause) {
+      setError(`Unable to apply call signaling: ${cause instanceof Error ? cause.message : "remote description failed"}`);
+      setConnectionState("Signaling failed");
     }
   }, [send]);
 
   const startCall = useCallback(async (targetRoom: string, token: string) => {
+    if (startedRoomRef.current === targetRoom && peerRef.current) return;
+    cleanupCall();
+    startedRoomRef.current = targetRoom;
+    const generation = callGenerationRef.current;
     try {
       setConnectionState("Requesting camera and microphone…");
       const [media, ice] = await Promise.all([
         navigator.mediaDevices.getUserMedia({ video: true, audio: true }),
         getIceServers(targetRoom, token),
       ]);
+      if (generation !== callGenerationRef.current) { media.getTracks().forEach((track) => track.stop()); return; }
       streamRef.current = media;
       if (localVideoRef.current) localVideoRef.current.srcObject = media;
       const peer = new RTCPeerConnection({ iceServers: ice.iceServers });
       peerRef.current = peer;
       media.getTracks().forEach((track) => peer.addTrack(track, media));
-      peer.ontrack = (event) => { if (remoteVideoRef.current) remoteVideoRef.current.srcObject = event.streams[0]; };
+      peer.ontrack = (event) => {
+        if (generation !== callGenerationRef.current || !remoteVideoRef.current) return;
+        const remote = event.streams[0] || remoteStreamRef.current || new MediaStream();
+        if (!event.streams[0]) remote.addTrack(event.track);
+        remoteStreamRef.current = remote;
+        remoteVideoRef.current.srcObject = remote;
+        void remoteVideoRef.current.play().catch(() => setError("Click the video area to start remote audio/video playback."));
+        setConnectionState("Remote video connected");
+      };
       peer.onicecandidate = (event) => { if (event.candidate) send("call:ice-candidate", { roomId: targetRoom, candidate: event.candidate.toJSON() }); };
       peer.onconnectionstatechange = () => {
         const next = peer.connectionState;
         setConnectionState(next === "connected" ? "Connected" : next === "failed" ? "Connection failed" : next);
-        if (next === "connected") send("call:connected", { roomId: targetRoom });
-        if (next === "failed") send("call:connection-failed", { roomId: targetRoom, reason: "ice_failed" });
+        if (next === "connected" && !connectedReportedRef.current) { connectedReportedRef.current = true; send("call:connected", { roomId: targetRoom }); }
+        if (next === "failed") { setError("The network connection failed. A TURN server may be needed behind some firewalls."); send("call:connection-failed", { roomId: targetRoom, reason: "ice_failed" }); }
       };
       const socket = io(socketUrl || undefined, { auth: { role: "visitor", roomId: targetRoom, visitorToken: token } });
       socketRef.current = socket;
@@ -144,7 +170,7 @@ const VideoCallWidget = () => {
       socket.on("call:begin", () => setConnectionState("Connecting video…"));
       socket.on("call:offer", (payload: { sdp: SignalDescription }) => { void handleRemoteDescription(payload.sdp); });
       socket.on("call:ice-candidate", (payload: { candidate: SignalCandidate }) => {
-        if (peer.remoteDescription) void peer.addIceCandidate(payload.candidate);
+        if (peer.remoteDescription) void peer.addIceCandidate(payload.candidate).catch(() => setError("A network candidate could not be added."));
         else pendingCandidatesRef.current.push(payload.candidate);
       });
       socket.on("call:peer-disconnected", () => finish("ended"));
@@ -152,7 +178,7 @@ const VideoCallWidget = () => {
       socket.on("call:error", () => setConnectionState("The call connection needs to be retried."));
     } catch (cause) {
       cleanupCall();
-      setError(cause instanceof DOMException && cause.name === "NotAllowedError" ? "Camera and microphone permission are required to join the call." : friendlyError(cause));
+      setError(cause instanceof DOMException && cause.name === "NotAllowedError" ? "Camera and microphone permission are required to join the call." : cause instanceof DOMException && cause.name === "NotFoundError" ? "No camera or microphone was found." : friendlyError(cause));
       setState("waiting");
     }
   }, [cleanupCall, finish, handleRemoteDescription, send]);
