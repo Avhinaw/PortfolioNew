@@ -101,6 +101,16 @@ const AdminMeetPage = () => {
 
   useEffect(() => () => closeCall(), [closeCall]);
 
+  useEffect(() => {
+    if (streamRef.current && localVideoRef.current && localVideoRef.current.srcObject !== streamRef.current) {
+      localVideoRef.current.srcObject = streamRef.current;
+    }
+    if (remoteStreamRef.current && remoteVideoRef.current && remoteVideoRef.current.srcObject !== remoteStreamRef.current) {
+      remoteVideoRef.current.srcObject = remoteStreamRef.current;
+      void remoteVideoRef.current.play().catch(() => setPageError("Click the remote video area to start audio/video playback."));
+    }
+  }, [activeMeeting, connectionState]);
+
   const login = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true); setLoginError(null);
@@ -140,12 +150,14 @@ const AdminMeetPage = () => {
       peerRef.current = peer;
       media.getTracks().forEach((track) => peer.addTrack(track, media));
       peer.ontrack = (event) => {
-        if (generation !== callGenerationRef.current || !remoteVideoRef.current) return;
+        if (generation !== callGenerationRef.current) return;
         const remote = event.streams[0] || remoteStreamRef.current || new MediaStream();
         if (!event.streams[0]) remote.addTrack(event.track);
         remoteStreamRef.current = remote;
-        remoteVideoRef.current.srcObject = remote;
-        void remoteVideoRef.current.play().catch(() => setPageError("Click the remote video area to start audio/video playback."));
+        if (remoteVideoRef.current) {
+          remoteVideoRef.current.srcObject = remote;
+          void remoteVideoRef.current.play().catch(() => setPageError("Click the remote video area to start audio/video playback."));
+        }
         setConnectionState("Remote video connected");
       };
       peer.onicecandidate = (event) => { if (event.candidate) socketRef.current?.emit("call:ice-candidate", { roomId: meeting.roomId, candidate: event.candidate.toJSON() }); };
