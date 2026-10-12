@@ -141,12 +141,14 @@ const VideoCallWidget = () => {
       peerRef.current = peer;
       media.getTracks().forEach((track) => peer.addTrack(track, media));
       peer.ontrack = (event) => {
-        if (generation !== callGenerationRef.current || !remoteVideoRef.current) return;
+        if (generation !== callGenerationRef.current) return;
         const remote = event.streams[0] || remoteStreamRef.current || new MediaStream();
         if (!event.streams[0]) remote.addTrack(event.track);
         remoteStreamRef.current = remote;
-        remoteVideoRef.current.srcObject = remote;
-        void remoteVideoRef.current.play().catch(() => setError("Click the video area to start remote audio/video playback."));
+        if (remoteVideoRef.current) {
+          remoteVideoRef.current.srcObject = remote;
+          void remoteVideoRef.current.play().catch(() => setError("Click the video area to start remote audio/video playback."));
+        }
         setConnectionState("Remote video connected");
       };
       peer.onicecandidate = (event) => { if (event.candidate) send("call:ice-candidate", { roomId: targetRoom, candidate: event.candidate.toJSON() }); };
@@ -196,6 +198,16 @@ const VideoCallWidget = () => {
 
   useEffect(() => () => cleanupCall(), [cleanupCall]);
 
+  useEffect(() => {
+    if (streamRef.current && localVideoRef.current && localVideoRef.current.srcObject !== streamRef.current) {
+      localVideoRef.current.srcObject = streamRef.current;
+    }
+    if (remoteStreamRef.current && remoteVideoRef.current && remoteVideoRef.current.srcObject !== remoteStreamRef.current) {
+      remoteVideoRef.current.srcObject = remoteStreamRef.current;
+      void remoteVideoRef.current.play().catch(() => setError("Click the video area to start remote audio/video playback."));
+    }
+  }, [state]);
+
   const refreshAvailability = useCallback(async () => {
     setAvailabilityLoading(true);
     try { setAvailability(await getAvailability()); } catch (cause) { setError(friendlyError(cause)); } finally { setAvailabilityLoading(false); }
@@ -227,7 +239,7 @@ const VideoCallWidget = () => {
         if (next.status === "accepted" || next.status === "in_progress") {
           setState("call");
           const token = tokenRef.current;
-          if (token && next.status === "accepted") void startCall(roomId, token);
+          if (token) void startCall(roomId, token);
         } else if (["rejected", "cancelled", "ended", "expired"].includes(next.status)) finish(next.status as CallEndReason);
       } catch (cause) { if (!cancelled) setError(friendlyError(cause)); }
     };
