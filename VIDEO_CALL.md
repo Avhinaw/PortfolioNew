@@ -25,6 +25,8 @@ Visitor Socket.IO authentication uses `{ role: "visitor", roomId, visitorToken }
 
 The FE uses native `RTCPeerConnection` and `getUserMedia`; Socket.IO is used only for signaling. Real calling still requires a deployed backend whose CORS allowlist includes the portfolio origin and whose ICE configuration is reachable.
 
+The FE attaches local tracks on both participants, uses the host-offerer/visitor-answerer flow, queues early ICE candidates until the remote description exists, and surfaces remote playback and connection failures. STUN-only ICE may still fail behind restrictive NATs or firewalls; configure a self-hosted TURN server in the backend ICE response if the connection reaches `failed`. Camera and microphone access requires HTTPS or localhost, and browsers may require a user click to begin remote playback audio.
+
 ## Admin host route
 
 - Open `/admin-meet` to reach the private host page.
