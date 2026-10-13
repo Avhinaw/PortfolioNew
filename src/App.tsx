@@ -31,6 +31,7 @@ import ProjectBox from "./Components/ProjectBox";
 import Project from "./data/Project";
 import SpideyTracker from "./Components/SpideyTracker";
 import { skillMapNodes } from "./data/SkillMap";
+import spiderWheelAvatar from "./assets/spider-wheel-avatar.png";
 import VideoCallWidget from "./Components/VideoCallWidget";
 import AdminMeetPage from "./Components/AdminMeetPage";
 import { getAvailability } from "./services/videoCallApi";
@@ -339,6 +340,9 @@ const PortfolioApp = () => {
                 <small>{option.label}</small>
               </button>
             ))}
+            <div className="app-wheel-spider" aria-hidden="true">
+              <img src={spiderWheelAvatar} alt="" />
+            </div>
           </div>
         </div>
       )}
