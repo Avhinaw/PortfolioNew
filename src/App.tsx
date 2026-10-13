@@ -11,6 +11,7 @@ import {
   MdClose,
   MdOutlineArrowBackIos,
   MdOutlineArrowForwardIos,
+  MdApps,
 } from "react-icons/md";
 import Intro from "./Components/Intro";
 import LoadingScreen from "./Components/LoadingScreen";
@@ -20,7 +21,6 @@ import GameModal from "./Components/GameModal";
 import MiniAppModal, { type MiniAppId } from "./Components/MiniAppModal";
 import AiAssistantModal from "./Components/AiAssistantModal";
 import sampleMusic from "./assets/sample-portfolio-music.mp3";
-import spiderAvatar from "./assets/spider-hero-pop.png";
 import {
   defaultThemeStyle,
   getRandomThemeStyle,
@@ -271,11 +271,11 @@ const PortfolioApp = () => {
 
   const wheelOptions = [
     { id: "hirebot", label: "HireBot", icon: <MdAutoAwesome aria-hidden="true" />, action: () => setIsAiOpen(true), x: 0, y: -138 },
-    { id: "clock", label: "Local Time", icon: <MdAccessTime aria-hidden="true" />, action: () => setActiveMiniApp("clock"), x: 98, y: -98 },
-    { id: "contact", label: "Contact", icon: <MdContactMail aria-hidden="true" />, action: () => setActiveMiniApp("contact"), x: 138, y: 8 },
-    { id: "signal", label: "Skills", icon: <MdRadar aria-hidden="true" />, action: () => setActiveMiniApp("signal"), x: 98, y: 105 },
-    { id: "game", label: "Spidey Swing", icon: <MdSportsEsports aria-hidden="true" />, action: () => setIsGameOpen(true), x: 0, y: 140 },
-    { id: "todo", label: "Todo", icon: <MdChecklist aria-hidden="true" />, action: () => setIsTodoOpen(true), x: -98, y: 105 },
+    { id: "clock", label: "Local Time", icon: <MdAccessTime aria-hidden="true" />, action: () => setActiveMiniApp("clock"), x: 119, y: -69 },
+    { id: "contact", label: "Contact", icon: <MdContactMail aria-hidden="true" />, action: () => setActiveMiniApp("contact"), x: 119, y: 69 },
+    { id: "signal", label: "Skills", icon: <MdRadar aria-hidden="true" />, action: () => setActiveMiniApp("signal"), x: -119, y: -69 },
+    { id: "game", label: "Spidey Swing", icon: <MdSportsEsports aria-hidden="true" />, action: () => setIsGameOpen(true), x: 0, y: 138 },
+    { id: "todo", label: "Todo", icon: <MdChecklist aria-hidden="true" />, action: () => setIsTodoOpen(true), x: -119, y: 69 },
   ];
 
   return (
@@ -309,7 +309,7 @@ const PortfolioApp = () => {
         aria-label={isAppWheelOpen ? "Close mini-app wheel" : "Open mini-app wheel"}
         title="Open mini-app wheel"
       >
-        {isAppWheelOpen ? <MdClose aria-hidden="true" /> : <img src={spiderAvatar} alt="" aria-hidden="true" />}
+        {isAppWheelOpen ? <MdClose aria-hidden="true" /> : <MdApps aria-hidden="true" />}
       </button>
       {isAppWheelOpen && (
         <div
