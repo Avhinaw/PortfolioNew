@@ -4,7 +4,7 @@ import {
   sendHireBotMessage,
   type HireBotHistoryMessage,
   type HireBotMode,
-} from "../services/videoCallApi";
+} from "../videoCallApi";
 
 type AiAssistantModalProps = {
   isOpen: boolean;
@@ -23,7 +23,7 @@ const AiAssistantModal = ({ isOpen, onClose }: AiAssistantModalProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     { id: 1, role: "assistant", content: welcomeMessage },
   ]);
-  const [mode, setMode] = useState<HireBotMode>("fun");
+  const [mode, setMode] = useState<HireBotMode>("serious");
   const [isPending, setIsPending] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [retryMessage, setRetryMessage] = useState<string | null>(null);
