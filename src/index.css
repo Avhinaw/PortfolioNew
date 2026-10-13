@@ -3586,13 +3586,3 @@ body.ai-modal-open {
     opacity: 1;
   }
 }
-.app-wheel-toggle img {
-  width: 2.25rem;
-  height: 2.25rem;
-  object-fit: contain;
-  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.4));
-  transition: transform 220ms ease;
-}
-.app-wheel-toggle:hover img {
-  transform: scale(1.12) rotate(-5deg);
-}
