@@ -2965,6 +2965,23 @@ body.mini-app-modal-open {
   border-radius: 999px;
 }
 
+.ai-mode-buttons {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.ai-mode-row button[aria-pressed="true"] {
+  color: var(--accent-contrast);
+  background: var(--accent);
+}
+
+.ai-mode-row button:disabled,
+.ai-quick-prompts button:disabled,
+.ai-form button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
 .ai-chat {
   display: grid;
   gap: 0.7rem;
@@ -3014,6 +3031,37 @@ body.mini-app-modal-open {
   color: var(--accent-contrast);
   background: var(--accent);
   border-radius: 0.75rem 0.75rem 0.2rem 0.75rem;
+}
+
+.ai-pending p {
+  color: var(--muted-ink);
+  font-style: italic;
+}
+
+.ai-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  padding: 0.65rem 0.75rem;
+  color: var(--ink);
+  font-size: 0.72rem;
+  background: color-mix(in srgb, #d65c5c 15%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, #d65c5c 45%, transparent);
+  border-radius: 0.65rem;
+}
+
+.ai-error button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.5rem;
+  color: var(--ink);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 999px;
 }
 
 .ai-quick-prompts {
@@ -3071,6 +3119,11 @@ body.mini-app-modal-open {
   border-radius: 0.6rem;
 }
 
+.ai-form button:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+}
+
 body.ai-modal-open {
   overflow: hidden;
 }
@@ -3126,6 +3179,24 @@ body.ai-modal-open {
   .ai-form {
     padding-right: 0.9rem;
     padding-left: 0.9rem;
+  }
+
+  .ai-mode-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .ai-mode-buttons {
+    width: 100%;
+  }
+
+  .ai-mode-buttons button {
+    flex: 1;
+  }
+
+  .ai-error {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 
@@ -3312,19 +3383,25 @@ body.ai-modal-open {
   position: fixed;
   z-index: 210;
   inset: 0;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  place-items: start center;
+  box-sizing: border-box;
   padding-top: 4.8rem;
-  background: radial-gradient(circle at 50% 10%, color-mix(in srgb, var(--accent) 8%, transparent), rgba(2, 5, 8, 0.68) 26%, rgba(2, 5, 8, 0.82));
+  background: radial-gradient(circle at 50% 10%, color-mix(in srgb, var(--accent) 14%, var(--page-bg)) 0%, color-mix(in srgb, var(--page-bg) 96%, black) 52%, color-mix(in srgb, var(--page-bg) 99%, black));
   backdrop-filter: blur(8px);
   animation: app-wheel-backdrop-in 180ms ease both;
 }
 .app-wheel {
   position: relative;
-  width: 23rem;
-  height: 23rem;
+  width: min(23rem, calc(100vw - 2rem));
+  height: min(23rem, calc(100vw - 2rem));
   flex: 0 0 auto;
   animation: app-wheel-in 320ms cubic-bezier(0.2, 0.9, 0.25, 1.15) both;
+}
+
+/* Six apps at equal 60-degree intervals around the center. */
+.app-wheel-option {
+  --wheel-radius: 8.625rem;
 }
 .app-wheel-ring,
 .app-wheel-ring::before,
@@ -3491,8 +3568,8 @@ body.ai-modal-open {
     padding-top: 4.3rem;
   }
   .app-wheel {
-    width: 20rem;
-    height: 20rem;
+    width: min(20rem, calc(100vw - 2rem));
+    height: min(20rem, calc(100vw - 2rem));
   }
   .app-wheel-option {
     transform: translate(-50%, -50%) translate(calc(var(--wheel-x) * 0.82), calc(var(--wheel-y) * 0.82)) scale(0.45);
