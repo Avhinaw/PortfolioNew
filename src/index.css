@@ -134,9 +134,9 @@ a {
 .theme-style-avatar {
   position: absolute;
   z-index: 2;
-  top: 0.5rem;
-  left: 0.5rem;
-  width: 8.5rem;
+  top: -2.5rem;
+  left: -4rem;
+  width: 15rem;
   max-width: none;
   pointer-events: none;
   opacity: 0;
