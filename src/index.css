@@ -1527,50 +1527,51 @@ body.todo-modal-open {
 .availability-toast {
   position: fixed;
   z-index: 110;
-  top: 1rem;
-  left: 50%;
+  right: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom));
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  width: min(calc(100% - 2rem), 28rem);
-  padding: 0.8rem 1rem;
+  gap: 0.55rem;
+  width: min(calc(100% - 2rem), 21rem);
+  padding: 0.7rem 0.85rem;
   color: #f5fffb;
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   line-height: 1.35;
   background: rgba(8, 25, 24, 0.94);
   border: 1px solid rgba(140, 243, 198, 0.35);
-  border-radius: 999px;
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.3), 0 0 24px rgba(140, 243, 198, 0.12);
+  border-radius: 0.85rem;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28), 0 0 18px rgba(140, 243, 198, 0.1);
   backdrop-filter: blur(16px);
-  transform: translateX(-50%);
   animation: availability-toast-in 240ms ease both;
   pointer-events: none;
 }
 
 .availability-toast-dot {
-  width: 0.58rem;
-  height: 0.58rem;
+  width: 0.48rem;
+  height: 0.48rem;
   flex: 0 0 auto;
   background: #8cf3c6;
   border-radius: 50%;
-  box-shadow: 0 0 0 0.25rem rgba(140, 243, 198, 0.12), 0 0 14px rgba(140, 243, 198, 0.8);
+  box-shadow: 0 0 0 0.2rem rgba(140, 243, 198, 0.12), 0 0 12px rgba(140, 243, 198, 0.75);
 }
 
 @keyframes availability-toast-in {
   from {
     opacity: 0;
-    transform: translate(-50%, -0.75rem);
+    transform: translateY(0.5rem);
   }
   to {
     opacity: 1;
-    transform: translate(-50%, 0);
+    transform: translateY(0);
   }
 }
 
 @media (max-width: 520px) {
   .availability-toast {
-    top: 0.7rem;
-    font-size: 0.74rem;
+    right: 0.75rem;
+    bottom: calc(0.75rem + env(safe-area-inset-bottom));
+    width: min(calc(100% - 1.5rem), 21rem);
+    font-size: 0.72rem;
   }
 }
 
