@@ -99,7 +99,6 @@ import { FaLinkedin } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa6";
 import { SiMailtrap } from "react-icons/si";
 import { SiGoogledocs } from "react-icons/si";
-import { FaSpider } from "react-icons/fa6";
 import spiderLogo from "../assets/spider_man_logo.png";
 import spiderHeroPop from "../assets/spider_man_left.png";
 import resoluteLogo from "../assets/resolute_solutions.jpg";
