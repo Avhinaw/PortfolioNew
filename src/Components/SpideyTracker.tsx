@@ -23,9 +23,7 @@ const SpideyTracker = ({ activeSkillId, trackedSkillIds, onSelectSkill }: Spidey
     <section className="spidey-tracker" aria-labelledby="spidey-tracker-title">
       <div className="spidey-tracker-heading">
         <div>
-          <p className="spidey-tracker-kicker">Skill network / live map</p>
-          <h2 id="spidey-tracker-title">Spidey Tracker</h2>
-          <p>Follow the web to see how the skills behind the work connect.</p>
+          <h2 id="spidey-tracker-title">Skill Tracker</h2>
         </div>
         <div className="spidey-tracker-progress" aria-label={`${trackedSkillIds.length} of ${skillMapNodes.length} skills tracked`}>
           <strong>{progress}%</strong>
@@ -74,17 +72,11 @@ const SpideyTracker = ({ activeSkillId, trackedSkillIds, onSelectSkill }: Spidey
           <p>{activeSkill.blurb}</p>
           <div className="spidey-skill-meter" aria-label={`${activeSkill.level}% proficiency`}><i style={{ width: `${activeSkill.level}%` }} /></div>
           <div className="spidey-tool-list">{activeSkill.tools.map((tool) => <span key={tool}>{tool}</span>)}</div>
-          <div className="spidey-evidence"><small>Field evidence</small><strong>{activeSkill.evidence}</strong></div>
+          <div className="spidey-evidence"><strong>{activeSkill.evidence}</strong></div>
           <button type="button" className="spidey-next-button" onClick={() => onSelectSkill(nextSkill.id)}>
             <span>Track next signal</span><strong>{nextSkill.label} ↗</strong>
           </button>
         </aside>
-      </div>
-
-      <div className="spidey-tracker-footer">
-        <span><i className="spidey-legend-dot is-live" />Live signal</span>
-        <span><i className="spidey-legend-dot is-tracked" />Tracked path</span>
-        <span>{trackedSkillIds.length} / {skillMapNodes.length} nodes visited</span>
       </div>
     </section>
   );
