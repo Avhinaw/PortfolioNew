@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Shery from "sheryjs";
+import Shery from "sheryjs/dist/Shery.js";
 import Project from "../data/Project";
 import "sheryjs/dist/Shery.css";
 
