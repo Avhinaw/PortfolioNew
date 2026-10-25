@@ -32,12 +32,7 @@ const GameModal = ({ isOpen, onClose }: GameModalProps) => {
       }}
     >
       <section className="game-modal trainspotting-modal" role="dialog" aria-modal="true" aria-labelledby="game-modal-title">
-        <div className="game-modal-heading">
-          <div>
-            <p className="game-modal-kicker">Portfolio game / full offline edition</p>
-            <h2 id="game-modal-title">Spidey Swing</h2>
-            <p>Trainspotting is now playable here with its complete pixel-art station, team AI, obstacles, objectives, audio, and replayable match flow.</p>
-          </div>
+        <div className="game-modal-heading float-right">
           <button type="button" className="game-modal-close" onClick={onClose} aria-label="Close game">
             <MdClose aria-hidden="true" />
           </button>
