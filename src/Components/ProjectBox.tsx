@@ -14,7 +14,7 @@ const ProjectBox = ({ title, desc, img, github, site }: ProjectBoxProps) => {
         href={site}
         target="_blank"
         rel="noopener noreferrer"
-        className="group block"
+        className="group shery-project-hover block"
         aria-label={`Visit ${title} project site`}
       >
         <img
@@ -32,7 +32,7 @@ const ProjectBox = ({ title, desc, img, github, site }: ProjectBoxProps) => {
         href={github}
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute left-6 top-[calc(36vh-3.25rem)] rounded-full border border-white/15 bg-neutral-500/50 px-3 py-1.5 text-sm font-medium backdrop-blur-xl transition hover:bg-neutral-500/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:left-7 sm:top-[calc(36vh-3.5rem)]"
+        className="shery-magnet absolute left-6 top-[calc(36vh-3.25rem)] rounded-full border border-white/15 bg-neutral-500/50 px-3 py-1.5 text-sm font-medium backdrop-blur-xl transition hover:bg-neutral-500/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:left-7 sm:top-[calc(36vh-3.5rem)]"
       >
         GitHub
       </a>

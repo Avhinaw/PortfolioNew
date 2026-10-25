@@ -34,6 +34,7 @@ import { skillMapNodes } from "./data/SkillMap";
 import spiderWheelAvatar from "./assets/spider-wheel-avatar.png";
 import VideoCallWidget from "./Components/VideoCallWidget";
 import AdminMeetPage from "./Components/AdminMeetPage";
+import SheryFX from "./Components/SheryFX";
 import { getAvailability } from "./services/videoCallApi";
 
 const availabilityToastKey = "portfolio-availability-toast-shown";
@@ -347,6 +348,7 @@ const PortfolioApp = () => {
         </div>
       )}
       {isLoading && <LoadingScreen onComplete={completeLoading} />}
+      <SheryFX />
       {availabilityToast && (
         <div className="availability-toast" role="status" aria-live="polite">
           <span className="availability-toast-dot" aria-hidden="true" />

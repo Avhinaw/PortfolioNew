@@ -170,7 +170,7 @@ const Intro = ({
                 <button
                     type="button"
                     onClick={onThemeStyleChange}
-                    className={`theme-style-trigger theme-style-icon inline-flex h-11 w-11 items-center justify-center rounded-full transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current ${isThemeAnimating ? "is-animating" : ""}`}
+                    className={`shery-magnet theme-style-trigger theme-style-icon inline-flex h-11 w-11 items-center justify-center rounded-full transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current ${isThemeAnimating ? "is-animating" : ""}`}
                     aria-label={`Current style: ${getThemeStyleLabel(themeStyle)}. Click to switch visual style.`}
                     title={`Style: ${getThemeStyleLabel(themeStyle)} — click to switch`}
                 >
