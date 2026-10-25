@@ -3614,3 +3614,37 @@ body.ai-modal-open {
     opacity: 1;
   }
 }
+
+/* Embedded Trainspotting game */
+.trainspotting-modal { width: min(100%, 62rem); }
+.trainspotting-game { padding: 0 1.25rem 1.25rem; color: #f4ecd8; background: #1c1826; }
+.trainspotting-intro { display: grid; gap: .75rem; max-width: 38rem; margin: 0 auto; padding: 1.5rem .5rem .75rem; }
+.trainspotting-intro h3 { margin: 0; color: #ffd23f; font-family: var(--display-font); font-size: clamp(1.6rem, 5vw, 2.5rem); }
+.trainspotting-intro p, .trainspotting-intro li { color: #f4ecd8; font-size: .8rem; line-height: 1.55; }
+.trainspotting-intro ol { display: grid; gap: .45rem; margin: 0; padding-left: 1.25rem; }
+.trainspotting-eyebrow { margin: 0; color: #ff8c32 !important; font-family: 'DM Mono', monospace; font-size: .62rem !important; letter-spacing: .12em; }
+.trainspotting-tip { padding: .75rem; color: #1c1826 !important; background: #ffd23f; font-family: 'DM Mono', monospace; font-size: .65rem !important; }
+.trainspotting-primary, .trainspotting-controls button, .trainspotting-toolbar button { border: 3px solid #161616; border-radius: 0; color: #fff; background: #f47721; box-shadow: 4px 4px 0 #161616; cursor: pointer; font-family: 'DM Mono', monospace; font-size: .65rem; font-weight: 700; padding: .7rem .85rem; text-transform: uppercase; }
+.trainspotting-primary:active, .trainspotting-controls button:active, .trainspotting-toolbar button:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #161616; }
+.trainspotting-hud { display: grid; gap: .45rem; margin-bottom: .6rem; font-family: 'DM Mono', monospace; font-size: .62rem; }
+.trainspotting-hud > div { display: flex; flex-wrap: wrap; align-items: center; gap: .55rem; padding: .55rem .7rem; border: 3px solid #161616; background: #2a2438; box-shadow: 3px 3px 0 #161616; }
+.trainspotting-hud > div:first-child { display: grid; gap: .15rem; background: #f47721; color: #161616; }
+.trainspotting-hud small { font-size: .5rem; letter-spacing: .12em; }
+.trainspotting-hud strong { font-size: .85rem; }
+.trainspotting-hud span { color: #f4ecd8; }
+.trainspotting-hud > div:first-child span { color: #161616; }
+.trainspotting-hud b { color: #ffd23f; font-size: 1rem; }
+.trainspotting-canvas { display: block; width: 100%; aspect-ratio: 3 / 2; border: 4px solid #161616; background: #161616; image-rendering: pixelated; }
+.trainspotting-controls { display: grid; grid-template-columns: repeat(4, 1fr); gap: .45rem; margin-top: .65rem; }
+.trainspotting-controls button { min-height: 3.2rem; padding: .35rem; color: #161616; background: #ffd23f; font-size: .55rem; }
+.trainspotting-controls button:disabled { cursor: not-allowed; opacity: .45; }
+.trainspotting-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem; margin-top: .75rem; color: #bfb5a2; font-family: 'DM Mono', monospace; font-size: .56rem; }
+.trainspotting-toolbar button { padding: .45rem .6rem; color: #f4ecd8; background: #3a3350; font-size: .55rem; }
+.trainspotting-result { display: grid; gap: .5rem; justify-items: center; padding: .8rem; border: 3px solid #161616; background: #2a2438; text-align: center; }
+.trainspotting-result strong { color: #ffd23f; font-family: var(--display-font); font-size: 1.2rem; text-transform: uppercase; }
+.trainspotting-result span { color: #f4ecd8; font-family: 'DM Mono', monospace; font-size: .65rem; }
+@media (max-width: 640px) {
+  .trainspotting-game { padding: 0 .85rem .85rem; }
+  .trainspotting-controls { grid-template-columns: repeat(2, 1fr); }
+  .trainspotting-hud > div:nth-child(2) { justify-content: space-between; }
+}

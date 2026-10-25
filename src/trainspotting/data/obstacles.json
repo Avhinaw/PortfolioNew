@@ -1,0 +1,585 @@
+[
+ {
+  "id": "lift_broken",
+  "layer": "systemic",
+  "name": "Lift out of order",
+  "icon": "🛗",
+  "announcement": "The lift is working. The lift has never worked.",
+  "related": [
+   "stairs_one_way",
+   "crowd_surge",
+   "lift_jam"
+  ],
+  "repeatable": true,
+  "requires": null,
+  "weight": 1,
+  "fx": {
+   "kind": "lift",
+   "mode": "broken",
+   "secs": 25
+  },
+  "announcement_hi": "लिफ़्ट चालू है। लिफ़्ट कभी चालू नहीं रही।"
+ },
+ {
+  "id": "stairs_one_way",
+  "layer": "systemic",
+  "name": "Stairs: down only",
+  "icon": "↘️",
+  "announcement": "Stairs are one-way. Which way is not announced.",
+  "related": [
+   "crowd_surge",
+   "lift_broken"
+  ],
+  "repeatable": false,
+  "requires": null,
+  "weight": 1,
+  "fx": {
+   "kind": "stairs_oneway",
+   "secs": 25
+  },
+  "announcement_hi": "सीढ़ियाँ एकतरफ़ा हैं। किस तरफ़, यह नहीं बताया गया है।"
+ },
+ {
+  "id": "lift_jam",
+  "layer": "systemic",
+  "name": "Lift jammed",
+  "icon": "🛗",
+  "announcement": "Passengers in the lift are requested to remain calm and in the lift.",
+  "related": [
+   "lift_broken",
+   "hunger_crash"
+  ],
+  "repeatable": false,
+  "requires": null,
+  "weight": 1,
+  "fx": {
+   "kind": "lift",
+   "mode": "jam",
+   "secs": 20
+  },
+  "announcement_hi": "लिफ़्ट में फँसे यात्री शांत रहें और लिफ़्ट में ही रहें।"
+ },
+ {
+  "id": "construction_block",
+  "layer": "systemic",
+  "name": "Footbridge narrowed",
+  "icon": "🚧",
+  "announcement": "Footbridge repair is in progress. Footbridge repair has been in progress since 2009.",
+  "related": [
+   "crowd_surge",
+   "cow_on_bridge"
+  ],
+  "repeatable": false,
+  "requires": null,
+  "weight": 1,
+  "fx": {
+   "kind": "slow",
+   "rect": "fobS",
+   "mult": 0.45,
+   "secs": 14
+  },
+  "announcement_hi": "पुल की मरम्मत का कार्य जारी है। पुल की मरम्मत दो हज़ार नौ से जारी है।"
+ },
+ {
+  "id": "platform_change",
+  "layer": "systemic",
+  "name": "Platform changed",
+  "icon": "📢",
+  "announcement": "The train will now arrive on a different platform. Which one is under review.",
+  "related": [
+   "board_dead",
+   "friends_at_wrong_door",
+   "wrong_coach"
+  ],
+  "repeatable": false,
+  "requires": null,
+  "weight": 1,
+  "fx": {
+   "kind": "platform_shift",
+   "mode": "change"
+  },
+  "announcement_hi": "गाड़ी अब दूसरे प्लेटफ़ॉर्म पर आएगी। कौन-सा, यह विचाराधीन है।"
+ },
+ {
+  "id": "crowd_surge",
+  "layer": "systemic",
+  "name": "Crowd surge",
+  "icon": "👥",
+  "announcement": "Passengers are requested not to rush. Passengers are rushing.",
+  "related": [
+   "police_check",
+   "forgot_bag"
+  ],
+  "repeatable": false,
+  "requires": null,
+  "weight": 1,
+  "fx": {
+   "kind": "slow",
+   "zones": [
+    "stairP2",
+    "stairP3",
+    "fobS",
+    "hall",
+    "booking"
+   ],
+   "mult": 0.5,
+   "secs": 14
+  },
+  "announcement_hi": "यात्रियों से अनुरोध है कि भागदौड़ न करें। यात्री भाग रहे हैं।"
+ },
+ {
+  "id": "cow_on_bridge",
+  "layer": "systemic",
+  "name": "Cow on the footbridge",
+  "icon": "🐄",
+  "announcement": "Please do not feed the cow. The cow has a valid ticket.",
+  "related": [
+   "construction_block",
+   "crowd_surge"
+  ],
+  "repeatable": false,
+  "requires": null,
+  "weight": 1,
+  "fx": {
+   "kind": "block",
+   "rect": "fobMid",
+   "secs": 14
+  },
+  "announcement_hi": "कृपया गाय को खाना न खिलाएँ। गाय के पास वैध टिकट है।"
+ },
+ {
+  "id": "police_check",
+  "layer": "systemic",
+  "name": "Police check",
+  "icon": "👮",
+  "announcement": "Random checking is in progress. Randomly, it is you.",
+  "related": [
+   "ticket_not_printed",
+   "ticket_on_dead_phone"
+  ],
+  "repeatable": false,
+  "requires": null,
+  "weight": 1,
+  "fx": {
+   "kind": "stall",
+   "secs": 8
+  },
+  "announcement_hi": "यादृच्छिक जाँच जारी है। संयोग से, वह आप हैं।"
+ },
+ {
+  "id": "board_dead",
+  "layer": "systemic",
+  "name": "Display board dead",
+  "icon": "📟",
+  "announcement": "The display board is temporarily showing the future.",
+  "related": [
+   "platform_change",
+   "wrong_coach"
+  ],
+  "repeatable": false,
+  "requires": null,
+  "weight": 1,
+  "fx": {
+   "kind": "board_dead",
+   "secs": 25
+  },
+  "announcement_hi": "सूचना पट्ट अभी भविष्य दिखा रहा है।"
+ },
+ {
+  "id": "train_arrives_wrong_platform",
+  "layer": "systemic",
+  "name": "Train on another platform",
+  "icon": "🚆",
+  "announcement": "The train has arrived on the platform it chose.",
+  "related": [
+   "coach_doesnt_exist",
+   "friends_at_wrong_door"
+  ],
+  "repeatable": false,
+  "requires": null,
+  "weight": 1,
+  "fx": {
+   "kind": "platform_shift",
+   "mode": "wrong"
+  },
+  "announcement_hi": "गाड़ी अपनी पसंद के प्लेटफ़ॉर्म पर आ गई है।"
+ },
+ {
+  "id": "hunger_crash",
+  "layer": "consequence",
+  "name": "Hunger crash",
+  "icon": "🥴",
+  "announcement": "Passengers who skipped chai are requested to feel it now.",
+  "related": [
+   "lift_jam"
+  ],
+  "repeatable": false,
+  "requires": "no_food",
+  "weight": 1,
+  "fx": {
+   "kind": "slow_all",
+   "mult": 0.6,
+   "secs": 70
+  },
+  "announcement_hi": "जिन यात्रियों ने चाय नहीं पी, उनसे अनुरोध है कि अब उसका असर महसूस करें।"
+ },
+ {
+  "id": "upi_failure",
+  "layer": "consequence",
+  "name": "UPI failed",
+  "icon": "💸",
+  "announcement": "The UPI server is on a short break.",
+  "related": [
+   "no_network"
+  ],
+  "repeatable": false,
+  "requires": "never",
+  "weight": 1,
+  "fx": {
+   "kind": "stall",
+   "secs": 5
+  },
+  "announcement_hi": "यूपीआई सर्वर थोड़े आराम पर है।"
+ },
+ {
+  "id": "no_network",
+  "layer": "consequence",
+  "name": "No network",
+  "icon": "📵",
+  "announcement": "Network is available. Network is not available.",
+  "related": [
+   "upi_failure"
+  ],
+  "repeatable": false,
+  "requires": "never",
+  "weight": 1,
+  "fx": {
+   "kind": "stall",
+   "secs": 8
+  },
+  "announcement_hi": "नेटवर्क उपलब्ध है। नेटवर्क उपलब्ध नहीं है।"
+ },
+ {
+  "id": "ticket_not_printed",
+  "layer": "consequence",
+  "name": "Ticket not printed",
+  "icon": "🎫",
+  "announcement": "Passengers without printed tickets are requested to be printed.",
+  "related": [
+   "police_check",
+   "door_wont_open"
+  ],
+  "repeatable": true,
+  "requires": "ticket_issue",
+  "weight": 1,
+  "fx": {
+   "kind": "door_close",
+   "which": "all",
+   "secs": 10
+  },
+  "announcement_hi": "बिना छपे टिकट वाले यात्रियों से अनुरोध है कि वे स्वयं छप जाएँ।"
+ },
+ {
+  "id": "ticket_on_dead_phone",
+  "layer": "consequence",
+  "name": "Ticket on a dead phone",
+  "icon": "🪫",
+  "announcement": "Charging points are available. Charging points are not available.",
+  "related": [
+   "no_network"
+  ],
+  "repeatable": false,
+  "requires": "ticket_issue",
+  "weight": 0.5,
+  "fx": {
+   "kind": "stall",
+   "secs": 8
+  },
+  "announcement_hi": "चार्जिंग पॉइंट उपलब्ध हैं। चार्जिंग पॉइंट उपलब्ध नहीं हैं।"
+ },
+ {
+  "id": "forgot_bag",
+  "layer": "consequence",
+  "name": "Forgotten bag",
+  "icon": "🧳",
+  "announcement": "An unattended bag is looking for its owner. Its owner is looking for the platform.",
+  "related": [
+   "crowd_surge"
+  ],
+  "repeatable": false,
+  "requires": "loader_dropped",
+  "weight": 1,
+  "fx": {
+   "kind": "slow_all",
+   "mult": 0.8,
+   "secs": 20
+  },
+  "announcement_hi": "एक लावारिस बैग अपने मालिक को ढूँढ रहा है। उसका मालिक प्लेटफ़ॉर्म ढूँढ रहा है।"
+ },
+ {
+  "id": "wrong_coach",
+  "layer": "consequence",
+  "name": "Wrong coach",
+  "icon": "🚃",
+  "announcement": "Coach S1 is at the front. Coach S1 is at the back.",
+  "related": [
+   "coach_doesnt_exist"
+  ],
+  "repeatable": false,
+  "requires": "train_visible",
+  "weight": 1,
+  "fx": {
+   "kind": "slow_all",
+   "mult": 0.6,
+   "secs": 22
+  },
+  "announcement_hi": "कोच एस वन आगे है। कोच एस वन पीछे है।"
+ },
+ {
+  "id": "overpacked",
+  "layer": "consequence",
+  "name": "Overpacked",
+  "icon": "🎒",
+  "announcement": "Excess baggage is advised to reconsider its life choices.",
+  "related": [],
+  "repeatable": false,
+  "requires": "never",
+  "weight": 1,
+  "fx": {
+   "kind": "slow_all",
+   "mult": 0.5,
+   "secs": 999
+  },
+  "announcement_hi": "ज़्यादा सामान को अपने जीवन के फ़ैसलों पर पुनर्विचार करने की सलाह दी जाती है।"
+ },
+ {
+  "id": "coach_doesnt_exist",
+  "layer": "escalation",
+  "name": "Coach does not exist",
+  "icon": "❓",
+  "announcement": "Your coach has been cancelled. Your coach was never attached.",
+  "related": [
+   "door_wont_open",
+   "pantry_car"
+  ],
+  "repeatable": false,
+  "requires": "train_open",
+  "weight": 1,
+  "fx": {
+   "kind": "door_close",
+   "which": "all",
+   "secs": 12
+  },
+  "announcement_hi": "आपका कोच रद्द कर दिया गया है। आपका कोच कभी जुड़ा ही नहीं था।"
+ },
+ {
+  "id": "door_wont_open",
+  "layer": "escalation",
+  "name": "Door will not open",
+  "icon": "🚪",
+  "announcement": "This door opens on the other side. The other side is also this side.",
+  "related": [
+   "pantry_car"
+  ],
+  "repeatable": false,
+  "requires": "train_open",
+  "weight": 1,
+  "fx": {
+   "kind": "door_close",
+   "which": "all",
+   "secs": 15
+  },
+  "announcement_hi": "यह दरवाज़ा दूसरी तरफ़ खुलता है। दूसरी तरफ़ भी यही तरफ़ है।"
+ },
+ {
+  "id": "train_starting",
+  "layer": "escalation",
+  "name": "Train starting!",
+  "icon": "🚨",
+  "announcement": "The train is about to depart. It was about to depart earlier too. This is that departure.",
+  "related": [
+   "door_wont_open"
+  ],
+  "repeatable": false,
+  "requires": "train_open",
+  "weight": 1,
+  "fx": {
+   "kind": "depart",
+   "secs": 16
+  },
+  "announcement_hi": "गाड़ी रवाना होने वाली है। पहले भी रवाना होने वाली थी। यह वही रवानगी है।"
+ },
+ {
+  "id": "wrong_train",
+  "layer": "escalation",
+  "name": "Wrong train",
+  "icon": "🚉",
+  "announcement": "The train at this platform is not the train at this platform.",
+  "related": [
+   "coach_doesnt_exist"
+  ],
+  "repeatable": false,
+  "requires": "train_open",
+  "weight": 1,
+  "fx": {
+   "kind": "door_close",
+   "which": "all",
+   "secs": 8
+  },
+  "announcement_hi": "इस प्लेटफ़ॉर्म पर खड़ी गाड़ी इस प्लेटफ़ॉर्म की गाड़ी नहीं है।"
+ },
+ {
+  "id": "pantry_car",
+  "layer": "escalation",
+  "name": "Pantry car",
+  "icon": "🍛",
+  "announcement": "The pantry car is a door for staff. Staff are also confused.",
+  "related": [
+   "door_wont_open"
+  ],
+  "repeatable": false,
+  "requires": "train_open",
+  "weight": 1,
+  "fx": {
+   "kind": "door_close",
+   "which": "all",
+   "secs": 18
+  },
+  "announcement_hi": "पैंट्री कार कर्मचारियों के लिए है। कर्मचारी भी उलझन में हैं।"
+ },
+ {
+  "id": "friends_at_wrong_door",
+  "layer": "escalation",
+  "name": "Friends at the wrong door",
+  "icon": "🙋",
+  "announcement": "Passengers are requested to stand at the door they are not standing at.",
+  "related": [
+   "coach_doesnt_exist"
+  ],
+  "repeatable": false,
+  "requires": "train_visible",
+  "weight": 1,
+  "fx": {
+   "kind": "scatter"
+  },
+  "announcement_hi": "यात्रियों से अनुरोध है कि वे उस दरवाज़े पर खड़े हों जिस पर वे खड़े नहीं हैं।"
+ },
+ {
+  "id": "chai_spill",
+  "layer": "systemic",
+  "name": "Chai spill",
+  "icon": "☕",
+  "announcement": "Wet floor. Hot chai. Wet, hot floor.",
+  "related": [
+   "crowd_surge"
+  ],
+  "repeatable": false,
+  "requires": null,
+  "weight": 1,
+  "fx": {
+   "kind": "slow",
+   "rect": "booking",
+   "mult": 0.5,
+   "secs": 12
+  },
+  "announcement_hi": "फ़र्श गीला है। चाय गर्म है। गीला, गर्म फ़र्श।"
+ },
+ {
+  "id": "trolley_jam",
+  "layer": "systemic",
+  "name": "Trolley jam",
+  "icon": "🛒",
+  "announcement": "Trolleys are requested to leave the trolley area, which is everywhere.",
+  "related": [
+   "crowd_surge",
+   "cow_on_bridge"
+  ],
+  "repeatable": false,
+  "requires": null,
+  "weight": 1,
+  "fx": {
+   "kind": "block",
+   "rect": "gateW",
+   "secs": 14
+  },
+  "announcement_hi": "ट्रॉलियों से अनुरोध है कि ट्रॉली क्षेत्र छोड़ दें, जो हर जगह है।"
+ },
+ {
+  "id": "sleeping_passenger",
+  "layer": "systemic",
+  "name": "Sleeping passenger",
+  "icon": "😴",
+  "announcement": "Passengers are requested not to wake the sleeping passenger. He has a long night ahead.",
+  "related": [
+   "crowd_surge"
+  ],
+  "repeatable": false,
+  "requires": null,
+  "weight": 1,
+  "fx": {
+   "kind": "block",
+   "rect": "nap",
+   "secs": 20
+  },
+  "announcement_hi": "यात्रियों से अनुरोध है कि सोए हुए यात्री को न जगाएँ। उसके सामने लंबी रात है।"
+ },
+ {
+  "id": "power_cut",
+  "layer": "systemic",
+  "name": "Power cut",
+  "icon": "🔌",
+  "announcement": "Power supply will resume. Power supply has resumed. Power supply will resume.",
+  "related": [
+   "board_dead",
+   "platform_change"
+  ],
+  "repeatable": false,
+  "requires": null,
+  "weight": 1,
+  "fx": {
+   "kind": "board_dead",
+   "secs": 20
+  },
+  "announcement_hi": "बिजली आपूर्ति बहाल होगी। बिजली आपूर्ति बहाल हो गई है। बिजली आपूर्ति बहाल होगी।"
+ },
+ {
+  "id": "vendor_swarm",
+  "layer": "systemic",
+  "name": "Vendor swarm",
+  "icon": "🥜",
+  "announcement": "Vendors are requested to sell only to those who want to buy. Everyone wants to buy.",
+  "related": [
+   "crowd_surge",
+   "hunger_crash"
+  ],
+  "repeatable": false,
+  "requires": null,
+  "weight": 1,
+  "fx": {
+   "kind": "slow",
+   "rect": "canteen",
+   "mult": 0.5,
+   "secs": 14
+  },
+  "announcement_hi": "विक्रेताओं से अनुरोध है कि केवल खरीदने के इच्छुक लोगों को बेचें। सब खरीदना चाहते हैं।"
+ },
+ {
+  "id": "selfie_crowd",
+  "layer": "systemic",
+  "name": "Selfie crowd",
+  "icon": "🤳",
+  "announcement": "A selfie is in progress. Please stand in it.",
+  "related": [
+   "crowd_surge",
+   "forgot_bag"
+  ],
+  "repeatable": false,
+  "requires": null,
+  "weight": 1,
+  "fx": {
+   "kind": "friend_stuck",
+   "role": "random"
+  },
+  "announcement_hi": "सेल्फ़ी चल रही है। कृपया उसमें खड़े हो जाएँ।"
+ }
+]
