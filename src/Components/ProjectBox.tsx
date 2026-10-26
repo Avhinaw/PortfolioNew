@@ -20,7 +20,7 @@ const ProjectBox = ({ title, desc, img, github, site }: ProjectBoxProps) => {
         <img
           src={img}
           alt={`${title} project preview`}
-          className="h-[36vh] min-h-[240px] max-h-[520px] w-full rounded-2xl object-cover brightness-[40%] transition duration-300 group-hover:brightness-[70%] group-focus-visible:brightness-[70%]"
+          className="shery-project-image-hover h-[36vh] min-h-[240px] max-h-[520px] w-full rounded-2xl object-cover brightness-[40%] transition duration-300 group-hover:brightness-[70%] group-focus-visible:brightness-[70%]"
         />
         <div className="pointer-events-none absolute inset-x-0 top-0 p-6 sm:p-7">
           <h3 className="text-xl font-bold sm:text-2xl">{title}</h3>

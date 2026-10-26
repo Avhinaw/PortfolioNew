@@ -19,11 +19,32 @@ const SheryFX = () => {
       duration: 0.8,
       ease: "cubic-bezier(0.23, 1, 0.32, 1)",
     });
-    shery.hoverWithMediaCircle(".shery-project-hover", {
+    const imageSelector = ".shery-project-image-hover";
+    shery.hoverWithMediaCircle(imageSelector, {
       images: Project.map((project) => project.image),
     });
 
+    const keepBlobInsideImage = (event: MouseEvent) => {
+      const target = event.currentTarget as HTMLElement;
+      const imageBounds = target.getBoundingClientRect();
+      const blob = document.querySelector<HTMLElement>(".movercirc:not(.just-a-white-blend-screen)");
+      if (!blob) return;
+
+      const blobSize = Math.min(window.innerWidth * 0.4, imageBounds.width);
+      const halfSize = blobSize / 2;
+      const left = Math.max(imageBounds.left + halfSize, Math.min(event.clientX, imageBounds.right - halfSize));
+      const top = Math.max(imageBounds.top + halfSize, Math.min(event.clientY, imageBounds.bottom - halfSize));
+      blob.style.width = `${blobSize}px`;
+      blob.style.height = `${blobSize}px`;
+      blob.style.left = `${left}px`;
+      blob.style.top = `${top}px`;
+    };
+
+    const imageTargets = document.querySelectorAll<HTMLElement>(imageSelector);
+    imageTargets.forEach((target) => target.addEventListener("mousemove", keepBlobInsideImage));
+
     return () => {
+      imageTargets.forEach((target) => target.removeEventListener("mousemove", keepBlobInsideImage));
       document.querySelectorAll(".movercirc, .just-a-white-blend-screen").forEach((element) => element.remove());
       document.querySelectorAll(".shery-magnet").forEach((element) => {
         (element as HTMLElement).style.removeProperty("transform");
