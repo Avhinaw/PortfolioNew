@@ -367,13 +367,12 @@ const PortfolioApp = () => {
           className="no-scrollbar flex w-full snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth pb-2"
         >
           <div className="flex w-max gap-4 px-1">
-            {Project.map((project, index) => (
+            {Project.map((project) => (
               <ProjectBox
                 key={project.title}
                 title={project.title}
                 desc={project.description}
                 img={project.image}
-                hoverImg={Project[(index + 1) % Project.length].image}
                 github={project.github}
                 site={project.site}
               />
