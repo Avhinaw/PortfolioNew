@@ -237,7 +237,7 @@ body .movercirc:not(.just-a-white-blend-screen) {
   border: 3px solid color-mix(in srgb, var(--accent) 78%, white 10%);
   border-radius: 48% 52% 61% 39% / 42% 37% 63% 58%;
   background: var(--accent);
-  box-shadow: 8px 10px 0 color-mix(in srgb, var(--page-bg) 70%, transparent), 0 0 0 5px color-mix(in srgb, var(--accent) 15%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
   mix-blend-mode: normal;
   animation: shery-curly-blob 3.2s ease-in-out infinite;
 }
@@ -248,7 +248,7 @@ body .movercirc:not(.just-a-white-blend-screen) img {
   height: 100%;
   object-fit: cover;
   filter: url(#shery-hover-curly) saturate(1.12) contrast(1.04);
-  transform: scale(1.16);
+  transform: scale(1.12);
 }
 
 @keyframes shery-curly-blob {
@@ -261,7 +261,8 @@ body .movercirc:not(.just-a-white-blend-screen) img {
 }
 
 .portfolio-shell .project-box > a:first-child > div {
-  z-index: 1;
+  position: relative;
+  z-index: 200;
 }
 
 .portfolio-shell .project-box > a:last-child {

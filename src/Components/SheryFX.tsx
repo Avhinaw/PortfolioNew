@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import Shery from "sheryjs/dist/Shery.js";
+import gsap from "gsap";
 import Project from "../data/Project";
 import "sheryjs/dist/Shery.css";
 
@@ -30,14 +31,19 @@ const SheryFX = () => {
       const blob = document.querySelector<HTMLElement>(".movercirc:not(.just-a-white-blend-screen)");
       if (!blob) return;
 
-      const blobSize = Math.min(window.innerWidth * 0.4, imageBounds.width);
+      const blobSize = Math.min(window.innerWidth * 0.4, imageBounds.width * 0.92);
       const halfSize = blobSize / 2;
       const left = Math.max(imageBounds.left + halfSize, Math.min(event.clientX, imageBounds.right - halfSize));
       const top = Math.max(imageBounds.top + halfSize, Math.min(event.clientY, imageBounds.bottom - halfSize));
-      blob.style.width = `${blobSize}px`;
-      blob.style.height = `${blobSize}px`;
-      blob.style.left = `${left}px`;
-      blob.style.top = `${top}px`;
+      gsap.to(blob, {
+        width: blobSize,
+        height: blobSize,
+        left,
+        top,
+        duration: 0.45,
+        ease: "power3.out",
+        overwrite: true,
+      });
     };
 
     const imageTargets = document.querySelectorAll<HTMLElement>(imageSelector);
