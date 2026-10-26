@@ -3648,3 +3648,223 @@ body.ai-modal-open {
   .trainspotting-controls { grid-template-columns: repeat(2, 1fr); }
   .trainspotting-hud > div:nth-child(2) { justify-content: space-between; }
 }
+
+/* Pixel skill tracker skin: scoped to the interactive tracker only. */
+.spidey-tracker--pixel {
+  --pixel-shadow: #071014;
+  --pixel-grid: color-mix(in srgb, var(--accent) 15%, transparent);
+  position: relative;
+  padding: 1.1rem;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, transparent 0.65rem, color-mix(in srgb, var(--card-bg) 92%, var(--page-bg)) 0) top left,
+    linear-gradient(225deg, transparent 0.65rem, color-mix(in srgb, var(--card-bg) 92%, var(--page-bg)) 0) top right,
+    linear-gradient(315deg, transparent 0.65rem, color-mix(in srgb, var(--card-bg) 92%, var(--page-bg)) 0) bottom right,
+    linear-gradient(45deg, transparent 0.65rem, color-mix(in srgb, var(--card-bg) 92%, var(--page-bg)) 0) bottom left;
+  background-size: 51% 51%;
+  background-repeat: no-repeat;
+  border: 2px solid var(--accent);
+  border-radius: 0;
+  box-shadow: 6px 6px 0 var(--pixel-shadow), inset 0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent);
+  font-family: 'DM Mono', monospace;
+}
+
+.spidey-tracker--pixel::before,
+.spidey-tracker--pixel::after {
+  position: absolute;
+  pointer-events: none;
+  content: "";
+}
+
+.spidey-tracker--pixel::before {
+  inset: 0.4rem;
+  border: 1px dashed color-mix(in srgb, var(--accent) 38%, transparent);
+}
+
+.spidey-tracker--pixel::after {
+  right: 0.7rem;
+  bottom: 0.55rem;
+  width: 3rem;
+  height: 0.25rem;
+  background: repeating-linear-gradient(90deg, var(--accent) 0 0.25rem, transparent 0.25rem 0.5rem);
+  opacity: 0.6;
+}
+
+.spidey-tracker--pixel .spidey-tracker-heading h2,
+.spidey-tracker--pixel .spidey-tracker-progress strong,
+.spidey-tracker--pixel .spidey-tracker-detail h3 {
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.spidey-tracker--pixel .spidey-tracker-heading h2::before {
+  margin-right: 0.45rem;
+  color: var(--accent);
+  content: ">_";
+}
+
+.spidey-tracker--pixel .spidey-tracker-progress {
+  min-width: 6rem;
+  padding: 0.4rem 0.55rem;
+  border: 2px solid color-mix(in srgb, var(--accent) 62%, transparent);
+  background: color-mix(in srgb, var(--page-bg) 72%, transparent);
+  box-shadow: 3px 3px 0 var(--pixel-shadow);
+}
+
+.spidey-tracker--pixel .spidey-tracker-progress strong {
+  font-size: 1.05rem;
+}
+
+.spidey-tracker--pixel .spidey-map,
+.spidey-tracker--pixel .spidey-tracker-detail {
+  border: 2px solid color-mix(in srgb, var(--accent) 58%, transparent);
+  border-radius: 0;
+  box-shadow: 4px 4px 0 var(--pixel-shadow);
+}
+
+.spidey-tracker--pixel .spidey-map {
+  background-color: color-mix(in srgb, var(--page-bg) 88%, var(--card-bg));
+  background-image:
+    linear-gradient(var(--pixel-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--pixel-grid) 1px, transparent 1px),
+    radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 34%);
+  background-size: 1rem 1rem, 1rem 1rem, auto;
+}
+
+.spidey-tracker--pixel .spidey-map-grid {
+  opacity: 0.38;
+  background-image: repeating-linear-gradient(0deg, transparent 0 0.95rem, var(--pixel-grid) 0.95rem 1rem), repeating-linear-gradient(90deg, transparent 0 0.95rem, var(--pixel-grid) 0.95rem 1rem);
+  background-size: 1rem 1rem;
+  mask-image: none;
+}
+
+.spidey-tracker--pixel .spidey-map-web path {
+  stroke-linecap: square;
+  stroke-dasharray: 1 1;
+}
+
+.spidey-tracker--pixel .spidey-map-web path.is-tracked {
+  stroke-dasharray: 2 1;
+  filter: drop-shadow(2px 2px 0 color-mix(in srgb, var(--accent) 40%, transparent));
+}
+
+.spidey-tracker--pixel .spidey-map-core {
+  width: 5.5rem;
+  height: 5.5rem;
+  border: 2px solid var(--accent);
+  border-radius: 0;
+  box-shadow: 5px 5px 0 var(--pixel-shadow), inset 0 0 0 5px color-mix(in srgb, var(--accent) 8%, transparent);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.spidey-tracker--pixel .spidey-map-core span,
+.spidey-tracker--pixel .spidey-map-core i {
+  transform: rotate(-45deg);
+}
+
+.spidey-tracker--pixel .spidey-map-core::before,
+.spidey-tracker--pixel .spidey-map-core::after {
+  border-radius: 0;
+  transform: rotate(45deg);
+}
+
+.spidey-tracker--pixel .spidey-skill-node {
+  min-width: 4.8rem;
+  padding: 0.42rem 0.5rem;
+  border: 2px solid color-mix(in srgb, var(--accent) 42%, transparent);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--page-bg) 88%, var(--card-bg));
+  box-shadow: 3px 3px 0 var(--pixel-shadow);
+  transition: transform 130ms steps(2, end), background 130ms steps(2, end), border-color 130ms steps(2, end), box-shadow 130ms steps(2, end);
+}
+
+.spidey-tracker--pixel .spidey-skill-node:hover,
+.spidey-tracker--pixel .spidey-skill-node:focus-visible,
+.spidey-tracker--pixel .spidey-skill-node.is-active {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 17%, var(--page-bg));
+  box-shadow: 5px 5px 0 var(--pixel-shadow);
+  transform: translate(-50%, -50%) translate(-2px, -2px);
+}
+
+.spidey-tracker--pixel .spidey-skill-node strong,
+.spidey-tracker--pixel .spidey-skill-node small,
+.spidey-tracker--pixel .spidey-detail-topline,
+.spidey-tracker--pixel .spidey-tool-list span,
+.spidey-tracker--pixel .spidey-evidence strong,
+.spidey-tracker--pixel .spidey-next-button {
+  font-family: 'DM Mono', monospace;
+}
+
+.spidey-tracker--pixel .spidey-skill-node strong {
+  font-size: 0.62rem;
+  letter-spacing: -0.04em;
+}
+
+.spidey-tracker--pixel .spidey-skill-node small {
+  font-size: 0.55rem;
+}
+
+.spidey-tracker--pixel .spidey-skill-node.is-tracked::after,
+.spidey-tracker--pixel .spidey-skill-pulse,
+.spidey-tracker--pixel .spidey-legend-dot {
+  border-radius: 0;
+}
+
+.spidey-tracker--pixel .spidey-tracker-detail {
+  background: color-mix(in srgb, var(--page-bg) 88%, var(--card-bg));
+}
+
+.spidey-tracker--pixel .spidey-skill-meter {
+  height: 0.8rem;
+  margin: 1rem 0 0.85rem;
+  border: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 0;
+  background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--accent) 14%, transparent) 0 0.42rem, transparent 0.42rem 0.62rem);
+}
+
+.spidey-tracker--pixel .spidey-skill-meter i {
+  background: repeating-linear-gradient(90deg, var(--accent) 0 0.42rem, color-mix(in srgb, var(--accent) 58%, transparent) 0.42rem 0.62rem);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.spidey-tracker--pixel .spidey-tool-list span {
+  padding: 0.32rem 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 0;
+  background: transparent;
+}
+
+.spidey-tracker--pixel .spidey-next-button {
+  border: 2px solid var(--accent);
+  border-radius: 0;
+  box-shadow: 4px 4px 0 var(--pixel-shadow);
+  text-transform: uppercase;
+}
+
+.spidey-tracker--pixel .spidey-next-button:hover,
+.spidey-tracker--pixel .spidey-next-button:focus-visible {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--pixel-shadow);
+}
+
+@media (max-width: 640px) {
+  .spidey-tracker--pixel {
+    padding: 0.85rem;
+  }
+
+  .spidey-tracker--pixel .spidey-map-core {
+    width: 4.4rem;
+    height: 4.4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spidey-tracker--pixel .spidey-skill-node,
+  .spidey-tracker--pixel .spidey-next-button {
+    transition: none;
+  }
+}

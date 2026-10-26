@@ -20,7 +20,7 @@ const SpideyTracker = ({ activeSkillId, trackedSkillIds, onSelectSkill }: Spidey
   const progress = Math.round((trackedSkillIds.length / skillMapNodes.length) * 100);
 
   return (
-    <section className="spidey-tracker" aria-labelledby="spidey-tracker-title">
+    <section className="spidey-tracker spidey-tracker--pixel" aria-labelledby="spidey-tracker-title">
       <div className="spidey-tracker-heading">
         <div>
           <h2 id="spidey-tracker-title">Skill Tracker</h2>
