@@ -25,16 +25,25 @@ const SheryFX = () => {
       images: Project.map((project) => project.image),
     });
 
+    const moveBlobIntoImageFrame = (event: MouseEvent) => {
+      const target = event.currentTarget as HTMLElement;
+      const frame = target.closest<HTMLElement>(".project-image-frame");
+      const blob = document.querySelector<HTMLElement>(".movercirc:not(.just-a-white-blend-screen)");
+      if (frame && blob && blob.parentElement !== frame) frame.appendChild(blob);
+    };
+
     const keepBlobInsideImage = (event: MouseEvent) => {
       const target = event.currentTarget as HTMLElement;
-      const imageBounds = target.getBoundingClientRect();
+      const frame = target.closest<HTMLElement>(".project-image-frame");
       const blob = document.querySelector<HTMLElement>(".movercirc:not(.just-a-white-blend-screen)");
-      if (!blob) return;
+      if (!frame || !blob) return;
+      if (blob.parentElement !== frame) frame.appendChild(blob);
 
+      const imageBounds = frame.getBoundingClientRect();
       const blobSize = Math.min(window.innerWidth * 0.4, imageBounds.width * 0.92);
       const halfSize = blobSize / 2;
-      const left = Math.max(imageBounds.left + halfSize, Math.min(event.clientX, imageBounds.right - halfSize));
-      const top = Math.max(imageBounds.top + halfSize, Math.min(event.clientY, imageBounds.bottom - halfSize));
+      const left = Math.max(halfSize, Math.min(event.clientX - imageBounds.left, imageBounds.width - halfSize));
+      const top = Math.max(halfSize, Math.min(event.clientY - imageBounds.top, imageBounds.height - halfSize));
       gsap.to(blob, {
         width: blobSize,
         height: blobSize,
@@ -47,9 +56,11 @@ const SheryFX = () => {
     };
 
     const imageTargets = document.querySelectorAll<HTMLElement>(imageSelector);
+    imageTargets.forEach((target) => target.addEventListener("mouseenter", moveBlobIntoImageFrame));
     imageTargets.forEach((target) => target.addEventListener("mousemove", keepBlobInsideImage));
 
     return () => {
+      imageTargets.forEach((target) => target.removeEventListener("mouseenter", moveBlobIntoImageFrame));
       imageTargets.forEach((target) => target.removeEventListener("mousemove", keepBlobInsideImage));
       document.querySelectorAll(".movercirc, .just-a-white-blend-screen").forEach((element) => element.remove());
       document.querySelectorAll(".shery-magnet").forEach((element) => {

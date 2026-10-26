@@ -251,6 +251,20 @@ body .movercirc:not(.just-a-white-blend-screen) img {
   transform: scale(1.12);
 }
 
+.portfolio-shell .project-image-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: inherit;
+  isolation: isolate;
+}
+
+.portfolio-shell .project-image-frame .movercirc:not(.just-a-white-blend-screen) {
+  position: absolute !important;
+  z-index: 2;
+  pointer-events: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
 @keyframes shery-curly-blob {
   0%, 100% { border-radius: 48% 52% 61% 39% / 42% 37% 63% 58%; }
   16% { border-radius: 67% 33% 42% 58% / 58% 64% 36% 42%; }
@@ -260,7 +274,7 @@ body .movercirc:not(.just-a-white-blend-screen) img {
   84% { border-radius: 29% 71% 48% 52% / 44% 69% 31% 56%; }
 }
 
-.portfolio-shell .project-box > a:first-child > div {
+.portfolio-shell .project-box > a:first-child > div.pointer-events-none {
   position: relative;
   z-index: 200;
 }

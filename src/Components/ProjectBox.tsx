@@ -17,11 +17,13 @@ const ProjectBox = ({ title, desc, img, github, site }: ProjectBoxProps) => {
         className="group shery-project-hover block"
         aria-label={`Visit ${title} project site`}
       >
-        <img
-          src={img}
-          alt={`${title} project preview`}
-          className="shery-project-image-hover h-[36vh] min-h-[240px] max-h-[520px] w-full rounded-2xl object-cover brightness-[40%] transition duration-300 group-hover:brightness-[70%] group-focus-visible:brightness-[70%]"
-        />
+        <div className="project-image-frame">
+          <img
+            src={img}
+            alt={`${title} project preview`}
+            className="shery-project-image-hover h-[36vh] min-h-[240px] max-h-[520px] w-full rounded-2xl object-cover brightness-[40%] transition duration-300 group-hover:brightness-[70%] group-focus-visible:brightness-[70%]"
+          />
+        </div>
         <div className="pointer-events-none absolute inset-x-0 top-0 p-6 sm:p-7">
           <h3 className="text-xl font-bold sm:text-2xl">{title}</h3>
           <p className="mt-1 max-w-[28ch] text-base tracking-tight sm:text-lg">{desc}</p>
