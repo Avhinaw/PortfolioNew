@@ -1,11 +1,9 @@
 import { useEffect } from "react";
 import Shery from "sheryjs/dist/Shery.js";
-import Project from "../data/Project";
 import "sheryjs/dist/Shery.css";
 
 type SheryAPI = {
   makeMagnet: (selector: string, options?: { duration?: number; ease?: string }) => void;
-  hoverWithMediaCircle: (selector: string, options: { images: string[] }) => void;
 };
 
 const SheryFX = () => {
@@ -18,9 +16,6 @@ const SheryFX = () => {
     shery.makeMagnet(".shery-magnet", {
       duration: 0.8,
       ease: "cubic-bezier(0.23, 1, 0.32, 1)",
-    });
-    shery.hoverWithMediaCircle(".shery-project-hover", {
-      images: Project.map((project) => project.image),
     });
 
     return () => {
