@@ -160,6 +160,21 @@ export const getHostIceServers = (token: string) =>
 export interface HostAvailability {
   available: boolean;
   busy: boolean;
+  manualAvailable: boolean;
+  scheduleActive: boolean;
+  schedule: AvailabilitySchedule;
+}
+
+export interface AvailabilityWindow {
+  dayOfWeek: number;
+  startMinute: number;
+  endMinute: number;
+}
+
+export interface AvailabilitySchedule {
+  enabled: boolean;
+  timezone: string;
+  windows: AvailabilityWindow[];
 }
 
 export const getHostMeeting = (roomId: string, token: string) =>
@@ -175,6 +190,12 @@ export const updateHostAvailability = (token: string, available: boolean) =>
   hostRequest<HostAvailability>("/host/availability", token, {
     method: "PUT",
     body: JSON.stringify({ available }),
+  });
+
+export const updateHostAvailabilitySchedule = (token: string, schedule: AvailabilitySchedule) =>
+  hostRequest<HostAvailability>("/host/availability/schedule", token, {
+    method: "PUT",
+    body: JSON.stringify(schedule),
   });
 
 export const testHostTelegram = (token: string) =>

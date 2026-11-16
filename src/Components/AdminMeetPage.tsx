@@ -15,6 +15,8 @@ import {
   rejectHostMeeting,
   testHostTelegram,
   updateHostAvailability,
+  updateHostAvailabilitySchedule,
+  type AvailabilitySchedule,
   type HostMeeting,
   type IceServer,
   VideoCallApiError,
@@ -38,6 +40,18 @@ function formatTime(value: string): string {
   return new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(new Date(value));
 }
 
+const SCHEDULE_DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const DEFAULT_SCHEDULE: AvailabilitySchedule = { enabled: false, timezone: "UTC", windows: [] };
+
+function minuteToTime(value: number): string {
+  return `${String(Math.floor(value / 60)).padStart(2, "0")}:${String(value % 60).padStart(2, "0")}`;
+}
+
+function timeToMinute(value: string): number {
+  const [hours, minutes] = value.split(":").map(Number);
+  return hours * 60 + minutes;
+}
+
 const AdminMeetPage = () => {
   const [token, setToken] = useState<string | null>(() => sessionStorage.getItem(tokenKey));
   const [email, setEmail] = useState("");
@@ -48,7 +62,10 @@ const AdminMeetPage = () => {
   const [loginError, setLoginError] = useState<string | null>(null);
   const [pageError, setPageError] = useState<string | null>(null);
   const [hostAvailable, setHostAvailable] = useState(true);
+  const [hostAvailability, setHostAvailability] = useState<import("../services/videoCallApi").HostAvailability | null>(null);
+  const [availabilitySchedule, setAvailabilitySchedule] = useState<AvailabilitySchedule>(DEFAULT_SCHEDULE);
   const [availabilityBusy, setAvailabilityBusy] = useState(false);
+  const [scheduleBusy, setScheduleBusy] = useState(false);
   const [telegramMessage, setTelegramMessage] = useState<string | null>(null);
   const [connectionState, setConnectionState] = useState("No active call");
   const [micEnabled, setMicEnabled] = useState(true);
@@ -96,7 +113,11 @@ const AdminMeetPage = () => {
   useEffect(() => {
     if (!token) return;
     void loadMeetings();
-    void getHostAvailability(token).then((result) => setHostAvailable(result.available)).catch((error) => setPageError(getError(error)));
+    void getHostAvailability(token).then((result) => {
+      setHostAvailability(result);
+      setHostAvailable(result.manualAvailable ?? result.available);
+      setAvailabilitySchedule(result.schedule ?? DEFAULT_SCHEDULE);
+    }).catch((error) => setPageError(getError(error)));
     const timer = window.setInterval(() => void loadMeetings(), 4000);
     return () => window.clearInterval(timer);
   }, [loadMeetings, token]);
@@ -237,8 +258,37 @@ const AdminMeetPage = () => {
     setAvailabilityBusy(true); setPageError(null);
     try {
       const result = await updateHostAvailability(token, !hostAvailable);
-      setHostAvailable(result.available);
+      setHostAvailability(result);
+      setHostAvailable(result.manualAvailable ?? result.available);
     } catch (error) { setPageError(getError(error)); } finally { setAvailabilityBusy(false); }
+  };
+
+  const saveAvailabilitySchedule = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!token) return;
+    setScheduleBusy(true); setPageError(null); setTelegramMessage(null);
+    try {
+      const result = await updateHostAvailabilitySchedule(token, availabilitySchedule);
+      setHostAvailability(result);
+      setHostAvailable(result.manualAvailable ?? result.available);
+      setAvailabilitySchedule(result.schedule);
+      setTelegramMessage("Recurring unavailable hours saved.");
+    } catch (error) { setPageError(getError(error)); } finally { setScheduleBusy(false); }
+  };
+
+  const setScheduleDayEnabled = (dayOfWeek: number, enabled: boolean) => {
+    setAvailabilitySchedule((current) => {
+      const windows = current.windows.filter((window) => window.dayOfWeek !== dayOfWeek);
+      if (enabled) windows.push({ dayOfWeek, startMinute: 60, endMinute: 480 });
+      return { ...current, windows: windows.sort((a, b) => a.dayOfWeek - b.dayOfWeek) };
+    });
+  };
+
+  const setScheduleTime = (dayOfWeek: number, field: "startMinute" | "endMinute", value: string) => {
+    setAvailabilitySchedule((current) => ({
+      ...current,
+      windows: current.windows.map((window) => window.dayOfWeek === dayOfWeek ? { ...window, [field]: timeToMinute(value) } : window),
+    }));
   };
 
   const rejectAllPending = async () => {
@@ -286,10 +336,18 @@ const AdminMeetPage = () => {
       </header>
       {pageError && <p className="admin-meet-error admin-meet-banner" role="alert">{pageError}</p>}
       {telegramMessage && <p className="admin-meet-success admin-meet-banner" role="status">{telegramMessage}</p>}
+      <section className="admin-meet-card admin-meet-schedule-card">
+        <div className="admin-meet-section-heading"><div><span className="admin-meet-kicker">Automatic hours</span><h2>Recurring unavailable schedule</h2><p className="admin-meet-muted">New call requests and accepts are blocked during these weekly hours.</p></div><span className={`admin-meet-schedule-status ${hostAvailability?.scheduleActive ? "is-active" : ""}`}>{hostAvailability?.scheduleActive ? "Unavailable now" : availabilitySchedule.enabled ? "Schedule enabled" : "Schedule off"}</span></div>
+        <form className="admin-meet-schedule-form" onSubmit={saveAvailabilitySchedule}>
+          <div className="admin-meet-schedule-topline"><label className="admin-meet-checkbox"><input type="checkbox" checked={availabilitySchedule.enabled} onChange={(event) => setAvailabilitySchedule((current) => ({ ...current, enabled: event.target.checked }))} /> Enable recurring unavailable hours</label><label>Timezone<input value={availabilitySchedule.timezone} onChange={(event) => setAvailabilitySchedule((current) => ({ ...current, timezone: event.target.value }))} placeholder="Asia/Kolkata" required /></label></div>
+          <div className="admin-meet-schedule-list">{SCHEDULE_DAYS.map((day, dayOfWeek) => { const window = availabilitySchedule.windows.find((item) => item.dayOfWeek === dayOfWeek); return <div className="admin-meet-schedule-row" key={day}><label className="admin-meet-checkbox"><input type="checkbox" checked={Boolean(window)} onChange={(event) => setScheduleDayEnabled(dayOfWeek, event.target.checked)} />{day}</label><label>From<input type="time" value={window ? minuteToTime(window.startMinute) : "01:00"} onChange={(event) => setScheduleTime(dayOfWeek, "startMinute", event.target.value)} disabled={!window} /></label><label>Until<input type="time" value={window ? minuteToTime(window.endMinute) : "08:00"} onChange={(event) => setScheduleTime(dayOfWeek, "endMinute", event.target.value)} disabled={!window} /></label></div>; })}</div>
+          <div className="admin-meet-schedule-footer"><p className="admin-meet-muted">Example: select a day and set <strong>01:00</strong> to <strong>08:00</strong>. Times use the selected timezone.</p><button className="admin-meet-primary" type="submit" disabled={scheduleBusy}>{scheduleBusy ? "Saving…" : "Save schedule"}</button></div>
+        </form>
+      </section>
       <div className="admin-meet-grid">
         <section className="admin-meet-card">
           <div className="admin-meet-section-heading"><h2>Incoming requests</h2><div className="admin-meet-section-actions"><button type="button" className="admin-meet-refresh" onClick={() => void loadMeetings()}>Refresh</button><button type="button" className="admin-meet-refresh admin-meet-danger-quiet" onClick={() => void rejectAllPending()} disabled={loading || !meetings.some((meeting) => meeting.status === "pending")}>Reject pending</button></div></div>
-          {meetings.length === 0 ? <p className="admin-meet-muted">No active visitor requests.</p> : <div className="admin-meet-list">{meetings.map((meeting) => <article className="admin-meet-request" key={meeting.roomId}><div><strong>{meeting.visitorName}</strong><span>{formatTime(meeting.createdAt)} · {meeting.status}</span>{meeting.visitorMessage && <p>{meeting.visitorMessage}</p>}</div><div className="admin-meet-actions">{meeting.status === "pending" && <><button type="button" className="admin-meet-primary" onClick={() => void accept(meeting)} disabled={loading || !hostAvailable}>Accept & join</button><button type="button" className="admin-meet-quiet" onClick={() => void reject(meeting)}>Reject</button></>}{meeting.status === "accepted" && <><button type="button" className="admin-meet-primary" onClick={() => void startCall(meeting)} disabled={loading}>Join call</button><button type="button" className="admin-meet-quiet" onClick={() => void openMeetingDetails(meeting)}>Details</button></>}</div></article>)}</div>}
+          {meetings.length === 0 ? <p className="admin-meet-muted">No active visitor requests.</p> : <div className="admin-meet-list">{meetings.map((meeting) => <article className="admin-meet-request" key={meeting.roomId}><div><strong>{meeting.visitorName}</strong><span>{formatTime(meeting.createdAt)} · {meeting.status}</span>{meeting.visitorMessage && <p>{meeting.visitorMessage}</p>}</div><div className="admin-meet-actions">{meeting.status === "pending" && <><button type="button" className="admin-meet-primary" onClick={() => void accept(meeting)} disabled={loading || hostAvailability?.available === false}>Accept & join</button><button type="button" className="admin-meet-quiet" onClick={() => void reject(meeting)}>Reject</button></>}{meeting.status === "accepted" && <><button type="button" className="admin-meet-primary" onClick={() => void startCall(meeting)} disabled={loading}>Join call</button><button type="button" className="admin-meet-quiet" onClick={() => void openMeetingDetails(meeting)}>Details</button></>}</div></article>)}</div>}
         </section>
         {activeMeeting && <section className="admin-meet-card admin-meet-room"><div className="admin-meet-section-heading"><div><span className="admin-meet-kicker">Live room</span><h2>{activeMeeting.visitorName}</h2></div><span className="admin-meet-status">{connectionState}</span></div><div className="admin-meet-videos"><video ref={remoteVideoRef} autoPlay playsInline className="admin-meet-video" /><video ref={localVideoRef} autoPlay muted playsInline className="admin-meet-video admin-meet-video-local" /></div><div className="admin-meet-controls"><button type="button" onClick={() => toggleTrack("audio")}>{micEnabled ? "Mute mic" : "Unmute mic"}</button><button type="button" onClick={() => toggleTrack("video")}>{cameraEnabled ? "Turn camera off" : "Turn camera on"}</button><button type="button" className="admin-meet-end" onClick={() => void endCall()}>End call</button></div></section>}
       </div>
