@@ -276,7 +276,7 @@ const PortfolioApp = () => {
     { id: "clock", label: "Local Time", icon: <MdAccessTime aria-hidden="true" />, action: () => setActiveMiniApp("clock"), x: 119, y: -69 },
     { id: "contact", label: "Contact", icon: <MdContactMail aria-hidden="true" />, action: () => setActiveMiniApp("contact"), x: 119, y: 69 },
     { id: "signal", label: "Skills", icon: <MdRadar aria-hidden="true" />, action: () => setActiveMiniApp("signal"), x: -119, y: -69 },
-    { id: "game", label: "Spidey Swing", icon: <MdSportsEsports aria-hidden="true" />, action: () => setIsGameOpen(true), x: 0, y: 138 },
+    { id: "game", label: "Local Train", icon: <MdSportsEsports aria-hidden="true" />, action: () => setIsGameOpen(true), x: 0, y: 138 },
     { id: "todo", label: "Todo", icon: <MdChecklist aria-hidden="true" />, action: () => setIsTodoOpen(true), x: -119, y: 69 },
   ];
 

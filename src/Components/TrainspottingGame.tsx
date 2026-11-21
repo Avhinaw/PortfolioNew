@@ -91,7 +91,7 @@ const TrainspottingGame = () => {
       {stage === "ready" && (
         <div className="trainspotting-intro">
           <p className="trainspotting-eyebrow">TODAY&apos;S CASE · NORMAL</p>
-          <h3>Trainspotting</h3>
+          <h3>Local Train</h3>
           <p>Get your team, tickets, and bags to the right platform before the train leaves.</p>
           <ol>
             <li>Read the train board and learn your platform and coach.</li>

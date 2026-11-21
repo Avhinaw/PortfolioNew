@@ -5,8 +5,16 @@ import AiTourMockup from '../assets/AiTourMockup.png';
 import shadientMock from '../assets/shadientMockup.png';
 import zentryMock from '../assets/ZentryMockup.png';
 import helloAndroidMockup from '../assets/helloAndroidMockup.png';
+import ghostProtocolMockup from '../assets/Ghost Protocol Cyber-Tech Mockup.webp';
 
 const Project = [
+    {
+        title: 'Ghost Protocolo',
+        description: 'Blockchain based dead man switch',
+        image: ghostProtocolMockup,
+        github: 'https://github.com/Avhinaw/Ghost-Protocol',
+        site: 'https://ghost-protocol-asf.pages.dev/'
+    },
     {
         title: 'AvhiSafe Web3 Wallet',
         description: 'A Web3 Wallet of Sol and Eth',
