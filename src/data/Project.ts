@@ -17,7 +17,7 @@ const Project = [
     },
     {
         title: 'AvhiSafe Web3 Wallet',
-        description: 'A Web3 Wallet of Sol and Eth',
+        description: 'Web3 AI Enabled Dyamic Wallet',
         image: abhiWalMock,
         github: 'https://github.com/Avhinaw/AvhiSafe',
         site: 'https://avhisafe.netlify.app/'
