@@ -36,6 +36,7 @@ import VideoCallWidget from "./Components/VideoCallWidget";
 import AdminMeetPage from "./Components/AdminMeetPage";
 import SheryFX from "./Components/SheryFX";
 import { getAvailability } from "./services/videoCallApi";
+import WorkflowShowcase from "./Components/WorkflowShowcase";
 
 const availabilityToastKey = "portfolio-availability-toast-shown";
 
@@ -401,6 +402,8 @@ const PortfolioApp = () => {
           </button>
         </div>
       </section>
+
+      <WorkflowShowcase />
 
       <SpideyTracker
         activeSkillId={activeSkillId}
